@@ -2,6 +2,8 @@
 
 A customizable carousel slider widget in Flutter.
 
+[![pub package](https://img.shields.io/pub/v/flutter_carousel_widget.svg)][pub]
+
 
 ## Features
 
@@ -19,7 +21,7 @@ Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-flutter_carousel_widget: ^0.0.1
+flutter_carousel_widget: ^0.0.2
 ```
 
 And import it:
@@ -56,7 +58,6 @@ FlutterCarousel(
 ### Option Customization
 
 ```dart
-
 FlutterCarousel(
    items: items,
    options: CarouselOptions(
@@ -83,7 +84,6 @@ This method will save memory by building items once it becomes necessary. This w
 It can be used to build different child item widgets related to content or by item index.
 
 ```dart
-
 FlutterCarousel.builder(
   itemCount: 15,
   itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
