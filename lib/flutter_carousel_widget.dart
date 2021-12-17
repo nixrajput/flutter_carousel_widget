@@ -28,34 +28,44 @@ class FlutterCarousel extends StatefulWidget {
 
   final int? itemCount;
 
-  const FlutterCarousel({
+  /// A [MapController], used to control the map.
+  final CarouselControllerImpl _carouselController;
+
+  FlutterCarousel({
     required this.items,
     required this.options,
     carouselController,
     Key? key,
   })  : itemBuilder = null,
         itemCount = items != null ? items.length : 0,
+        _carouselController = carouselController ??
+            CarouselController() as CarouselControllerImpl,
         super(key: key);
 
   /// The on demand item builder constructor
-  const FlutterCarousel.builder(
+  FlutterCarousel.builder(
       {required this.itemCount,
       required this.itemBuilder,
       required this.options,
       carouselController,
       Key? key})
       : items = null,
+        _carouselController = carouselController ??
+            CarouselController() as CarouselControllerImpl,
         super(key: key);
 
   @override
-  FlutterCarouselState createState() => FlutterCarouselState();
+  FlutterCarouselState createState() =>
+      FlutterCarouselState(_carouselController);
 }
 
 class FlutterCarouselState extends State<FlutterCarousel>
     with TickerProviderStateMixin {
-  final CarouselControllerImpl _carouselController =
-      CarouselController() as CarouselControllerImpl;
+  final CarouselControllerImpl carouselController;
+
   Timer? _timer;
+
+  FlutterCarouselState(this.carouselController);
 
   CarouselOptions get options => widget.options;
 
@@ -92,19 +102,22 @@ class FlutterCarouselState extends State<FlutterCarousel>
   @override
   void initState() {
     super.initState();
+
     _carouselState =
         CarouselState(options, clearTimer, resumeTimer, changeMode);
 
     _currentPage = widget.options.initialPage;
+
     _carouselState!.itemCount = widget.itemCount;
-    _carouselController.state = _carouselState;
+    carouselController.state = _carouselState;
     _carouselState!.initialPage = widget.options.initialPage;
     _carouselState!.realPage = options.enableInfiniteScroll
         ? _carouselState!.realPage + _carouselState!.initialPage
         : _carouselState!.initialPage;
-    handleAutoPlay();
 
     _initPageController();
+
+    handleAutoPlay();
   }
 
   void _initPageController() {

@@ -1,5 +1,10 @@
-#Changelog
+# Changelog
 
+
+## 0.1.1
+
+* Bug fixes.
+* Documentation updated.
 
 ## 0.1.0
 

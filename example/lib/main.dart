@@ -85,7 +85,7 @@ class CarouselDemoHome extends StatelessWidget {
           DemoItem('Enlarge Strategy Demo', '/enlarge'),
           DemoItem('Manually Controlled Slider', '/manual'),
           DemoItem('Fullscreen Carousel Slider', '/fullscreen'),
-          DemoItem('Carousel with Indicator Demo', '/indicator'),
+          DemoItem('Carousel with Custom Indicator Demo', '/indicator'),
           DemoItem('Keep PageView Position Demo', '/position'),
           DemoItem('Multiple Item in One Screen Demo', '/multiple'),
         ],
@@ -121,7 +121,7 @@ class ComplicatedImageDemo extends StatelessWidget {
             aspectRatio: 1.0,
             enlargeCenterPage: true,
             showIndicator: true,
-            slideIndicator: CircularSlideIndicator(),
+            slideIndicator: SequentialFillIndicator(),
           ),
           items: imageSliders,
         ),
@@ -140,10 +140,12 @@ class EnlargeStrategyDemo extends StatelessWidget {
       body: Center(
         child: FlutterCarousel(
           options: CarouselOptions(
-            autoPlay: true,
             aspectRatio: 2.0,
             enlargeCenterPage: true,
             enlargeStrategy: CenterPageEnlargeStrategy.height,
+            showIndicator: true,
+            autoPlay: true,
+            slideIndicator: CircularWaveSlideIndicator(),
           ),
           items: imageSliders,
         ),
@@ -179,7 +181,13 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
               const SizedBox(height: 16.0),
               FlutterCarousel(
                 items: imageSliders,
-                options: CarouselOptions(enlargeCenterPage: true, height: 200),
+                options: CarouselOptions(
+                  enlargeCenterPage: true,
+                  height: 200,
+                  showIndicator: true,
+                  autoPlay: true,
+                  slideIndicator: CircularWaveSlideIndicator(),
+                ),
                 carouselController: _controller,
               ),
               Column(
@@ -241,7 +249,7 @@ class FullscreenSliderDemo extends StatelessWidget {
               enlargeCenterPage: false,
               showIndicator: true,
               autoPlay: true,
-              slideIndicator: CircularSlideIndicator(),
+              slideIndicator: CircularWaveSlideIndicator(),
               // autoPlay: false,
             ),
             items: imgList
@@ -276,8 +284,16 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Carousel with Indicator Demo')),
+      appBar: AppBar(title: const Text('Carousel with Custom Indicator Demo')),
       body: Column(children: [
+        const SizedBox(height: 20.0),
+        const Text(
+          'Carousel with Custom Indicator Demo',
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         Expanded(
           child: FlutterCarousel(
             items: imageSliders,
@@ -332,6 +348,9 @@ class KeepPageViewPositionDemo extends StatelessWidget {
               aspectRatio: 1.0,
               viewportFraction: 1.0,
               enlargeCenterPage: false,
+              showIndicator: true,
+              autoPlay: true,
+              slideIndicator: CircularStaticIndicator(),
               pageViewKey: const PageStorageKey<String>('carousel_slider'),
             ),
             items: imageSliders,
@@ -364,6 +383,9 @@ class MultipleItemDemo extends StatelessWidget {
             aspectRatio: 2.0,
             enlargeCenterPage: false,
             viewportFraction: 1,
+            showIndicator: true,
+            autoPlay: true,
+            slideIndicator: CircularStaticIndicator(),
           ),
           itemCount: (imgList.length / 2).round(),
           itemBuilder: (context, index, realIdx) {
