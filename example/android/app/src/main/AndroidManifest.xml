@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flutter_carousel_widget_example">
    <application
-        android:label="flutter_carousel_widget_example"
+        android:label="Carousel Widget"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

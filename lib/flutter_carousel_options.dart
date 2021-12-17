@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'flutter_carousel_indicators.dart';
+
 enum CarouselPageChangedReason { timed, manual, controller }
 
 enum CenterPageEnlargeStrategy { scale, height }
@@ -115,6 +117,10 @@ class CarouselOptions {
   /// Whether or not to disable the `Center` widget for each slide.
   final bool disableCenter;
 
+  final SlideIndicator? slideIndicator;
+
+  final bool showIndicator;
+
   CarouselOptions({
     this.height,
     this.aspectRatio = 1 / 1,
@@ -138,5 +144,7 @@ class CarouselOptions {
     this.pageViewKey,
     this.enlargeStrategy = CenterPageEnlargeStrategy.scale,
     this.disableCenter = false,
+    this.showIndicator = false,
+    this.slideIndicator,
   });
 }

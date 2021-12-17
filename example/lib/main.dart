@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_controller.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_indicators.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_options.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
@@ -48,6 +49,7 @@ class CarouselDemo extends StatelessWidget {
 class DemoItem extends StatelessWidget {
   final String title;
   final String route;
+
   const DemoItem(this.title, this.route, {Key? key}) : super(key: key);
 
   @override
@@ -97,45 +99,10 @@ final List<Widget> imageSliders = imgList
           margin: const EdgeInsets.all(5.0),
           child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.network(
-                    item,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    scale: 1.0,
-                  ),
-                  Positioned(
-                    bottom: 0.0,
-                    left: 0.0,
-                    right: 0.0,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color.fromARGB(200, 0, 0, 0),
-                            Color.fromARGB(0, 0, 0, 0)
-                          ],
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10.0,
-                        horizontal: 20.0,
-                      ),
-                      child: Text(
-                        'No. ${imgList.indexOf(item)} image',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+              child: Image.network(
+                item,
+                fit: BoxFit.cover,
+                width: double.infinity,
               )),
         ))
     .toList();
@@ -153,6 +120,8 @@ class ComplicatedImageDemo extends StatelessWidget {
             autoPlay: true,
             aspectRatio: 1.0,
             enlargeCenterPage: true,
+            showIndicator: true,
+            slideIndicator: CircularSlideIndicator(),
           ),
           items: imageSliders,
         ),
@@ -270,12 +239,16 @@ class FullscreenSliderDemo extends StatelessWidget {
               height: height,
               viewportFraction: 1.0,
               enlargeCenterPage: false,
+              showIndicator: true,
+              autoPlay: true,
+              slideIndicator: CircularSlideIndicator(),
               // autoPlay: false,
             ),
             items: imgList
                 .map((item) => Center(
                         child: Image.network(
                       item,
+                      width: double.infinity,
                       fit: BoxFit.cover,
                       height: height,
                     )))
