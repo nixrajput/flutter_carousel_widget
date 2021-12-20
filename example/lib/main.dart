@@ -102,6 +102,7 @@ final List<Widget> imageSliders = imgList
               child: Image.network(
                 item,
                 width: double.infinity,
+                fit: BoxFit.fill,
               )),
         ))
     .toList();
@@ -116,8 +117,8 @@ class ComplicatedImageDemo extends StatelessWidget {
       body: Center(
         child: FlutterCarousel(
           options: CarouselOptions(
+            viewportFraction: 1.0,
             autoPlay: true,
-            aspectRatio: 1.0,
             enlargeCenterPage: true,
             showIndicator: true,
             slideIndicator: SequentialFillIndicator(),
@@ -139,9 +140,7 @@ class EnlargeStrategyDemo extends StatelessWidget {
       body: Center(
         child: FlutterCarousel(
           options: CarouselOptions(
-            aspectRatio: 2.0,
             enlargeCenterPage: true,
-            enlargeStrategy: CenterPageEnlargeStrategy.height,
             showIndicator: true,
             autoPlay: true,
             slideIndicator: CircularWaveSlideIndicator(),
@@ -178,16 +177,19 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
           child: Column(
             children: [
               const SizedBox(height: 16.0),
-              FlutterCarousel(
-                items: imageSliders,
-                options: CarouselOptions(
-                  enlargeCenterPage: false,
-                  height: 200,
-                  showIndicator: true,
-                  autoPlay: true,
-                  slideIndicator: CircularWaveSlideIndicator(),
+              SizedBox(
+                width: double.infinity,
+                child: FlutterCarousel(
+                  items: imageSliders,
+                  options: CarouselOptions(
+                    viewportFraction: 1.0,
+                    height: 200,
+                    showIndicator: true,
+                    autoPlay: true,
+                    slideIndicator: CircularWaveSlideIndicator(),
+                  ),
+                  carouselController: _controller,
                 ),
-                carouselController: _controller,
               ),
               Column(
                 children: <Widget>[
@@ -333,11 +335,11 @@ class KeepPageViewPositionDemo extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Keep PageView Position Demo')),
       body: ListView.builder(itemBuilder: (ctx, index) {
-        if (index == 3) {
+        if (index == 2) {
           return FlutterCarousel(
             options: CarouselOptions(
-              aspectRatio: 1.0,
               viewportFraction: 1.0,
+              aspectRatio: 16 / 9,
               enlargeCenterPage: false,
               showIndicator: true,
               autoPlay: true,
@@ -388,7 +390,11 @@ class MultipleItemDemo extends StatelessWidget {
                   flex: 1,
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Image.network(imgList[idx], fit: BoxFit.cover),
+                    child: Image.network(
+                      imgList[idx],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
                   ),
                 );
               }).toList(),

@@ -2,6 +2,7 @@ library flutter_carousel_widget;
 
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -196,14 +197,9 @@ class FlutterCarouselState extends State<FlutterCarousel>
         height: widget.options.height,
         child: child,
       );
-    } else if (widget.options.height == null &&
-        widget.options.aspectRatio != null) {
-      wrapper = AspectRatio(
-        aspectRatio: widget.options.aspectRatio!,
-        child: child,
-      );
     } else {
-      wrapper = SizedBox(
+      wrapper = AspectRatio(
+        aspectRatio: widget.options.aspectRatio ?? 1 / 1,
         child: child,
       );
     }
@@ -292,8 +288,11 @@ class FlutterCarouselState extends State<FlutterCarousel>
   Widget build(BuildContext context) {
     return getGestureWrapper(
       Stack(
+        fit: StackFit.loose,
+        clipBehavior: Clip.none,
         children: [
           PageView.builder(
+            clipBehavior: Clip.none,
             physics: widget.options.scrollPhysics,
             scrollDirection: widget.options.scrollDirection,
             pageSnapping: widget.options.pageSnapping,
@@ -312,8 +311,11 @@ class FlutterCarouselState extends State<FlutterCarousel>
               }
             },
             itemBuilder: (BuildContext context, int idx) {
-              final int index = getRealIndex(idx + _carouselState!.initialPage,
-                  _carouselState!.realPage, widget.itemCount);
+              final int index = getRealIndex(
+                idx + _carouselState!.initialPage,
+                _carouselState!.realPage,
+                widget.itemCount,
+              );
 
               return AnimatedBuilder(
                 animation: _carouselState!.pageController!,
@@ -354,7 +356,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
                   final double height = widget.options.height ??
                       MediaQuery.of(context).size.width *
-                          (1 / (widget.options.aspectRatio ?? 16 / 9));
+                          (1 / (widget.options.aspectRatio ?? 1 / 1));
 
                   if (widget.options.scrollDirection == Axis.horizontal) {
                     return getCenterWrapper(
@@ -379,13 +381,14 @@ class FlutterCarouselState extends State<FlutterCarousel>
               widget.options.slideIndicator != null &&
               widget.itemCount! > 0)
             Positioned(
-              bottom: 8.0,
+              bottom: 12.0,
               left: 0.0,
               right: 0.0,
               child: widget.options.slideIndicator!.build(
-                  _currentPage! % widget.itemCount!,
-                  _pageDelta,
-                  widget.itemCount!),
+                _currentPage! % widget.itemCount!,
+                _pageDelta,
+                widget.itemCount!,
+              ),
             )
         ],
       ),

@@ -1,6 +1,11 @@
 # Changelog
 
 
+## 0.1.3
+
+* Minor bug fixes.
+
+
 ## 0.1.2
 
 * Auto-sized child support.
