@@ -196,9 +196,14 @@ class FlutterCarouselState extends State<FlutterCarousel>
         height: widget.options.height,
         child: child,
       );
-    } else {
+    } else if (widget.options.height == null &&
+        widget.options.aspectRatio != null) {
       wrapper = AspectRatio(
-        aspectRatio: widget.options.aspectRatio,
+        aspectRatio: widget.options.aspectRatio!,
+        child: child,
+      );
+    } else {
+      wrapper = SizedBox(
         child: child,
       );
     }
@@ -254,13 +259,9 @@ class FlutterCarouselState extends State<FlutterCarousel>
         height: height,
       );
     }
-    return Transform.scale(
-        scale: scale!,
-        child: SizedBox(
-          child: child,
-          width: width,
-          height: height,
-        ));
+    return SizedBox(
+      child: child,
+    );
   }
 
   void onStart() {
@@ -353,7 +354,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
                   final double height = widget.options.height ??
                       MediaQuery.of(context).size.width *
-                          (1 / widget.options.aspectRatio);
+                          (1 / (widget.options.aspectRatio ?? 16 / 9));
 
                   if (widget.options.scrollDirection == Axis.horizontal) {
                     return getCenterWrapper(
@@ -367,9 +368,6 @@ class FlutterCarouselState extends State<FlutterCarousel>
                     return getCenterWrapper(
                       getEnlargeWrapper(
                         child,
-                        width:
-                            distortionValue * MediaQuery.of(context).size.width,
-                        scale: distortionValue,
                       ),
                     );
                   }

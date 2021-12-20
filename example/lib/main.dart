@@ -5,12 +5,12 @@ import 'package:flutter_carousel_widget/flutter_carousel_options.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 final List<String> imgList = [
-  'https://source.unsplash.com/random/?abstracts',
-  'https://source.unsplash.com/random/?fruits,flowers',
-  'https://source.unsplash.com/random/?sports',
-  'https://source.unsplash.com/random/?nature',
-  'https://source.unsplash.com/random/?science',
-  'https://source.unsplash.com/random/?computer'
+  'https://source.unsplash.com/random/1080x1080/?abstracts',
+  'https://source.unsplash.com/random/1080x720/?fruits,flowers',
+  'https://source.unsplash.com/random/1920x1920/?sports',
+  'https://source.unsplash.com/random/1080x1080/?nature',
+  'https://source.unsplash.com/random/1080x360/?science',
+  'https://source.unsplash.com/random/1080x600/?computer'
 ];
 
 void main() => runApp(const CarouselDemo());
@@ -101,7 +101,6 @@ final List<Widget> imageSliders = imgList
               borderRadius: const BorderRadius.all(Radius.circular(5.0)),
               child: Image.network(
                 item,
-                fit: BoxFit.cover,
                 width: double.infinity,
               )),
         ))
@@ -182,7 +181,7 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
               FlutterCarousel(
                 items: imageSliders,
                 options: CarouselOptions(
-                  enlargeCenterPage: true,
+                  enlargeCenterPage: false,
                   height: 200,
                   showIndicator: true,
                   autoPlay: true,
@@ -284,16 +283,8 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Carousel with Custom Indicator Demo')),
+      appBar: AppBar(title: const Text('Custom Indicator Demo')),
       body: Column(children: [
-        const SizedBox(height: 20.0),
-        const Text(
-          'Carousel with Custom Indicator Demo',
-          style: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         Expanded(
           child: FlutterCarousel(
             items: imageSliders,
