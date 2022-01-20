@@ -6,7 +6,7 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
 [![popularity](https://badges.bar/flutter_carousel_widget/popularity)](https://pub.dev/packages/flutter_carousel_widget/score)
 [![likes](https://badges.bar/flutter_carousel_widget/likes)](https://pub.dev/packages/flutter_carousel_widget/score)
 [![pub points](https://badges.bar/flutter_carousel_widget/pub%20points)](https://pub.dev/packages/flutter_carousel_widget/score)
-[![CI](https://github.com/nixrajput/flutter_carousel_widget/workflows/CI/badge.svg)][pub]
+[![CI](https://github.com/nixrajput/flutter-carousel-widget/workflows/CI/badge.svg)][pub]
 
 
 ## Features
