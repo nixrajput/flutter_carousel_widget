@@ -1,6 +1,12 @@
 # Changelog
 
 
+## 0.1.4
+
+* Bug fixes.
+* Documentation updated.
+
+
 ## 0.1.3
 
 * Minor bug fixes.

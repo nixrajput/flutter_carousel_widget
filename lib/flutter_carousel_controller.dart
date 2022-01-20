@@ -55,7 +55,7 @@ class CarouselControllerImpl implements CarouselController {
   Future<void> nextPage(
       {Duration? duration = const Duration(milliseconds: 300),
       Curve? curve = Curves.linear}) async {
-    final bool isNeedResetTimer = _state!.options.pauseAutoPlayOnManualNavigate;
+    final isNeedResetTimer = _state!.options.pauseAutoPlayOnManualNavigate;
     if (isNeedResetTimer) {
       _state!.onResetTimer();
     }
@@ -74,7 +74,7 @@ class CarouselControllerImpl implements CarouselController {
   Future<void> previousPage(
       {Duration? duration = const Duration(milliseconds: 300),
       Curve? curve = Curves.linear}) async {
-    final bool isNeedResetTimer = _state!.options.pauseAutoPlayOnManualNavigate;
+    final isNeedResetTimer = _state!.options.pauseAutoPlayOnManualNavigate;
     if (isNeedResetTimer) {
       _state!.onResetTimer();
     }
@@ -96,7 +96,7 @@ class CarouselControllerImpl implements CarouselController {
         _state!.realPage - _state!.initialPage, _state!.itemCount);
 
     _setModeController();
-    final int pageToJump = _state!.pageController!.page!.toInt() + page - index;
+    final pageToJump = _state!.pageController!.page!.toInt() + page - index;
     return _state!.pageController!.jumpToPage(pageToJump);
   }
 
@@ -108,7 +108,7 @@ class CarouselControllerImpl implements CarouselController {
   Future<void> animateToPage(int page,
       {Duration? duration = const Duration(milliseconds: 300),
       Curve? curve = Curves.linear}) async {
-    final bool isNeedResetTimer = _state!.options.pauseAutoPlayOnManualNavigate;
+    final isNeedResetTimer = _state!.options.pauseAutoPlayOnManualNavigate;
     if (isNeedResetTimer) {
       _state!.onResetTimer();
     }

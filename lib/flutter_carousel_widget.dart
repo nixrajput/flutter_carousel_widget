@@ -3,7 +3,6 @@ library flutter_carousel_widget;
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -145,10 +144,10 @@ class FlutterCarouselState extends State<FlutterCarousel>
               return;
             }
 
-            CarouselPageChangedReason previousReason = mode;
+            var previousReason = mode;
             changeMode(CarouselPageChangedReason.timed);
-            int nextPage = _carouselState!.pageController!.page!.round() + 1;
-            int itemCount = widget.itemCount ?? widget.items!.length;
+            var nextPage = _carouselState!.pageController!.page!.round() + 1;
+            var itemCount = widget.itemCount ?? widget.items!.length;
 
             if (nextPage >= itemCount &&
                 widget.options.enableInfiniteScroll == false) {
@@ -180,7 +179,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
   }
 
   void handleAutoPlay() {
-    bool autoPlayEnabled = widget.options.autoPlay;
+    var autoPlayEnabled = widget.options.autoPlay;
 
     if (autoPlayEnabled && _timer != null) return;
 
@@ -219,9 +218,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
           instance.onEnd = (_) {
             onPanUp();
           };
-          instance.onCancel = () {
-            onPanUp();
-          };
+          instance.onCancel = onPanUp;
         }),
       },
       child: NotificationListener(
@@ -302,7 +299,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
                 widget.options.enableInfiniteScroll ? null : widget.itemCount,
             key: widget.options.pageViewKey,
             onPageChanged: (int index) {
-              int currentPage = getRealIndex(
+              var currentPage = getRealIndex(
                   index + _carouselState!.initialPage,
                   _carouselState!.realPage,
                   widget.itemCount);
@@ -311,7 +308,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
               }
             },
             itemBuilder: (BuildContext context, int idx) {
-              final int index = getRealIndex(
+              final index = getRealIndex(
                 idx + _carouselState!.initialPage,
                 _carouselState!.realPage,
                 widget.itemCount,
@@ -325,7 +322,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
                         : Container())
                     : widget.itemBuilder!(context, index, idx),
                 builder: (BuildContext context, child) {
-                  double distortionValue = 1.0;
+                  var distortionValue = 1.0;
                   // if `enlargeCenterPage` is true, we must calculate the carousel item's height
                   // to display the visual effect
                   if (widget.options.enlargeCenterPage != null &&
@@ -336,9 +333,9 @@ class FlutterCarouselState extends State<FlutterCarousel>
                     try {
                       itemOffset = _carouselState!.pageController!.page! - idx;
                     } catch (e) {
-                      BuildContext storageContext = _carouselState!
+                      var storageContext = _carouselState!
                           .pageController!.position.context.storageContext;
-                      final double? previousSavedPosition =
+                      final previousSavedPosition =
                           PageStorage.of(storageContext)
                               ?.readState(storageContext) as double?;
                       if (previousSavedPosition != null) {
@@ -354,7 +351,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
                         Curves.easeOut.transform(distortionRatio as double);
                   }
 
-                  final double height = widget.options.height ??
+                  final height = widget.options.height ??
                       MediaQuery.of(context).size.width *
                           (1 / (widget.options.aspectRatio ?? 1 / 1));
 

@@ -87,16 +87,16 @@ class CircularIndicatorPainter extends CustomPainter {
         ? size.width
         : (size.width - 2 * radius) / (itemCount - 1);
     final y = size.height / 2;
-    double x = radius;
+    var x = radius;
 
-    for (int i = 0; i < itemCount; i++) {
+    for (var i = 0; i < itemCount; i++) {
       canvas.drawCircle(Offset(x, y), radius, indicatorPaint);
       x += dx;
     }
 
     canvas.save();
-    double midX = radius + dx * currentPage;
-    double midY = size.height / 2;
+    var midX = radius + dx * currentPage;
+    var midY = size.height / 2;
     final path = Path();
     path.addOval(Rect.fromLTRB(
         midX - radius, midY - radius, midX + radius, midY + radius));
@@ -119,7 +119,7 @@ class CircularIndicatorPainter extends CustomPainter {
 
     if (indicatorBorderColor != null) {
       x = radius;
-      for (int i = 0; i < itemCount; i++) {
+      for (var i = 0; i < itemCount; i++) {
         canvas.drawCircle(Offset(x, y), radius, borderIndicatorPaint);
         x += dx;
       }
@@ -220,14 +220,14 @@ class CircularWaveIndicatorPainter extends CustomPainter {
         ? size.width
         : (size.width - 2 * radius!) / (itemCount! - 1);
     final y = size.height / 2;
-    double? x = radius;
-    for (int i = 0; i < itemCount!; i++) {
+    var x = radius;
+    for (var i = 0; i < itemCount!; i++) {
       canvas.drawCircle(Offset(x!, y), radius!, indicatorPaint);
       x += dx;
     }
-    double midX = radius! + dx * currentPage!;
-    double midY = size.height / 2;
-    double r = radius! * ((1.4 * pageDelta! - 0.7).abs() + 0.3);
+    var midX = radius! + dx * currentPage!;
+    var midY = size.height / 2;
+    var r = radius! * ((1.4 * pageDelta! - 0.7).abs() + 0.3);
     if (currentPage == itemCount! - 1) {
       canvas.save();
       final path = Path();
@@ -248,7 +248,7 @@ class CircularWaveIndicatorPainter extends CustomPainter {
     }
     if (indicatorBorderColor != null) {
       x = radius;
-      for (int i = 0; i < itemCount!; i++) {
+      for (var i = 0; i < itemCount!; i++) {
         canvas.drawCircle(Offset(x!, y), radius!, borderIndicatorPaint);
         x += dx;
       }
@@ -354,8 +354,8 @@ class CircularStaticIndicatorPainter extends CustomPainter {
         ? size.width
         : (size.width - 2 * radius) / (itemCount - 1);
     final y = size.height / 2;
-    double x = radius;
-    for (int i = 0; i < itemCount; i++) {
+    var x = radius;
+    for (var i = 0; i < itemCount; i++) {
       canvas.drawCircle(Offset(x, y), radius, indicatorPaint);
       if (i == currentPage) {
         canvas.drawCircle(
@@ -374,7 +374,7 @@ class CircularStaticIndicatorPainter extends CustomPainter {
     }
     if (indicatorBorderColor != null) {
       x = radius;
-      for (int i = 0; i < itemCount; i++) {
+      for (var i = 0; i < itemCount; i++) {
         canvas.drawCircle(Offset(x, y), radius, borderIndicatorPaint);
         x += dx;
       }
@@ -478,7 +478,7 @@ class SequentialFillIndicatorPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    int currentPage = this.currentPage;
+    var currentPage = this.currentPage;
     if (this.currentPage + pageDelta > itemCount - 1) {
       currentPage = 0;
     }
@@ -486,15 +486,15 @@ class SequentialFillIndicatorPainter extends CustomPainter {
         ? size.width
         : (size.width - 2 * radius) / (itemCount - 1);
     final y = size.height / 2;
-    double x = radius;
-    for (int i = 0; i < itemCount; i++) {
+    var x = radius;
+    for (var i = 0; i < itemCount; i++) {
       canvas.drawCircle(Offset(x, y), radius, indicatorPaint);
       x += dx;
     }
     canvas.save();
     x = radius;
     final path = Path();
-    for (int i = 0; i < itemCount; i++) {
+    for (var i = 0; i < itemCount; i++) {
       path.addOval(Rect.fromCircle(center: Offset(x, y), radius: radius));
       x += dx;
     }
@@ -514,7 +514,7 @@ class SequentialFillIndicatorPainter extends CustomPainter {
     canvas.restore();
     if (indicatorBorderColor != null) {
       x = radius;
-      for (int i = 0; i < itemCount; i++) {
+      for (var i = 0; i < itemCount; i++) {
         canvas.drawCircle(Offset(x, y), radius, borderIndicatorPaint);
         x += dx;
       }
