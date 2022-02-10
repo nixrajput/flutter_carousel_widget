@@ -207,7 +207,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
       gestures: {
         _MultipleGestureRecognizer:
             GestureRecognizerFactoryWithHandlers<_MultipleGestureRecognizer>(
-                () => _MultipleGestureRecognizer(),
+                _MultipleGestureRecognizer.new,
                 (_MultipleGestureRecognizer instance) {
           instance.onStart = (_) {
             onStart();

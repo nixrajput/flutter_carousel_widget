@@ -109,7 +109,7 @@ class CarouselOptions {
   final bool pauseAutoPlayInFiniteScroll;
 
   /// Pass a `PageStorageKey` if you want to keep the PageView's position when it was recreated.
-  final PageStorageKey? pageViewKey;
+  final PageStorageKey<dynamic>? pageViewKey;
 
   /// Use `enlargeStrategy` to determine which method to enlarge the center page.
   final CenterPageEnlargeStrategy enlargeStrategy;
@@ -117,14 +117,16 @@ class CarouselOptions {
   /// Whether or not to disable the `Center` widget for each slide.
   final bool disableCenter;
 
+  /// Use `slideIndicator` to determine which indicator you want to show for each slide.
   final SlideIndicator? slideIndicator;
 
+  /// Whether or not to show the `SlideIndicator` for each slide.
   final bool showIndicator;
 
   CarouselOptions({
     this.height,
     this.aspectRatio,
-    this.viewportFraction = 1.0,
+    this.viewportFraction = 0.9,
     this.initialPage = 0,
     this.enableInfiniteScroll = true,
     this.reverse = false,
@@ -144,7 +146,7 @@ class CarouselOptions {
     this.pageViewKey,
     this.enlargeStrategy = CenterPageEnlargeStrategy.scale,
     this.disableCenter = false,
-    this.showIndicator = false,
-    this.slideIndicator,
+    this.showIndicator = true,
+    this.slideIndicator = const CircularSlideIndicator(),
   });
 }

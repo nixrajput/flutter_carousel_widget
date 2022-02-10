@@ -1,5 +1,12 @@
 # Changelog
 
+
+## 0.1.5
+
+* Default Slide Indicator added.
+* Bug fixes.
+* Performance improvements.
+
 ## 0.1.4
 
 * Bug fixes.
