@@ -37,82 +37,52 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 Simply create a `FlutterCarousel` widget, and pass the required params:
 
 ```dart
-FlutterCarousel
-(
-options: CarouselOptions
-(
-height: 400.0
-,
-showIndicator: true
-,
-slideIndicator: CircularSlideIndicator
-(
-),)
-,
-items: [1,2,3,4,5]
-.
-map
-((i) {
-return Builder(
-builder: (BuildContext context) {
-return Container(
-width: MediaQuery.of(context).size.width,
-margin: EdgeInsets.symmetric(horizontal: 5.0),
-decoration: BoxDecoration(
-color: Colors.amber
-),
-child: Text('text $i', style: TextStyle(fontSize: 16.0),)
-);
-},
-);
-})
-.
-toList
-(
-),)
+FlutterCarousel(
+  options: CarouselOptions(
+    height: 400.0, 
+    showIndicator: true,
+    slideIndicator: CircularSlideIndicator(),
+  ),
+  items: [1,2,3,4,5].map((i) {
+    return Builder(
+      builder: (BuildContext context) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          margin: EdgeInsets.symmetric(horizontal: 5.0),
+          decoration: BoxDecoration(
+            color: Colors.amber
+          ),
+          child: Text('text $i', style: TextStyle(fontSize: 16.0),)
+        );
+      },
+    );
+  }).toList(),
+)
 ```
 
 ### Option Customization
 
 ```dart
-FlutterCarousel
-(
-items: items,options: CarouselOptions
-(
-height: 400
-,
-aspectRatio: 16
-/
-9
-,
-viewportFraction: 0.8
-,
-initialPage: 0
-,
-enableInfiniteScroll: true
-,
-reverse: false
-,
-autoPlay: true
-,
-autoPlayInterval: Duration
-(
-seconds: 3
-)
-,
-autoPlayAnimationDuration: Duration
-(
-milliseconds: 800
-)
-,
-autoPlayCurve: Curves.fastOutSlowIn,enlargeCenterPage: true
-,
-onPageChanged: callbackFunction,scrollDirection: Axis.horizontal,showIndicator: true
-,
-slideIndicator: CircularSlideIndicator
-(
-),)
-)
+FlutterCarousel(
+   items: items,
+   options: CarouselOptions(
+      height: 400,
+      aspectRatio: 16/9,
+      viewportFraction: 0.8,
+      initialPage: 0,
+      enableInfiniteScroll: true,
+      reverse: false,
+      autoPlay: true,
+      autoPlayInterval: Duration(seconds: 3),
+      autoPlayAnimationDuration: Duration(milliseconds: 800),
+      autoPlayCurve: Curves.fastOutSlowIn,
+      enlargeCenterPage: true,
+      onPageChanged: callbackFunction,
+      scrollDirection: Axis.horizontal,
+      showIndicator: true,
+      slideIndicator: CircularSlideIndicator(),
+   )
+ )
 ```
 
 ### Build item widgets on demand
@@ -122,25 +92,12 @@ built if they're not currently meant to be visible on screen. It can be used to 
 child item widgets related to content or by item index.
 
 ```dart
-FlutterCarousel.builder(itemCount: 15
-,
-itemBuilder: (
-
-BuildContext context, int
-itemIndex,
-
-int pageViewIndex
-)
-=>
-Container
-(
-child: Text
-(
-itemIndex.toString()
-)
-,
-)
-,
+FlutterCarousel.builder(
+  itemCount: 15,
+  itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+    Container(
+      child: Text(itemIndex.toString()),
+    ),
 )
 ```
 
