@@ -5,9 +5,9 @@
 Pod::Spec.new do |s|
   s.name             = 'flutter_carousel_widget'
   s.version          = '0.0.1'
-  s.summary          = 'A customizable carousel slider widget in Flutter which supports inifinte scrolling, auto scrolling, custom child widget, custom animations and built-in indicators.'
+  s.summary          = 'A customizable carousel slider widget in Flutter which supports infinite scrolling, auto scrolling, custom child widget, custom animations and pre-built indicators.'
   s.description      = <<-DESC
-A customizable carousel slider widget in Flutter which supports inifinte scrolling, auto scrolling, custom child widget, custom animations and built-in indicators.
+A customizable carousel slider widget in Flutter which supports infinite scrolling, auto scrolling, custom child widget, custom animations and pre-built indicators.
                        DESC
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }

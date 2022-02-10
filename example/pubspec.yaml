@@ -1,5 +1,6 @@
 name: flutter_carousel_widget_example
 description: Demonstrates how to use the flutter_carousel_widget plugin.
+
 publish_to: 'none'
 
 environment:
@@ -17,6 +18,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   flutter_lints: ^1.0.4
 
 flutter:

@@ -1,1 +1,3 @@
-<manifest package="com.nixlab.flutter_carousel_widget"></manifest>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.nixlab.flutter_carousel_widget">
+</manifest>
