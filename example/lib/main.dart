@@ -61,11 +61,17 @@ class DemoItem extends StatelessWidget {
             vertical: 16.0,
             horizontal: 16.0,
           ),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 18.0,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18.0,
+                ),
+              ),
+              const Icon(Icons.arrow_forward_ios)
+            ],
           ),
         ),
         margin: const EdgeInsets.only(
@@ -115,12 +121,35 @@ final List<Widget> imageSliders = imgList
     .map((item) => Container(
           margin: const EdgeInsets.all(5.0),
           child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-              child: Image.network(
-                item,
-                width: double.infinity,
-                fit: BoxFit.fill,
-              )),
+            borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+            child: Image.network(
+              item,
+              width: double.infinity,
+              fit: BoxFit.fill,
+              loadingBuilder: (BuildContext ctx, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                  ),
+                );
+              },
+              errorBuilder: (
+                BuildContext context,
+                Object exception,
+                StackTrace? stackTrace,
+              ) {
+                return const Text(
+                  'Oops!! An error occurred. 😢',
+                  style: TextStyle(fontSize: 16.0),
+                );
+              },
+            ),
+          ),
         ))
     .toList();
 
@@ -154,7 +183,6 @@ class EnlargeStrategyDemo extends StatelessWidget {
         child: FlutterCarousel(
           options: CarouselOptions(
             enlargeCenterPage: true,
-            showIndicator: true,
             autoPlay: true,
             slideIndicator: CircularWaveSlideIndicator(),
           ),

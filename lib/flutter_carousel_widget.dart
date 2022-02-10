@@ -277,8 +277,8 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
   @override
   void dispose() {
-    super.dispose();
     clearTimer();
+    super.dispose();
   }
 
   @override

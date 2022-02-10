@@ -1,6 +1,6 @@
-# flutter_carousel_widget_example
+# example
 
-Demonstrates how to use the flutter_carousel_widget plugin.
+A new Flutter project.
 
 ## Getting Started
 

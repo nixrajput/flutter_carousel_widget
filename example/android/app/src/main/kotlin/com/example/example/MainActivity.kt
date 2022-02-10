@@ -1,4 +1,4 @@
-package com.nixlab.flutter_carousel_widget_example
+package com.example.example
 
 import io.flutter.embedding.android.FlutterActivity
 

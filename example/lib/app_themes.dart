@@ -28,6 +28,7 @@ class AppThemes {
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: lightBGColor,
+      elevation: 0.0,
     ),
     textTheme: const TextTheme(
       bodyText1: TextStyle(color: darkColor),
@@ -69,6 +70,7 @@ class AppThemes {
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: darkBGColor,
+      elevation: 0.0,
     ),
     textTheme: const TextTheme(
       bodyText1: TextStyle(color: lightColor),

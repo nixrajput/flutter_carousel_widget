@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.nixlab.flutter_carousel_widget_example"
+        applicationId "com.example.example"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()

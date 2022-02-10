@@ -7,4 +7,4 @@ version:
   revision: 5f105a6ca7a5ac7b8bc9b241f4c2d86f4188cf5c
   channel: stable
 
-project_type: plugin
+project_type: package

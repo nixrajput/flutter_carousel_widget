@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0
+
+* Source code optimised.
+* Bug fixes.
+* Performance improvements.
+* Documentation updated.
+
 ## 0.1.5
 
 * Default Slide Indicator added.
