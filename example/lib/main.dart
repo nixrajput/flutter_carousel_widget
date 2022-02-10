@@ -7,12 +7,12 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'app_themes.dart';
 
 final List<String> imgList = [
-  'https://source.unsplash.com/random/1080x1080/?abstracts',
-  'https://source.unsplash.com/random/1080x720/?fruits,flowers',
+  'https://source.unsplash.com/random/1920x1920/?abstracts',
+  'https://source.unsplash.com/random/1920x1920/?fruits,flowers',
   'https://source.unsplash.com/random/1920x1920/?sports',
-  'https://source.unsplash.com/random/1080x1080/?nature',
-  'https://source.unsplash.com/random/1080x360/?science',
-  'https://source.unsplash.com/random/1080x600/?computer'
+  'https://source.unsplash.com/random/1920x1920/?nature',
+  'https://source.unsplash.com/random/1920x1920/?science',
+  'https://source.unsplash.com/random/1920x1920/?computer'
 ];
 
 void main() => runApp(const CarouselDemo());
