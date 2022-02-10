@@ -1,16 +1,13 @@
 # Changelog
 
-
 ## 0.1.4
 
 * Bug fixes.
 * Documentation updated.
 
-
 ## 0.1.3
 
 * Minor bug fixes.
-
 
 ## 0.1.2
 
@@ -27,7 +24,6 @@
 * Pre-built Carousel indicator support added.
 * Bug fixes.
 * Documentation updated.
-
 
 ## 0.0.1
 

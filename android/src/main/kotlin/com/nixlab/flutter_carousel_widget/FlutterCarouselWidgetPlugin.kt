@@ -1,4 +1,4 @@
-package com.example.flutter_carousel_widget
+package com.nixlab.flutter_carousel_widget
 
 import androidx.annotation.NonNull
 

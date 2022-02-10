@@ -1,11 +1,11 @@
 name: flutter_carousel_widget
-description: A customizable carousel slider widget in Flutter which supports infinte scrolling, auto scrolling, custom child widget, custom animations and pre-built indicators.
-version: 0.1.4
+description: A customizable carousel slider widget in Flutter which supports infinite scrolling, auto scrolling, custom child widget, custom animations and built-in indicators.
+version: 0.1.5
 homepage: https://github.com/nixrajput/flutter_carousel_widget
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.20.0"
+  sdk: ">=2.16.0 <3.0.0"
+  flutter: ">=2.5.0"
 
 dependencies:
   flutter:
@@ -19,3 +19,12 @@ dev_dependencies:
   flutter_lints: ^1.0.4
 
 flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.nixlab.flutter_carousel_widget
+        pluginClass: FlutterCarouselWidgetPlugin
+      ios:
+        pluginClass: FlutterCarouselWidgetPlugin
+      windows:
+        pluginClass: FlutterCarouselWidgetPlugin

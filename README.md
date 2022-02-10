@@ -1,12 +1,12 @@
 # flutter_carousel_widget
 
-A customizable carousel slider widget in Flutter which supports infinite scrolling, auto scrolling, custom child widget, custom animations and pre-built indicators.
+A customizable carousel slider widget in Flutter which supports infinite scrolling, auto scrolling,
+custom child widget, custom animations and pre-built indicators.
 
 [![pub package](https://img.shields.io/pub/v/flutter_carousel_widget.svg)][pub]
 [![popularity](https://badges.bar/flutter_carousel_widget/popularity)](https://pub.dev/packages/flutter_carousel_widget/score)
 [![likes](https://badges.bar/flutter_carousel_widget/likes)](https://pub.dev/packages/flutter_carousel_widget/score)
 [![pub points](https://badges.bar/flutter_carousel_widget/pub%20points)](https://pub.dev/packages/flutter_carousel_widget/score)
-
 
 ## Features
 
@@ -17,14 +17,13 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
 * Pre-built carousel Indicator.
 * Many more features are coming soon
 
-
 ## Installation
 
 Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-flutter_carousel_widget: ^0.1.4
+flutter_carousel_widget: ^0.1.5
 ```
 
 And import it:
@@ -32,7 +31,6 @@ And import it:
 ```dart
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 ```
-
 
 ## Usage
 
@@ -89,8 +87,9 @@ FlutterCarousel(
 
 ### Build item widgets on demand
 
-This method will save memory by building items once it becomes necessary. This way they won't be built if they're not currently meant to be visible on screen.
-It can be used to build different child item widgets related to content or by item index.
+This method will save memory by building items once it becomes necessary. This way they won't be
+built if they're not currently meant to be visible on screen. It can be used to build different
+child item widgets related to content or by item index.
 
 ```dart
 FlutterCarousel.builder(
@@ -102,10 +101,11 @@ FlutterCarousel.builder(
 )
 ```
 
-
 ## Carousel controller
 
-In order to manually control the pageview's position, you can create your own `CarouselController`, and pass it to `CarouselSlider`. Then you can use the `CarouselController` instance to manipulate the position.
+In order to manually control the pageview's position, you can create your own `CarouselController`,
+and pass it to `CarouselSlider`. Then you can use the `CarouselController` instance to manipulate
+the position.
 
 ```dart 
 class CarouselDemo extends StatelessWidget {
@@ -153,7 +153,6 @@ Jump to the given page.
 
 Animate to the given page.
 
-
 ## Screenshots
 
 Basic Flutter Carousel:
@@ -183,9 +182,8 @@ Flutter Carousel with multiple item in one widget:
 ## Credits
 
 This package is initially inspired from [carousel_slider][carousel_slider] package.
-Thanks [serenader.me][serenader] for the package.
-I am extended this package with some extra toppings and new features.
-
+Thanks [serenader.me][serenader] for the package. I am extending this package with some extra
+toppings and new features.
 
 ## Connect With Me
 
@@ -202,11 +200,19 @@ I am extended this package with some extra toppings and new features.
 [<img align="left" alt="nixrajput | LinkedIn" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/linkedin-in-brands.svg" />][linkedin]
 
 [pub]: https://pub.dev/packages/flutter_carousel_widget
+
 [github]: https://github.com/nixrajput
+
 [website]: https://nixlab.co.in
+
 [facebook]: https://facebook.com/nixrajput07
+
 [twitter]: https://twitter.com/nixrajput07
+
 [instagram]: https://instagram.com/nixrajput
+
 [linkedin]: https://linkedin.com/in/nixrajput
+
 [carousel_slider]: https://pub.dev/packages/carousel_slider
+
 [serenader]: https://pub.dev/publishers/serenader.me/packages
