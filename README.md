@@ -19,7 +19,7 @@ custom child widget, custom animations and pre-built indicators.
 
 ## Demo
 
-[View Demo]()
+[View Demo](https://flutter-carousel-widget.web.app)
 
 ## Installation
 
