@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.1
+
+* Web app example demo added. 
+* Indicator color will change according to System theme.
+* Screenshots updated.
+* Documentation updated.
+* Source code optimised.
+* Performance improvements.
+
 ## 1.0.0
 
 * Source code optimised.

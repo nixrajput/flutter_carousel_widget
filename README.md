@@ -19,7 +19,7 @@ custom child widget, custom animations and pre-built indicators.
 
 ## Demo
 
-[Demo]()
+[View Demo]()
 
 ## Installation
 
@@ -27,7 +27,7 @@ Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-flutter_carousel_widget: ^1.0.1
+  flutter_carousel_widget: ^1.0.1
 ```
 
 And import it:
@@ -70,27 +70,27 @@ FlutterCarousel(
 FlutterCarousel(
    items: items,
    options: CarouselOptions(
-        height: 400.0,
-        aspectRatio: 16 / 9,
-        viewportFraction: 1.0,
-        initialPage: 0,
-        enableInfiniteScroll: true,
-        reverse: false,
-        autoPlay: false,
-        autoPlayInterval: const Duration(seconds: 2),
-        autoPlayAnimationDuration: const Duration(milliseconds: 800),
-        autoPlayCurve: Curves.fastOutSlowIn,
-        enlargeCenterPage: false,
-        onPageChanged: callbackFunction,
-        pageSnapping: true,
-        scrollDirection: Axis.horizontal,
-        pauseAutoPlayOnTouch: true,
-        pauseAutoPlayOnManualNavigate: true,
-        pauseAutoPlayInFiniteScroll: false,
-        enlargeStrategy: CenterPageEnlargeStrategy.scale,
-        disableCenter: false,
-        showIndicator: true,
-        slideIndicator: CircularSlideIndicator(),
+    height: 400.0,
+    aspectRatio: 16 / 9,
+    viewportFraction: 1.0,
+    initialPage: 0,
+    enableInfiniteScroll: true,
+    reverse: false,
+    autoPlay: false,
+    autoPlayInterval: const Duration(seconds: 2),
+    autoPlayAnimationDuration: const Duration(milliseconds: 800),
+    autoPlayCurve: Curves.fastOutSlowIn,
+    enlargeCenterPage: false,
+    onPageChanged: callbackFunction,
+    pageSnapping: true,
+    scrollDirection: Axis.horizontal,
+    pauseAutoPlayOnTouch: true,
+    pauseAutoPlayOnManualNavigate: true,
+    pauseAutoPlayInFiniteScroll: false,
+    enlargeStrategy: CenterPageEnlargeStrategy.scale,
+    disableCenter: false,
+    showIndicator: true,
+    slideIndicator: CircularSlideIndicator(),
    )
  )
 ```
@@ -176,18 +176,6 @@ Enlarge Center Widget Flutter Carousel:
 Fullscreen Flutter Carousel:
 
 ![simple](screenshots/fullscreen.png)
-
-Manually Controlled Flutter Carousel:
-
-![simple](screenshots/manually.png)
-
-Flutter Carousel with custom indicator:
-
-![simple](screenshots/indicator.png)
-
-Flutter Carousel with multiple item in one widget:
-
-![simple](screenshots/multiitem.png)
 
 ## Credits
 
