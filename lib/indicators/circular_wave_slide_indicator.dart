@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'slide_indicator.dart';
 
@@ -7,8 +8,8 @@ class CircularWaveSlideIndicator implements SlideIndicator {
   final double indicatorRadius;
   final EdgeInsets? padding;
   final AlignmentGeometry alignment;
-  final Color currentIndicatorColor;
-  final Color indicatorBackgroundColor;
+  final Color? currentIndicatorColor;
+  final Color? indicatorBackgroundColor;
   final double indicatorBorderWidth;
   final Color? indicatorBorderColor;
 
@@ -17,14 +18,23 @@ class CircularWaveSlideIndicator implements SlideIndicator {
     this.indicatorRadius = 6,
     this.padding,
     this.alignment = Alignment.bottomCenter,
-    this.currentIndicatorColor = const Color(0xFFFFFFFF),
-    this.indicatorBackgroundColor = const Color(0x66FFFFFF),
+    this.currentIndicatorColor,
+    this.indicatorBackgroundColor,
     this.indicatorBorderWidth = 1,
     this.indicatorBorderColor,
   });
 
   @override
   Widget build(int currentPage, double pageDelta, int itemCount) {
+    var activeColor = const Color(0xFFFFFFFF);
+    var backgroundColor = const Color(0x66FFFFFF);
+
+    if (SchedulerBinding.instance!.window.platformBrightness ==
+        Brightness.light) {
+      activeColor = const Color(0xFF000000);
+      backgroundColor = const Color(0xFF878484);
+    }
+
     return Container(
       alignment: alignment,
       padding: padding,
@@ -33,8 +43,9 @@ class CircularWaveSlideIndicator implements SlideIndicator {
         height: indicatorRadius * 2,
         child: CustomPaint(
           painter: CircularWaveIndicatorPainter(
-            currentIndicatorColor: currentIndicatorColor,
-            indicatorBackgroundColor: indicatorBackgroundColor,
+            currentIndicatorColor: currentIndicatorColor ?? activeColor,
+            indicatorBackgroundColor:
+                indicatorBackgroundColor ?? backgroundColor,
             currentPage: currentPage,
             pageDelta: pageDelta,
             itemCount: itemCount,

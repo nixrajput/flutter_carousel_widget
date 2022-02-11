@@ -125,7 +125,7 @@ class CarouselOptions {
 
   CarouselOptions({
     this.height,
-    this.aspectRatio,
+    this.aspectRatio = 1 / 1,
     this.viewportFraction = 0.9,
     this.initialPage = 0,
     this.enableInfiniteScroll = true,

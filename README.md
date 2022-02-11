@@ -17,13 +17,17 @@ custom child widget, custom animations and pre-built indicators.
 * Pre-built carousel Indicator.
 * Many more features are coming soon
 
+## Demo
+
+[Demo]()
+
 ## Installation
 
 Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-flutter_carousel_widget: ^1.0.0
+flutter_carousel_widget: ^1.0.1
 ```
 
 And import it:
@@ -66,21 +70,27 @@ FlutterCarousel(
 FlutterCarousel(
    items: items,
    options: CarouselOptions(
-      height: 400,
-      aspectRatio: 16/9,
-      viewportFraction: 0.8,
-      initialPage: 0,
-      enableInfiniteScroll: true,
-      reverse: false,
-      autoPlay: true,
-      autoPlayInterval: Duration(seconds: 3),
-      autoPlayAnimationDuration: Duration(milliseconds: 800),
-      autoPlayCurve: Curves.fastOutSlowIn,
-      enlargeCenterPage: true,
-      onPageChanged: callbackFunction,
-      scrollDirection: Axis.horizontal,
-      showIndicator: true,
-      slideIndicator: CircularSlideIndicator(),
+        height: 400.0,
+        aspectRatio: 16 / 9,
+        viewportFraction: 1.0,
+        initialPage: 0,
+        enableInfiniteScroll: true,
+        reverse: false,
+        autoPlay: false,
+        autoPlayInterval: const Duration(seconds: 2),
+        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+        autoPlayCurve: Curves.fastOutSlowIn,
+        enlargeCenterPage: false,
+        onPageChanged: callbackFunction,
+        pageSnapping: true,
+        scrollDirection: Axis.horizontal,
+        pauseAutoPlayOnTouch: true,
+        pauseAutoPlayOnManualNavigate: true,
+        pauseAutoPlayInFiniteScroll: false,
+        enlargeStrategy: CenterPageEnlargeStrategy.scale,
+        disableCenter: false,
+        showIndicator: true,
+        slideIndicator: CircularSlideIndicator(),
    )
  )
 ```

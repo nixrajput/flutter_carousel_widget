@@ -29,6 +29,17 @@ class AppThemes {
     appBarTheme: const AppBarTheme(
       backgroundColor: lightBGColor,
       elevation: 0.0,
+      titleTextStyle: TextStyle(
+        color: darkColor,
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold,
+      ),
+      iconTheme: IconThemeData(
+        color: darkColor,
+      ),
+    ),
+    iconTheme: const IconThemeData(
+      color: darkColor,
     ),
     textTheme: const TextTheme(
       bodyText1: TextStyle(color: darkColor),
@@ -71,6 +82,17 @@ class AppThemes {
     appBarTheme: const AppBarTheme(
       backgroundColor: darkBGColor,
       elevation: 0.0,
+      titleTextStyle: TextStyle(
+        color: lightColor,
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold,
+      ),
+      iconTheme: IconThemeData(
+        color: lightColor,
+      ),
+    ),
+    iconTheme: const IconThemeData(
+      color: lightColor,
     ),
     textTheme: const TextTheme(
       bodyText1: TextStyle(color: lightColor),

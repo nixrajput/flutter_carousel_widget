@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'slide_indicator.dart';
 
@@ -9,8 +10,8 @@ class CircularSlideIndicator implements SlideIndicator {
   final Color? indicatorBorderColor;
   final EdgeInsets? padding;
   final AlignmentGeometry alignment;
-  final Color currentIndicatorColor;
-  final Color indicatorBackgroundColor;
+  final Color? currentIndicatorColor;
+  final Color? indicatorBackgroundColor;
 
   const CircularSlideIndicator({
     this.itemSpacing = 20,
@@ -19,12 +20,21 @@ class CircularSlideIndicator implements SlideIndicator {
     this.indicatorBorderColor,
     this.padding,
     this.alignment = Alignment.bottomCenter,
-    this.currentIndicatorColor = const Color(0xFFFFFFFF),
-    this.indicatorBackgroundColor = const Color(0x66FFFFFF),
+    this.currentIndicatorColor,
+    this.indicatorBackgroundColor,
   });
 
   @override
   Widget build(int currentPage, double pageDelta, int itemCount) {
+    var activeColor = const Color(0xFFFFFFFF);
+    var backgroundColor = const Color(0x66FFFFFF);
+
+    if (SchedulerBinding.instance!.window.platformBrightness ==
+        Brightness.light) {
+      activeColor = const Color(0xFF000000);
+      backgroundColor = const Color(0xFF878484);
+    }
+
     return Container(
       alignment: alignment,
       padding: padding,
@@ -33,8 +43,9 @@ class CircularSlideIndicator implements SlideIndicator {
         height: indicatorRadius * 2,
         child: CustomPaint(
           painter: CircularIndicatorPainter(
-            currentIndicatorColor: currentIndicatorColor,
-            indicatorBackgroundColor: indicatorBackgroundColor,
+            currentIndicatorColor: currentIndicatorColor ?? activeColor,
+            indicatorBackgroundColor:
+                indicatorBackgroundColor ?? backgroundColor,
             currentPage: currentPage,
             pageDelta: pageDelta,
             itemCount: itemCount,

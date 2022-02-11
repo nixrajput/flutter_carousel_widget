@@ -55,7 +55,7 @@ class DemoItem extends StatelessWidget {
         Navigator.pushNamed(context, route);
       },
       child: Card(
-        color: Colors.red.withOpacity(0.5),
+        color: Colors.redAccent.withOpacity(0.25),
         child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 16.0,
@@ -118,10 +118,10 @@ class CarouselDemoHome extends StatelessWidget {
 }
 
 final List<Widget> imageSliders = imgList
-    .map((item) => Container(
-          margin: const EdgeInsets.all(5.0),
+    .map((item) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
             child: Image.network(
               item,
               width: double.infinity,
@@ -178,12 +178,13 @@ class EnlargeStrategyDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Enlarge Strategy Demo')),
+      appBar: AppBar(title: const Text('Center Enlarge Strategy Demo')),
       body: Center(
         child: FlutterCarousel(
           options: CarouselOptions(
             enlargeCenterPage: true,
             autoPlay: true,
+            viewportFraction: 0.8,
             slideIndicator: CircularWaveSlideIndicator(),
           ),
           items: imageSliders,
