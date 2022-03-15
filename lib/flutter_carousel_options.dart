@@ -123,6 +123,9 @@ class CarouselOptions {
   /// Whether or not to show the `SlideIndicator` for each slide.
   final bool showIndicator;
 
+  /// Whether or not to float `SlideIndicator` over `Carousel`.
+  final bool floatingIndicator;
+
   CarouselOptions({
     this.height,
     this.aspectRatio = 1 / 1,
@@ -147,6 +150,7 @@ class CarouselOptions {
     this.enlargeStrategy = CenterPageEnlargeStrategy.scale,
     this.disableCenter = false,
     this.showIndicator = true,
+    this.floatingIndicator = true,
     this.slideIndicator = const CircularSlideIndicator(),
   });
 }

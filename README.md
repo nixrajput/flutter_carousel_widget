@@ -27,7 +27,7 @@ Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-  flutter_carousel_widget: ^1.0.1
+  flutter_carousel_widget: ^1.0.2
 ```
 
 And import it:
@@ -90,6 +90,7 @@ FlutterCarousel(
     enlargeStrategy: CenterPageEnlargeStrategy.scale,
     disableCenter: false,
     showIndicator: true,
+    floatingIndicator = true,
     slideIndicator: CircularSlideIndicator(),
    )
  )
@@ -173,15 +174,14 @@ Enlarge Center Widget Flutter Carousel:
 
 ![simple](screenshots/enlarge.png)
 
-Fullscreen Flutter Carousel:
+Manually Controlled Flutter Carousel:
 
-![simple](screenshots/fullscreen.png)
+![simple](screenshots/manual.png)
 
-## Credits
+Flutter Carousel with Custom Indicator:
 
-This package is initially inspired from [carousel_slider][carousel_slider] package.
-Thanks [serenader.me][serenader] for the package. I am extending this package with some extra
-toppings and new features.
+![simple](screenshots/custom.png)
+
 
 ## Connect With Me
 

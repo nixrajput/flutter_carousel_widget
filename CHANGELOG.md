@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.2
+
+* Option to float Slide Indicator over Carousel or to show below Carousel added.
+* Screenshots updated.
+* Source code optimised.
+* Performance improvements.
+
 ## 1.0.1
 
 * Web app example demo added. 

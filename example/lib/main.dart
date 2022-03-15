@@ -118,37 +118,33 @@ class CarouselDemoHome extends StatelessWidget {
 }
 
 final List<Widget> imageSliders = imgList
-    .map((item) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-            child: Image.network(
-              item,
-              width: double.infinity,
-              fit: BoxFit.fill,
-              loadingBuilder: (BuildContext ctx, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Center(
-                  child: CircularProgressIndicator(
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                        : null,
-                  ),
-                );
-              },
-              errorBuilder: (
-                BuildContext context,
-                Object exception,
-                StackTrace? stackTrace,
-              ) {
-                return const Text(
-                  'Oops!! An error occurred. 😢',
-                  style: TextStyle(fontSize: 16.0),
-                );
-              },
-            ),
+    .map((item) => ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+          child: Image.network(
+            item,
+            width: double.infinity,
+            loadingBuilder: (BuildContext ctx, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              );
+            },
+            errorBuilder: (
+              BuildContext context,
+              Object exception,
+              StackTrace? stackTrace,
+            ) {
+              return const Text(
+                'Oops!! An error occurred. 😢',
+                style: TextStyle(fontSize: 16.0),
+              );
+            },
           ),
         ))
     .toList();
@@ -163,9 +159,45 @@ class ComplicatedImageDemo extends StatelessWidget {
       body: Center(
         child: FlutterCarousel(
           options: CarouselOptions(
+            height: MediaQuery.of(context).size.height * 0.5,
             autoPlay: true,
           ),
-          items: imageSliders,
+          items: imgList
+              .map((item) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: ClipRRect(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(4.0)),
+                      child: Image.network(
+                        item,
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        loadingBuilder: (BuildContext ctx, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                        errorBuilder: (
+                          BuildContext context,
+                          Object exception,
+                          StackTrace? stackTrace,
+                        ) {
+                          return const Text(
+                            'Oops!! An error occurred. 😢',
+                            style: TextStyle(fontSize: 16.0),
+                          );
+                        },
+                      ),
+                    ),
+                  ))
+              .toList(),
         ),
       ),
     );
@@ -218,14 +250,43 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 8.0),
             FlutterCarousel(
-              items: imageSliders,
+              items: imgList
+                  .map((item) => Image.network(
+                        item,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (BuildContext ctx, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                        errorBuilder: (
+                          BuildContext context,
+                          Object exception,
+                          StackTrace? stackTrace,
+                        ) {
+                          return const Text(
+                            'Oops!! An error occurred. 😢',
+                            style: TextStyle(fontSize: 16.0),
+                          );
+                        },
+                      ))
+                  .toList(),
               options: CarouselOptions(
                 viewportFraction: 1.0,
                 height: MediaQuery.of(context).size.height * 0.5,
                 showIndicator: true,
-                autoPlay: true,
+                autoPlay: false,
+                floatingIndicator: false,
                 slideIndicator: CircularWaveSlideIndicator(),
               ),
               carouselController: _controller,
@@ -282,6 +343,7 @@ class FullscreenSliderDemo extends StatelessWidget {
               viewportFraction: 1.0,
               enlargeCenterPage: false,
               showIndicator: true,
+              floatingIndicator: false,
               autoPlay: true,
               slideIndicator: CircularWaveSlideIndicator(),
               // autoPlay: false,
