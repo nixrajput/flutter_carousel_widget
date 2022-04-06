@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.0.5
+
+* Minor bug fixes.
+* Performance improvements.
+
+## 1.0.4
+
+* Minor bug fixes.
+* Performance improvements.
+
+## 1.0.3
+
+* Minor bug fixes.
+* Performance improvements.
+
 ## 1.0.2
 
 * Option to float Slide Indicator over Carousel or to show below Carousel added.

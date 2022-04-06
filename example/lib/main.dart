@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_controller.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_indicators.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_options.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 import 'app_themes.dart';
@@ -9,7 +6,7 @@ import 'app_themes.dart';
 final List<String> imgList = [
   'https://source.unsplash.com/random/1920x1920/?abstracts',
   'https://source.unsplash.com/random/1920x1920/?fruits,flowers',
-  'https://source.unsplash.com/random/1920x1920/?sports',
+  'https://source.unsplash.com/random/1080x640/?sports',
   'https://source.unsplash.com/random/1920x1920/?nature',
   'https://source.unsplash.com/random/1920x1920/?science',
   'https://source.unsplash.com/random/1920x1920/?computer'
@@ -123,6 +120,7 @@ final List<Widget> imageSliders = imgList
           child: Image.network(
             item,
             width: double.infinity,
+            fit: BoxFit.cover,
             loadingBuilder: (BuildContext ctx, Widget child,
                 ImageChunkEvent? loadingProgress) {
               if (loadingProgress == null) return child;
@@ -156,10 +154,12 @@ class ComplicatedImageDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Image Slider Demo')),
-      body: Center(
+      body: Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.width,
+        ),
         child: FlutterCarousel(
           options: CarouselOptions(
-            height: MediaQuery.of(context).size.height * 0.5,
             autoPlay: true,
           ),
           items: imgList
@@ -171,7 +171,7 @@ class ComplicatedImageDemo extends StatelessWidget {
                       child: Image.network(
                         item,
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.5,
+                        fit: BoxFit.cover,
                         loadingBuilder: (BuildContext ctx, Widget child,
                             ImageChunkEvent? loadingProgress) {
                           if (loadingProgress == null) return child;
@@ -211,16 +211,15 @@ class EnlargeStrategyDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Center Enlarge Strategy Demo')),
-      body: Center(
-        child: FlutterCarousel(
-          options: CarouselOptions(
-            enlargeCenterPage: true,
-            autoPlay: true,
-            viewportFraction: 0.8,
-            slideIndicator: CircularWaveSlideIndicator(),
-          ),
-          items: imageSliders,
+      body: FlutterCarousel(
+        options: CarouselOptions(
+          enlargeCenterPage: true,
+          autoPlay: true,
+          viewportFraction: 0.8,
+          enlargeStrategy: CenterPageEnlargeStrategy.height,
+          slideIndicator: CircularWaveSlideIndicator(),
         ),
+        items: imageSliders,
       ),
     );
   }
@@ -247,14 +246,14 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Manually Controlled Slider')),
-      body: SingleChildScrollView(
+      body: SizedBox(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 8.0),
             FlutterCarousel(
               items: imgList
-                  .map((item) => Image.network(
-                        item,
+                  .map((img) => Image.network(
+                        img,
                         width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
                         loadingBuilder: (BuildContext ctx, Widget child,
@@ -283,10 +282,8 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
                   .toList(),
               options: CarouselOptions(
                 viewportFraction: 1.0,
-                height: MediaQuery.of(context).size.height * 0.5,
-                showIndicator: true,
                 autoPlay: false,
-                floatingIndicator: false,
+                floatingIndicator: true,
                 slideIndicator: CircularWaveSlideIndicator(),
               ),
               carouselController: _controller,
@@ -389,7 +386,6 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
               carouselController: _controller,
               options: CarouselOptions(
                   autoPlay: true,
-                  enlargeCenterPage: false,
                   viewportFraction: 1.0,
                   showIndicator: false,
                   onPageChanged: (index, reason) {

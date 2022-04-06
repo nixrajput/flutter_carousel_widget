@@ -11,6 +11,10 @@ import 'flutter_carousel_options.dart';
 import 'flutter_carousel_state.dart';
 import 'flutter_carousel_utils.dart';
 
+export 'flutter_carousel_controller.dart';
+export 'flutter_carousel_indicators.dart';
+export 'flutter_carousel_options.dart';
+
 typedef ExtendedIndexedWidgetBuilder = Widget Function(
     BuildContext context, int index, int realIndex);
 
@@ -85,26 +89,42 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
   @override
   void didUpdateWidget(FlutterCarousel oldWidget) {
+    super.didUpdateWidget(oldWidget);
     _carouselState!.options = options;
     _carouselState!.itemCount = widget.itemCount;
 
     // pageController needs to be re-initialized to respond to state changes
+    _pageController = PageController(
+      viewportFraction: options.viewportFraction,
+      keepPage: widget.options.keepPage,
+      initialPage: _carouselState!.realPage,
+    );
+
+    _carouselState!.pageController = _pageController;
+
     if (oldWidget.itemCount != widget.itemCount) {
-      _initPageController();
+      _pageController!.addListener(() {
+        setState(() {
+          _currentPage = _pageController!.page!.floor();
+          _pageDelta = _pageController!.page! - _pageController!.page!.floor();
+        });
+      });
     }
 
     // handle autoplay when state changes
     handleAutoPlay();
-
-    super.didUpdateWidget(oldWidget);
   }
 
   @override
   void initState() {
     super.initState();
 
-    _carouselState =
-        CarouselState(options, clearTimer, resumeTimer, changeMode);
+    _carouselState = CarouselState(
+      options,
+      clearTimer,
+      resumeTimer,
+      changeMode,
+    );
 
     _currentPage = widget.options.initialPage;
 
@@ -112,28 +132,26 @@ class FlutterCarouselState extends State<FlutterCarousel>
     carouselController.state = _carouselState;
     _carouselState!.initialPage = widget.options.initialPage;
     _carouselState!.realPage = options.enableInfiniteScroll
-        ? _carouselState!.realPage + _carouselState!.initialPage
+        ? _carouselState!.realPage * widget.itemCount! +
+            _carouselState!.initialPage
         : _carouselState!.initialPage;
 
-    _initPageController();
-
     handleAutoPlay();
-  }
 
-  void _initPageController() {
-    _pageController?.dispose();
     _pageController = PageController(
       viewportFraction: options.viewportFraction,
-      initialPage: _currentPage!,
+      keepPage: widget.options.keepPage,
+      initialPage: _carouselState!.realPage,
     );
+
+    _carouselState!.pageController = _pageController;
+
     _pageController!.addListener(() {
       setState(() {
         _currentPage = _pageController!.page!.floor();
         _pageDelta = _pageController!.page! - _pageController!.page!.floor();
       });
     });
-
-    _carouselState!.pageController = _pageController;
   }
 
   Timer? getTimer() {
@@ -175,7 +193,9 @@ class FlutterCarouselState extends State<FlutterCarousel>
   }
 
   void resumeTimer() {
-    _timer ??= getTimer();
+    if (_timer != null) {
+      _timer = getTimer();
+    }
   }
 
   void handleAutoPlay() {
@@ -198,7 +218,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
       );
     } else {
       wrapper = AspectRatio(
-        aspectRatio: widget.options.aspectRatio ?? 1 / 1,
+        aspectRatio: widget.options.aspectRatio!,
         child: child,
       );
     }
@@ -256,6 +276,8 @@ class FlutterCarouselState extends State<FlutterCarousel>
       scale: scale,
       child: SizedBox(
         child: child,
+        width: width,
+        height: height,
       ),
     );
   }
@@ -286,7 +308,6 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
   Widget _buildCarouselWidget() {
     return PageView.builder(
-      clipBehavior: Clip.none,
       physics: widget.options.scrollPhysics,
       scrollDirection: widget.options.scrollDirection,
       pageSnapping: widget.options.pageSnapping,
@@ -311,7 +332,9 @@ class FlutterCarouselState extends State<FlutterCarousel>
         return AnimatedBuilder(
           animation: _carouselState!.pageController!,
           child: (widget.items != null)
-              ? (widget.items!.isNotEmpty ? widget.items![index] : Container())
+              ? (widget.items!.isNotEmpty
+                  ? widget.items![index]
+                  : const SizedBox())
               : widget.itemBuilder!(context, index, idx),
           builder: (BuildContext context, child) {
             var distortionValue = 1.0;
@@ -319,7 +342,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
             // to display the visual effect
             if (widget.options.enlargeCenterPage != null &&
                 widget.options.enlargeCenterPage == true) {
-              double itemOffset;
+              double? itemOffset;
               // pageController.page can only be accessed after the first build,
               // so in the first build we calculate the item offset manually
               try {
@@ -336,17 +359,20 @@ class FlutterCarouselState extends State<FlutterCarousel>
                       _carouselState!.realPage.toDouble() - idx.toDouble();
                 }
               }
-              final num distortionRatio =
-                  (1 - (itemOffset.abs() * 0.3)).clamp(0.0, 1.0);
-              distortionValue =
-                  Curves.easeOut.transform(distortionRatio as double);
+              final distortionRatio =
+                  1 - (itemOffset.abs() * 0.25).clamp(0.0, 1.0);
+              distortionValue = Curves.easeOut.transform(distortionRatio);
             }
+
+            final height = widget.options.height ??
+                MediaQuery.of(context).size.width *
+                    (1 / widget.options.aspectRatio!);
 
             if (widget.options.scrollDirection == Axis.horizontal) {
               return getCenterWrapper(
                 getEnlargeWrapper(
                   child,
-                  height: widget.options.height,
+                  height: distortionValue * height,
                   scale: distortionValue,
                 ),
               );
@@ -354,7 +380,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
               return getCenterWrapper(
                 getEnlargeWrapper(
                   child,
-                  height: widget.options.height,
+                  width: distortionValue * MediaQuery.of(context).size.width,
                   scale: distortionValue,
                 ),
               );
@@ -370,14 +396,13 @@ class FlutterCarouselState extends State<FlutterCarousel>
     return getGestureWrapper(
       options.floatingIndicator
           ? Stack(
-              clipBehavior: Clip.none,
               children: [
                 _buildCarouselWidget(),
                 if (widget.options.showIndicator &&
                     widget.options.slideIndicator != null &&
-                    widget.itemCount! > 0)
+                    widget.itemCount! > 1)
                   Positioned(
-                    bottom: 8.0,
+                    bottom: 4.0,
                     left: 0.0,
                     right: 0.0,
                     child: widget.options.slideIndicator!.build(
@@ -391,14 +416,12 @@ class FlutterCarouselState extends State<FlutterCarousel>
           : Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  child: _buildCarouselWidget(),
-                ),
+                Expanded(child: _buildCarouselWidget()),
                 if (widget.options.showIndicator &&
                     widget.options.slideIndicator != null &&
                     widget.itemCount! > 0)
                   Container(
-                    margin: const EdgeInsets.only(top: 8.0),
+                    margin: const EdgeInsets.only(top: 4.0),
                     child: widget.options.slideIndicator!.build(
                       _currentPage! % widget.itemCount!,
                       _pageDelta,

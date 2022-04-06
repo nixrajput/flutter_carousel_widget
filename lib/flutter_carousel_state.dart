@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 import 'flutter_carousel_options.dart';
 
@@ -15,7 +16,7 @@ class CarouselState {
   /// This value can be ignored unless you know the carousel will be scrolled
   /// backwards more then 10000 pages.
   /// Defaults to 10000 to simulate infinite backwards scrolling.
-  int realPage = 10000;
+  int realPage = 100000;
 
   /// The initial index of the [PageView] on [CarouselSlider] init.
   ///

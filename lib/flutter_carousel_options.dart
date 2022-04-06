@@ -126,27 +126,31 @@ class CarouselOptions {
   /// Whether or not to float `SlideIndicator` over `Carousel`.
   final bool floatingIndicator;
 
+  /// Whether or not to keep pages in PageView
+  final bool keepPage;
+
   CarouselOptions({
     this.height,
     this.aspectRatio = 1 / 1,
     this.viewportFraction = 0.9,
     this.initialPage = 0,
-    this.enableInfiniteScroll = true,
+    this.enableInfiniteScroll = false,
     this.reverse = false,
     this.autoPlay = false,
     this.autoPlayInterval = const Duration(seconds: 5),
-    this.autoPlayAnimationDuration = const Duration(milliseconds: 500),
-    this.autoPlayCurve = Curves.easeInOut,
+    this.autoPlayAnimationDuration = const Duration(milliseconds: 300),
+    this.autoPlayCurve = Curves.easeInCubic,
     this.enlargeCenterPage = false,
     this.onPageChanged,
     this.onScrolled,
-    this.scrollPhysics,
+    this.scrollPhysics = const BouncingScrollPhysics(),
     this.pageSnapping = true,
     this.scrollDirection = Axis.horizontal,
     this.pauseAutoPlayOnTouch = true,
     this.pauseAutoPlayOnManualNavigate = true,
     this.pauseAutoPlayInFiniteScroll = false,
     this.pageViewKey,
+    this.keepPage = true,
     this.enlargeStrategy = CenterPageEnlargeStrategy.scale,
     this.disableCenter = false,
     this.showIndicator = true,
