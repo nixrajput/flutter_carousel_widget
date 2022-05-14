@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0
+
+* Minor bug fixes.
+* Performance improvements.
+
 ## 1.0.5
 
 * Minor bug fixes.

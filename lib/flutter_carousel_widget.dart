@@ -83,8 +83,8 @@ class FlutterCarouselState extends State<FlutterCarousel>
   int? _currentPage;
   double _pageDelta = 0;
 
-  void changeMode(CarouselPageChangedReason _mode) {
-    mode = _mode;
+  void changeMode(CarouselPageChangedReason mode) {
+    mode = mode;
   }
 
   @override
@@ -267,17 +267,17 @@ class FlutterCarouselState extends State<FlutterCarousel>
       {double? width, double? height, double? scale}) {
     if (widget.options.enlargeStrategy == CenterPageEnlargeStrategy.height) {
       return SizedBox(
-        child: child,
         width: width,
         height: height,
+        child: child,
       );
     }
     return Transform.scale(
       scale: scale,
       child: SizedBox(
-        child: child,
         width: width,
         height: height,
+        child: child,
       ),
     );
   }
@@ -419,7 +419,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
                 Expanded(child: _buildCarouselWidget()),
                 if (widget.options.showIndicator &&
                     widget.options.slideIndicator != null &&
-                    widget.itemCount! > 0)
+                    widget.itemCount! > 1)
                   Container(
                     margin: const EdgeInsets.only(top: 4.0),
                     child: widget.options.slideIndicator!.build(

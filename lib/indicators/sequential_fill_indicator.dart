@@ -31,7 +31,7 @@ class SequentialFillIndicator extends SlideIndicator {
     var activeColor = const Color(0xFFFFFFFF);
     var backgroundColor = const Color(0x66FFFFFF);
 
-    if (SchedulerBinding.instance!.window.platformBrightness ==
+    if (SchedulerBinding.instance.window.platformBrightness ==
         Brightness.light) {
       activeColor = const Color(0xFF000000);
       backgroundColor = const Color(0xFF878484);
