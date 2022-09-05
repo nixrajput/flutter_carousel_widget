@@ -4,9 +4,6 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
 custom child widget, custom animations and pre-built indicators.
 
 [![pub package](https://img.shields.io/pub/v/flutter_carousel_widget.svg)][pub]
-[![popularity](https://badges.bar/flutter_carousel_widget/popularity)](https://pub.dev/packages/flutter_carousel_widget/score)
-[![likes](https://badges.bar/flutter_carousel_widget/likes)](https://pub.dev/packages/flutter_carousel_widget/score)
-[![pub points](https://badges.bar/flutter_carousel_widget/pub%20points)](https://pub.dev/packages/flutter_carousel_widget/score)
 
 ## Features
 
@@ -27,7 +24,7 @@ Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-  flutter_carousel_widget: ^1.1.0
+  flutter_carousel_widget: ^1.2.0
 ```
 
 And import it:
@@ -118,7 +115,7 @@ In order to manually control the pageview's position, you can create your own `C
 and pass it to `CarouselSlider`. Then you can use the `CarouselController` instance to manipulate
 the position.
 
-```dart 
+```dart
 class CarouselDemo extends StatelessWidget {
   CarouselController buttonCarouselController = CarouselController();
 
@@ -198,19 +195,10 @@ Flutter Carousel with Custom Indicator:
 [<img align="left" alt="nixrajput | LinkedIn" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/linkedin-in-brands.svg" />][linkedin]
 
 [pub]: https://pub.dev/packages/flutter_carousel_widget
-
 [github]: https://github.com/nixrajput
-
 [website]: https://nixlab.co.in
-
 [facebook]: https://facebook.com/nixrajput07
-
 [twitter]: https://twitter.com/nixrajput07
-
 [instagram]: https://instagram.com/nixrajput
-
 [linkedin]: https://linkedin.com/in/nixrajput
-
 [carousel_slider]: https://pub.dev/packages/carousel_slider
-
-[serenader]: https://pub.dev/publishers/serenader.me/packages

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+* Project structure changed.
+* Minor bug fixes.
+* Removed unnecessary codes.
+
 ## 1.1.0
 
 * Minor bug fixes.

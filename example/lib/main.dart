@@ -52,7 +52,7 @@ class DemoItem extends StatelessWidget {
         Navigator.pushNamed(context, route);
       },
       child: Card(
-        color: Colors.redAccent.withOpacity(0.25),
+        color: Colors.blueAccent,
         child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 16.0,
@@ -65,6 +65,7 @@ class DemoItem extends StatelessWidget {
                 title,
                 style: const TextStyle(
                   fontSize: 18.0,
+                  color: Colors.white,
                 ),
               ),
               const Icon(Icons.arrow_forward_ios)
@@ -283,7 +284,7 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
               options: CarouselOptions(
                 viewportFraction: 1.0,
                 autoPlay: false,
-                floatingIndicator: true,
+                floatingIndicator: false,
                 slideIndicator: CircularWaveSlideIndicator(),
               ),
               carouselController: _controller,

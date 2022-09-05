@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'flutter_carousel_indicators.dart';
+import 'package:flutter_carousel_widget/src/indicators/circular_slide_indicator.dart';
+import 'package:flutter_carousel_widget/src/indicators/slide_indicator.dart';
 
 enum CarouselPageChangedReason { timed, manual, controller }
 
