@@ -4,6 +4,9 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
 custom child widget, custom animations and pre-built indicators.
 
 [![pub package](https://img.shields.io/pub/v/flutter_carousel_widget.svg)][pub]
+[![Flutter](https://img.shields.io/badge/Flutter-3.3.0-blue.svg)](https://flutter.io/)
+[![Dart](https://img.shields.io/badge/Dart-2.18.0-blue.svg)](https://www.dartlang.org/)
+[![Code Climate](https://codeclimate.com/github/nixrajput/flutter_carousel_widget/badges/gpa.svg)](https://codeclimate.com/github/nixrajput/flutter_carousel_widget)
 
 ## Features
 
@@ -65,31 +68,31 @@ FlutterCarousel(
 
 ```dart
 FlutterCarousel(
-   items: items,
-   options: CarouselOptions(
-    height: 400.0,
-    aspectRatio: 16 / 9,
-    viewportFraction: 1.0,
-    initialPage: 0,
-    enableInfiniteScroll: true,
-    reverse: false,
-    autoPlay: false,
-    autoPlayInterval: const Duration(seconds: 2),
-    autoPlayAnimationDuration: const Duration(milliseconds: 800),
-    autoPlayCurve: Curves.fastOutSlowIn,
-    enlargeCenterPage: false,
-    onPageChanged: callbackFunction,
-    pageSnapping: true,
-    scrollDirection: Axis.horizontal,
-    pauseAutoPlayOnTouch: true,
-    pauseAutoPlayOnManualNavigate: true,
-    pauseAutoPlayInFiniteScroll: false,
-    enlargeStrategy: CenterPageEnlargeStrategy.scale,
-    disableCenter: false,
-    showIndicator: true,
-    floatingIndicator = true,
-    slideIndicator: CircularSlideIndicator(),
-   )
+  items: items,
+  options: CarouselOptions(
+  height: 400.0,
+  aspectRatio: 16 / 9,
+  viewportFraction: 1.0,
+  initialPage: 0,
+  enableInfiniteScroll: true,
+  reverse: false,
+  autoPlay: false,
+  autoPlayInterval: const Duration(seconds: 2),
+  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+  autoPlayCurve: Curves.fastOutSlowIn,
+  enlargeCenterPage: false,
+  onPageChanged: callbackFunction,
+  pageSnapping: true,
+  scrollDirection: Axis.horizontal,
+  pauseAutoPlayOnTouch: true,
+  pauseAutoPlayOnManualNavigate: true,
+  pauseAutoPlayInFiniteScroll: false,
+  enlargeStrategy: CenterPageEnlargeStrategy.scale,
+  disableCenter: false,
+  showIndicator: true,
+  floatingIndicator = true,
+  slideIndicator: CircularSlideIndicator(),
+  )
  )
 ```
 
@@ -103,9 +106,9 @@ child item widgets related to content or by item index.
 FlutterCarousel.builder(
   itemCount: 15,
   itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-    Container(
-      child: Text(itemIndex.toString()),
-    ),
+  Container(
+    child: Text(itemIndex.toString()),
+  ),
 )
 ```
 
@@ -201,4 +204,3 @@ Flutter Carousel with Custom Indicator:
 [twitter]: https://twitter.com/nixrajput07
 [instagram]: https://instagram.com/nixrajput
 [linkedin]: https://linkedin.com/in/nixrajput
-[carousel_slider]: https://pub.dev/packages/carousel_slider
