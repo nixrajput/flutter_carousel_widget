@@ -40,7 +40,7 @@
 
 ## 1.0.1
 
-* Web app example demo added. 
+* Web app example demo added.
 * Indicator color will change according to System theme.
 * Screenshots updated.
 * Documentation updated.
