@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.1
+
+* Github Actions: Web Demo is now deployed to Github Pages
+* Documentation: Updated the documentation to reflect the new Github Pages deployment
+
 ## 1.2.0
 
 * Project structure changed.

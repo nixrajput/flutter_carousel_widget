@@ -1,7 +1,6 @@
 # flutter_carousel_widget
 
-A customizable carousel slider widget in Flutter which supports infinite scrolling, auto scrolling,
-custom child widget, custom animations and pre-built indicators.
+A customizable carousel slider widget in Flutter which supports infinite scrolling, auto scrolling, custom child widget, custom animations and pre-built indicators.
 
 [![pub package](https://img.shields.io/pub/v/flutter_carousel_widget.svg)][pub]
 [![Flutter](https://img.shields.io/badge/Flutter-3.3.0-blue.svg)](https://flutter.io/)
@@ -14,12 +13,12 @@ custom child widget, custom animations and pre-built indicators.
 * Custom Child Widget
 * Auto Play
 * Horizontal and Vertical Alignment
-* Pre-built carousel Indicator.
-* Many more features are coming soon
+* Pre-built carousel Indicators
+* Custom Indicators
 
 ## Demo
 
-[View Demo](https://flutter-carousel-widget.web.app)
+[View Demo](https://nixrajput.github.io/flutter_carousel_widget)
 
 ## Installation
 
@@ -27,7 +26,7 @@ Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-  flutter_carousel_widget: ^1.2.0
+  flutter_carousel_widget: ^1.2.1
 ```
 
 And import it:
