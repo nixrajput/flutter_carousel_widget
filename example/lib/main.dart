@@ -53,6 +53,11 @@ class DemoItem extends StatelessWidget {
       },
       child: Card(
         color: Colors.blueAccent,
+        margin: const EdgeInsets.only(
+          bottom: 16.0,
+          left: 16.0,
+          right: 16.0,
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 16.0,
@@ -71,11 +76,6 @@ class DemoItem extends StatelessWidget {
               const Icon(Icons.arrow_forward_ios)
             ],
           ),
-        ),
-        margin: const EdgeInsets.only(
-          bottom: 16.0,
-          left: 16.0,
-          right: 16.0,
         ),
       ),
     );
