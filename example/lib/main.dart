@@ -98,52 +98,60 @@ class CarouselDemoHome extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: ListView(
-        shrinkWrap: true,
-        children: const [
-          SizedBox(height: 8.0),
-          DemoItem('Image Slider Demo', '/complicated'),
-          DemoItem('Enlarge Strategy Demo', '/enlarge'),
-          DemoItem('Manually Controlled Slider', '/manual'),
-          DemoItem('Fullscreen Carousel Slider', '/fullscreen'),
-          DemoItem('Carousel with Custom Indicator Demo', '/indicator'),
-          DemoItem('Keep PageView Position Demo', '/position'),
-          DemoItem('Multiple Item in One Screen Demo', '/multiple'),
-        ],
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600.0),
+          child: ListView(
+            shrinkWrap: true,
+            children: const [
+              SizedBox(height: 8.0),
+              DemoItem('Image Slider Demo', '/complicated'),
+              DemoItem('Enlarge Strategy Demo', '/enlarge'),
+              DemoItem('Manually Controlled Slider', '/manual'),
+              DemoItem('Fullscreen Carousel Slider', '/fullscreen'),
+              DemoItem('Carousel with Custom Indicator Demo', '/indicator'),
+              DemoItem('Keep PageView Position Demo', '/position'),
+              DemoItem('Multiple Item in One Screen Demo', '/multiple'),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
 final List<Widget> imageSliders = imgList
-    .map((item) => ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-          child: Image.network(
-            item,
-            width: double.infinity,
-            fit: BoxFit.cover,
-            loadingBuilder: (BuildContext ctx, Widget child,
-                ImageChunkEvent? loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Center(
-                child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
-                      : null,
-                ),
-              );
-            },
-            errorBuilder: (
-              BuildContext context,
-              Object exception,
-              StackTrace? stackTrace,
-            ) {
-              return const Text(
-                'Oops!! An error occurred. 😢',
-                style: TextStyle(fontSize: 16.0),
-              );
-            },
+    .map((item) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+            child: Image.network(
+              item,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              loadingBuilder: (BuildContext ctx, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                  ),
+                );
+              },
+              errorBuilder: (
+                BuildContext context,
+                Object exception,
+                StackTrace? stackTrace,
+              ) {
+                return const Text(
+                  'Oops!! An error occurred. 😢',
+                  style: TextStyle(fontSize: 16.0),
+                );
+              },
+            ),
           ),
         ))
     .toList();
@@ -155,50 +163,54 @@ class ComplicatedImageDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Image Slider Demo')),
-      body: Container(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.width,
-        ),
-        child: FlutterCarousel(
-          options: CarouselOptions(
-            autoPlay: true,
+      body: Center(
+        child: Container(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.width,
           ),
-          items: imgList
-              .map((item) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: ClipRRect(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(4.0)),
-                      child: Image.network(
-                        item,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (BuildContext ctx, Widget child,
-                            ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          );
-                        },
-                        errorBuilder: (
-                          BuildContext context,
-                          Object exception,
-                          StackTrace? stackTrace,
-                        ) {
-                          return const Text(
-                            'Oops!! An error occurred. 😢',
-                            style: TextStyle(fontSize: 16.0),
-                          );
-                        },
+          child: FlutterCarousel(
+            options: CarouselOptions(
+              autoPlay: true,
+              autoPlayInterval: const Duration(seconds: 2),
+            ),
+            items: imgList
+                .map((item) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: ClipRRect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4.0)),
+                        child: Image.network(
+                          item,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (BuildContext ctx, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                          errorBuilder: (
+                            BuildContext context,
+                            Object exception,
+                            StackTrace? stackTrace,
+                          ) {
+                            return const Text(
+                              'Oops!! An error occurred. 😢',
+                              style: TextStyle(fontSize: 16.0),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ))
-              .toList(),
+                    ))
+                .toList(),
+          ),
         ),
       ),
     );
@@ -212,15 +224,19 @@ class EnlargeStrategyDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Center Enlarge Strategy Demo')),
-      body: FlutterCarousel(
-        options: CarouselOptions(
-          enlargeCenterPage: true,
-          autoPlay: true,
-          viewportFraction: 0.8,
-          enlargeStrategy: CenterPageEnlargeStrategy.height,
-          slideIndicator: CircularWaveSlideIndicator(),
+      body: Center(
+        child: FlutterCarousel(
+          options: CarouselOptions(
+            enlargeCenterPage: true,
+            autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 2),
+            viewportFraction: 0.8,
+            enlargeStrategy: CenterPageEnlargeStrategy.height,
+            slideIndicator: CircularWaveSlideIndicator(),
+            floatingIndicator: false,
+          ),
+          items: imageSliders,
         ),
-        items: imageSliders,
       ),
     );
   }
@@ -247,78 +263,83 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Manually Controlled Slider')),
-      body: SizedBox(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FlutterCarousel(
-              items: imgList
-                  .map((img) => Image.network(
-                        img,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (BuildContext ctx, Widget child,
-                            ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          );
-                        },
-                        errorBuilder: (
-                          BuildContext context,
-                          Object exception,
-                          StackTrace? stackTrace,
-                        ) {
-                          return const Text(
-                            'Oops!! An error occurred. 😢',
-                            style: TextStyle(fontSize: 16.0),
-                          );
-                        },
-                      ))
-                  .toList(),
-              options: CarouselOptions(
-                viewportFraction: 1.0,
-                autoPlay: false,
-                floatingIndicator: false,
-                slideIndicator: CircularWaveSlideIndicator(),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 800.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FlutterCarousel(
+                items: imgList
+                    .map((img) => Image.network(
+                          img,
+                          width: MediaQuery.of(context).size.width,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (BuildContext ctx, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                          errorBuilder: (
+                            BuildContext context,
+                            Object exception,
+                            StackTrace? stackTrace,
+                          ) {
+                            return const Text(
+                              'Oops!! An error occurred. 😢',
+                              style: TextStyle(fontSize: 16.0),
+                            );
+                          },
+                        ))
+                    .toList(),
+                options: CarouselOptions(
+                  viewportFraction: 1.0,
+                  autoPlay: false,
+                  enableInfiniteScroll: true,
+                  floatingIndicator: false,
+                  slideIndicator: CircularWaveSlideIndicator(),
+                ),
+                carouselController: _controller,
               ),
-              carouselController: _controller,
-            ),
-            const SizedBox(height: 16.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: ElevatedButton(
-                      onPressed: _controller.previousPage,
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.arrow_back),
+              const SizedBox(height: 16.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: ElevatedButton(
+                        onPressed: _controller.previousPage,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(Icons.arrow_back),
+                        ),
                       ),
                     ),
-                  ),
-                  Flexible(
-                    child: ElevatedButton(
-                      onPressed: _controller.nextPage,
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.arrow_forward),
+                    Flexible(
+                      child: ElevatedButton(
+                        onPressed: _controller.nextPage,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(Icons.arrow_forward),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -332,31 +353,34 @@ class FullscreenSliderDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Fullscreen Slider Demo')),
-      body: Builder(
-        builder: (context) {
-          final height = MediaQuery.of(context).size.height;
-          return FlutterCarousel(
-            options: CarouselOptions(
-              height: height,
-              viewportFraction: 1.0,
-              enlargeCenterPage: false,
-              showIndicator: true,
-              floatingIndicator: false,
-              autoPlay: true,
-              slideIndicator: CircularWaveSlideIndicator(),
-              // autoPlay: false,
-            ),
-            items: imgList
-                .map((item) => Center(
-                        child: Image.network(
-                      item,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      height: height,
-                    )))
-                .toList(),
-          );
-        },
+      body: Center(
+        child: Builder(
+          builder: (context) {
+            final height = MediaQuery.of(context).size.height;
+            return FlutterCarousel(
+              options: CarouselOptions(
+                height: height,
+                viewportFraction: 1.0,
+                enlargeCenterPage: false,
+                showIndicator: true,
+                autoPlay: true,
+                enableInfiniteScroll: true,
+                autoPlayInterval: const Duration(seconds: 2),
+                slideIndicator: CircularWaveSlideIndicator(),
+                // autoPlay: false,
+              ),
+              items: imgList
+                  .map((item) => Center(
+                          child: Image.network(
+                        item,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        height: height,
+                      )))
+                  .toList(),
+            );
+          },
+        ),
       ),
     );
   }
@@ -380,6 +404,8 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
     return Scaffold(
       appBar: AppBar(title: const Text('Custom Indicator Demo')),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: FlutterCarousel(
@@ -399,8 +425,9 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: imgList.asMap().entries.map((entry) {
-              return GestureDetector(
+              return InkWell(
                 onTap: () => _controller.animateToPage(entry.key),
+                mouseCursor: SystemMouseCursors.click,
                 child: Container(
                   width: 12.0,
                   height: 12.0,
@@ -429,31 +456,40 @@ class KeepPageViewPositionDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Keep PageView Position Demo')),
-      body: ListView.builder(itemBuilder: (ctx, index) {
-        if (index == 2) {
-          return FlutterCarousel(
-            options: CarouselOptions(
-              viewportFraction: 1.0,
-              aspectRatio: 16 / 9,
-              enlargeCenterPage: false,
-              showIndicator: true,
-              autoPlay: true,
-              slideIndicator: CircularStaticIndicator(),
-              pageViewKey: const PageStorageKey<String>('carousel_slider'),
-            ),
-            items: imageSliders,
-          );
-        } else {
-          return Container(
-            margin: const EdgeInsets.symmetric(vertical: 20),
-            color: Colors.blue,
-            height: 200,
-            child: const Center(
-              child: Text('other content'),
-            ),
-          );
-        }
-      }),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 800.0),
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemBuilder: (ctx, index) {
+              if (index == 2) {
+                return FlutterCarousel(
+                  options: CarouselOptions(
+                    viewportFraction: 1.0,
+                    aspectRatio: 16 / 9,
+                    enlargeCenterPage: false,
+                    showIndicator: true,
+                    autoPlay: true,
+                    slideIndicator: CircularStaticIndicator(),
+                    pageViewKey:
+                        const PageStorageKey<String>('carousel_slider'),
+                  ),
+                  items: imageSliders,
+                );
+              } else {
+                return Container(
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  color: Colors.blue,
+                  height: 200,
+                  child: const Center(
+                    child: Text('other content'),
+                  ),
+                );
+              }
+            },
+          ),
+        ),
+      ),
     );
   }
 }
@@ -466,35 +502,40 @@ class MultipleItemDemo extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Multiple Item in One Slide Demo')),
       body: Center(
-        child: FlutterCarousel.builder(
-          options: CarouselOptions(
-            aspectRatio: 2.0,
-            enlargeCenterPage: false,
-            viewportFraction: 1,
-            showIndicator: true,
-            autoPlay: true,
-            slideIndicator: CircularStaticIndicator(),
-          ),
-          itemCount: (imgList.length / 2).round(),
-          itemBuilder: (context, index, realIdx) {
-            final first = index * 2;
-            final second = first + 1;
-            return Row(
-              children: [first, second].map((idx) {
-                return Expanded(
-                  flex: 1,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Image.network(
-                      imgList[idx],
-                      fit: BoxFit.cover,
-                      width: double.infinity,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 800.0),
+          child: FlutterCarousel.builder(
+            options: CarouselOptions(
+              aspectRatio: 2.0,
+              enlargeCenterPage: false,
+              viewportFraction: 1,
+              showIndicator: true,
+              enableInfiniteScroll: true,
+              autoPlayInterval: const Duration(seconds: 2),
+              autoPlay: true,
+              slideIndicator: CircularStaticIndicator(),
+            ),
+            itemCount: (imgList.length / 2).round(),
+            itemBuilder: (context, index, realIdx) {
+              final first = index * 2;
+              final second = first + 1;
+              return Row(
+                children: [first, second].map((idx) {
+                  return Expanded(
+                    flex: 1,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Image.network(
+                        imgList[idx],
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
-            );
-          },
+                  );
+                }).toList(),
+              );
+            },
+          ),
         ),
       ),
     );
