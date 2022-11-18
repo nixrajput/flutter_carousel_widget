@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.2
+
+* Fix: `issue #7` bug show indicator when no custom `CarouselController` is set and `showIndicator` is set to `true` and `onPageChanged` is called.
+* Custom `CarouselController` can be set via `CarouselOptions` property.
+* All known bugs are fixed.
+* Performance improvements.
+
 ## 1.2.1
 
 * Github Actions: Web Demo is now deployed to Github Pages

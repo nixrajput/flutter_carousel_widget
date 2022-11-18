@@ -13,7 +13,7 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
 * Custom Child Widget
 * Auto Play
 * Horizontal and Vertical Alignment
-* Pre-built carousel Indicators
+* Pre-built Carousel Indicators
 * Custom Indicators
 
 ## Demo
@@ -26,7 +26,7 @@ Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-  flutter_carousel_widget: ^1.2.1
+  flutter_carousel_widget: ^1.2.2
 ```
 
 And import it:
@@ -80,6 +80,7 @@ FlutterCarousel(
   autoPlayAnimationDuration: const Duration(milliseconds: 800),
   autoPlayCurve: Curves.fastOutSlowIn,
   enlargeCenterPage: false,
+  carouselController: CarouselController(),
   onPageChanged: callbackFunction,
   pageSnapping: true,
   scrollDirection: Axis.horizontal,
@@ -126,9 +127,9 @@ class CarouselDemo extends StatelessWidget {
     children: <Widget>[
       FlutterCarousel(
         items: child,
-        carouselController: buttonCarouselController,
         options: CarouselOptions(
           autoPlay: false,
+          carouselController: buttonCarouselController,
           enlargeCenterPage: true,
           viewportFraction: 0.9,
           aspectRatio: 2.0,
@@ -180,7 +181,6 @@ Manually Controlled Flutter Carousel:
 Flutter Carousel with Custom Indicator:
 
 ![simple](screenshots/custom.png)
-
 
 ## Connect With Me
 

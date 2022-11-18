@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/src/flutter_carousel_controller.dart';
 import 'package:flutter_carousel_widget/src/indicators/circular_slide_indicator.dart';
 import 'package:flutter_carousel_widget/src/indicators/slide_indicator.dart';
 
@@ -67,6 +68,9 @@ class CarouselOptions {
   ///
   /// Defaults to [Axis.horizontal].
   final Axis scrollDirection;
+
+  /// A [MapController], used to control the map.
+  final CarouselController? carouselController;
 
   /// Called whenever the page in the center of the viewport changes.
   final Function(int index, CarouselPageChangedReason reason)? onPageChanged;
@@ -141,6 +145,7 @@ class CarouselOptions {
     this.autoPlayAnimationDuration = const Duration(milliseconds: 300),
     this.autoPlayCurve = Curves.easeInCubic,
     this.enlargeCenterPage = false,
+    this.carouselController,
     this.onPageChanged,
     this.onScrolled,
     this.scrollPhysics = const BouncingScrollPhysics(),
@@ -156,5 +161,5 @@ class CarouselOptions {
     this.showIndicator = true,
     this.floatingIndicator = true,
     this.slideIndicator = const CircularSlideIndicator(),
-  });
+  }) : assert(showIndicator == true ? slideIndicator != null : true);
 }

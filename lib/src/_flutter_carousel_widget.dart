@@ -25,32 +25,25 @@ class FlutterCarousel extends StatefulWidget {
   /// with Hero.
   final ExtendedIndexedWidgetBuilder? itemBuilder;
 
+  /// The count of items to be shown in the carousel
   final int? itemCount;
 
-  /// A [MapController], used to control the map.
-  final CarouselControllerImpl _carouselController;
-
-  FlutterCarousel({
+  /// The default constructor
+  const FlutterCarousel({
     required this.items,
     required this.options,
-    carouselController,
     Key? key,
   })  : itemBuilder = null,
         itemCount = items != null ? items.length : 0,
-        _carouselController = carouselController ??
-            CarouselController() as CarouselControllerImpl,
         super(key: key);
 
   /// The on demand item builder constructor
-  FlutterCarousel.builder(
-      {required this.itemCount,
-      required this.itemBuilder,
-      required this.options,
-      carouselController,
-      Key? key})
-      : items = null,
-        _carouselController = carouselController ??
-            CarouselController() as CarouselControllerImpl,
+  const FlutterCarousel.builder({
+    required this.itemCount,
+    required this.itemBuilder,
+    required this.options,
+    Key? key,
+  })  : items = null,
         super(key: key);
 
   @override
@@ -59,7 +52,10 @@ class FlutterCarousel extends StatefulWidget {
 
 class FlutterCarouselState extends State<FlutterCarousel>
     with TickerProviderStateMixin {
-  CarouselControllerImpl get carouselController => widget._carouselController;
+  CarouselControllerImpl get carouselController =>
+      widget.options.carouselController != null
+          ? widget.options.carouselController as CarouselControllerImpl
+          : CarouselController() as CarouselControllerImpl;
 
   Timer? _timer;
 
@@ -77,35 +73,6 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
   void changeMode(CarouselPageChangedReason mode) {
     mode = mode;
-  }
-
-  @override
-  void didUpdateWidget(FlutterCarousel oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _carouselState!.options = options;
-    _carouselState!.itemCount = widget.itemCount;
-
-    /// [pageController] needs to be re-initialized to respond
-    /// to state changes
-    _pageController = PageController(
-      viewportFraction: options.viewportFraction,
-      keepPage: widget.options.keepPage,
-      initialPage: _carouselState!.realPage,
-    );
-
-    _carouselState!.pageController = _pageController;
-
-    if (oldWidget.itemCount != widget.itemCount) {
-      _pageController!.addListener(() {
-        setState(() {
-          _currentPage = _pageController!.page!.floor();
-          _pageDelta = _pageController!.page! - _pageController!.page!.floor();
-        });
-      });
-    }
-
-    /// handle autoplay when state changes
-    handleAutoPlay();
   }
 
   @override
@@ -145,6 +112,33 @@ class FlutterCarouselState extends State<FlutterCarousel>
         _pageDelta = _pageController!.page! - _pageController!.page!.floor();
       });
     });
+  }
+
+  @override
+  void didUpdateWidget(FlutterCarousel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _carouselState!.options = options;
+    _carouselState!.itemCount = widget.itemCount;
+
+    /// [pageController] needs to be re-initialized to respond
+    /// to state changes
+    _pageController = PageController(
+      viewportFraction: options.viewportFraction,
+      keepPage: widget.options.keepPage,
+      initialPage: _carouselState!.realPage,
+    );
+
+    _carouselState!.pageController = _pageController;
+
+    _pageController!.addListener(() {
+      setState(() {
+        _currentPage = _pageController!.page!.floor();
+        _pageDelta = _pageController!.page! - _pageController!.page!.floor();
+      });
+    });
+
+    /// handle autoplay when state changes
+    handleAutoPlay();
   }
 
   /// Timer
@@ -206,7 +200,31 @@ class FlutterCarouselState extends State<FlutterCarousel>
     }
   }
 
-  Widget getGestureWrapper(Widget child) {
+  void onStart() {
+    changeMode(CarouselPageChangedReason.manual);
+  }
+
+  void onPanDown() {
+    if (widget.options.pauseAutoPlayOnTouch) {
+      clearTimer();
+    }
+
+    changeMode(CarouselPageChangedReason.manual);
+  }
+
+  void onPanUp() {
+    if (widget.options.pauseAutoPlayOnTouch) {
+      resumeTimer();
+    }
+  }
+
+  @override
+  void dispose() {
+    clearTimer();
+    super.dispose();
+  }
+
+  Widget getGestureWrapper({required Widget child}) {
     Widget wrapper;
     if (widget.options.height != null) {
       wrapper = SizedBox(
@@ -280,30 +298,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
     );
   }
 
-  void onStart() {
-    changeMode(CarouselPageChangedReason.manual);
-  }
-
-  void onPanDown() {
-    if (widget.options.pauseAutoPlayOnTouch) {
-      clearTimer();
-    }
-
-    changeMode(CarouselPageChangedReason.manual);
-  }
-
-  void onPanUp() {
-    if (widget.options.pauseAutoPlayOnTouch) {
-      resumeTimer();
-    }
-  }
-
-  @override
-  void dispose() {
-    clearTimer();
-    super.dispose();
-  }
-
+  /// The method that builds the carousel
   Widget _buildCarouselWidget() {
     return PageView.builder(
       physics: widget.options.scrollPhysics,
@@ -317,7 +312,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
         var currentPage = getRealIndex(index + _carouselState!.initialPage,
             _carouselState!.realPage, widget.itemCount);
         if (widget.options.onPageChanged != null) {
-          widget.options.onPageChanged!(currentPage, mode);
+          widget.options.onPageChanged?.call(currentPage, mode);
         }
       },
       itemBuilder: (BuildContext context, int idx) {
@@ -396,49 +391,51 @@ class FlutterCarouselState extends State<FlutterCarousel>
     );
   }
 
+  /// The method to build the slide indicator
+  Widget _buildSlideIndicator() {
+    return widget.options.slideIndicator!.build(
+      _currentPage! % widget.itemCount!,
+      _pageDelta,
+      widget.itemCount!,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return getGestureWrapper(
-      options.floatingIndicator
+    if (widget.options.showIndicator &&
+        widget.options.slideIndicator != null &&
+        widget.itemCount! > 1) {
+      /// If [floatingIndicator] option is [true]
+      if (widget.options.floatingIndicator) {
+        return getGestureWrapper(
+          child: Stack(
+            children: [
+              _buildCarouselWidget(),
+              Positioned(
+                bottom: 8.0,
+                left: 0.0,
+                right: 0.0,
+                child: _buildSlideIndicator(),
+              ),
+            ],
+          ),
+        );
+      }
 
-          /// If [floatingIndicator] option is [true]
-          ? Stack(
-              children: [
-                _buildCarouselWidget(),
-                if (widget.options.showIndicator &&
-                    widget.options.slideIndicator != null &&
-                    widget.itemCount! > 1)
-                  Positioned(
-                    bottom: 8.0,
-                    left: 0.0,
-                    right: 0.0,
-                    child: widget.options.slideIndicator!.build(
-                      _currentPage! % widget.itemCount!,
-                      _pageDelta,
-                      widget.itemCount!,
-                    ),
-                  )
-              ],
-            )
-          :
+      /// If [floatingIndicator] option is [false]
+      return getGestureWrapper(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(child: _buildCarouselWidget()),
+            const SizedBox(height: 8.0),
+            _buildSlideIndicator()
+          ],
+        ),
+      );
+    }
 
-          /// If [floatingIndicator] option is [false]
-          Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(child: _buildCarouselWidget()),
-                if (widget.options.showIndicator &&
-                    widget.options.slideIndicator != null &&
-                    widget.itemCount! > 1)
-                  const SizedBox(height: 8.0),
-                widget.options.slideIndicator!.build(
-                  _currentPage! % widget.itemCount!,
-                  _pageDelta,
-                  widget.itemCount!,
-                )
-              ],
-            ),
-    );
+    return getGestureWrapper(child: _buildCarouselWidget());
   }
 }
 

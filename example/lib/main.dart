@@ -303,11 +303,11 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
                 options: CarouselOptions(
                   viewportFraction: 1.0,
                   autoPlay: false,
-                  enableInfiniteScroll: true,
                   floatingIndicator: false,
+                  enableInfiniteScroll: true,
+                  carouselController: _controller,
                   slideIndicator: CircularWaveSlideIndicator(),
                 ),
-                carouselController: _controller,
               ),
               const SizedBox(height: 16.0),
               Padding(
@@ -362,12 +362,10 @@ class FullscreenSliderDemo extends StatelessWidget {
                 height: height,
                 viewportFraction: 1.0,
                 enlargeCenterPage: false,
-                showIndicator: true,
                 autoPlay: true,
                 enableInfiniteScroll: true,
                 autoPlayInterval: const Duration(seconds: 2),
                 slideIndicator: CircularWaveSlideIndicator(),
-                // autoPlay: false,
               ),
               items: imgList
                   .map((item) => Center(
@@ -397,7 +395,6 @@ class CarouselWithIndicatorDemo extends StatefulWidget {
 
 class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
   int _current = 0;
-  final CarouselController _controller = CarouselController();
 
   @override
   Widget build(BuildContext context) {
@@ -410,9 +407,9 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
           Expanded(
             child: FlutterCarousel(
               items: imageSliders,
-              carouselController: _controller,
               options: CarouselOptions(
                   autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 1),
                   viewportFraction: 1.0,
                   showIndicator: false,
                   onPageChanged: (index, reason) {
@@ -425,21 +422,17 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: imgList.asMap().entries.map((entry) {
-              return InkWell(
-                onTap: () => _controller.animateToPage(entry.key),
-                mouseCursor: SystemMouseCursors.click,
-                child: Container(
-                  width: 12.0,
-                  height: 12.0,
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 4.0),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: (Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black)
-                          .withOpacity(_current == entry.key ? 0.9 : 0.4)),
-                ),
+              return Container(
+                width: 12.0,
+                height: 12.0,
+                margin:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: (Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black)
+                        .withOpacity(_current == entry.key ? 0.9 : 0.4)),
               );
             }).toList(),
           ),
@@ -537,6 +530,127 @@ class MultipleItemDemo extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+  }
+}
+
+const weekDays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+
+class NextPrevState extends StatefulWidget {
+  const NextPrevState({Key? key}) : super(key: key);
+
+  @override
+  State<NextPrevState> createState() => NextPrevStateState();
+}
+
+class NextPrevStateState extends State<NextPrevState> {
+  Future<String>? _value;
+  final CarouselController _controller = CarouselController();
+
+  Future<String> getValue() async {
+    await Future.delayed(const Duration(seconds: 3));
+    return 'Flutter Devs';
+  }
+
+  var current = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = getValue();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Image Slider Demo')),
+      body: Column(
+        children: [
+          FutureBuilder<String>(
+            future: _value,
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: GestureDetector(
+                            onTap: _controller.previousPage,
+                            child: Icon(
+                              Icons.chevron_left,
+                              size: 50,
+                              color: Colors.green.shade600,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              snapshot.data!,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: GestureDetector(
+                            onTap: _controller.nextPage,
+                            child: Icon(
+                              Icons.chevron_right,
+                              size: 50,
+                              color: Colors.green.shade600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    FlutterCarousel(
+                      options: CarouselOptions(
+                        autoPlay: false,
+                        carouselController: _controller,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            current = index;
+                          });
+                        },
+                      ),
+                      items: weekDays.map((i) {
+                        return Builder(
+                          builder: (BuildContext ctx) {
+                            return Text(i);
+                          },
+                        );
+                      }).toList(),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: weekDays.map((i) {
+                        final idx = weekDays.indexOf(i);
+                        return Container(
+                          height: 10,
+                          width: 10,
+                          margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                          decoration: BoxDecoration(
+                            color: current == idx
+                                ? Colors.green.shade600
+                                : Colors.grey,
+                            shape: BoxShape.circle,
+                          ),
+                        );
+                      }).toList(),
+                    )
+                  ],
+                );
+              }
+              return const Center(child: Text('Loading'));
+            },
+          )
+        ],
       ),
     );
   }
