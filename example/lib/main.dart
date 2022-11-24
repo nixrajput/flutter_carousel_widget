@@ -156,6 +156,8 @@ final List<Widget> imageSliders = imgList
         ))
     .toList();
 
+const sliders = ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4', 'Slide 5'];
+
 class ComplicatedImageDemo extends StatelessWidget {
   const ComplicatedImageDemo({Key? key}) : super(key: key);
 
@@ -171,44 +173,21 @@ class ComplicatedImageDemo extends StatelessWidget {
           child: FlutterCarousel(
             options: CarouselOptions(
               autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 2),
             ),
-            items: imgList
-                .map((item) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(4.0)),
-                        child: Image.network(
-                          item,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (BuildContext ctx, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          },
-                          errorBuilder: (
-                            BuildContext context,
-                            Object exception,
-                            StackTrace? stackTrace,
-                          ) {
-                            return const Text(
-                              'Oops!! An error occurred. 😢',
-                              style: TextStyle(fontSize: 16.0),
-                            );
-                          },
-                        ),
+            items: sliders
+                .map(
+                  (item) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: ClipRRect(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(4.0)),
+                      child: Container(
+                        color: Theme.of(context).bottomAppBarColor,
+                        child: Center(child: Text(item)),
                       ),
-                    ))
+                    ),
+                  ),
+                )
                 .toList(),
           ),
         ),

@@ -112,7 +112,8 @@ class CarouselOptions {
   /// in the last item.
   final bool pauseAutoPlayInFiniteScroll;
 
-  /// Pass a `PageStorageKey` if you want to keep the PageView's position when it was recreated.
+  /// Pass a `PageStorageKey` if you want to keep the PageView's position when
+  /// it was recreated.
   final PageStorageKey<dynamic>? pageViewKey;
 
   /// Use `enlargeStrategy` to determine which method to enlarge the center page.
@@ -132,6 +133,18 @@ class CarouselOptions {
 
   /// Whether or not to keep pages in PageView
   final bool keepPage;
+
+  /// Whether to add padding to both ends of the list.
+  /// If this is set to true and [viewportFraction] < 1.0, padding will be
+  /// added such that the first and last child slivers will be in the center
+  /// of the viewport when scrolled all the way to the start or end,
+  /// respectively.
+  /// If [viewportFraction] >= 1.0, this property has no effect.
+  /// This property defaults to true and must not be null.
+  final bool padEnds;
+
+  /// Exposed clipBehavior of PageView
+  final Clip clipBehavior;
 
   CarouselOptions({
     this.height,
@@ -161,5 +174,74 @@ class CarouselOptions {
     this.showIndicator = true,
     this.floatingIndicator = true,
     this.slideIndicator = const CircularSlideIndicator(),
+    this.padEnds = true,
+    this.clipBehavior = Clip.hardEdge,
   }) : assert(showIndicator == true ? slideIndicator != null : true);
+
+  /// Copy With Constructor
+  CarouselOptions copyWith({
+    double? height,
+    double? aspectRatio,
+    double? viewportFraction,
+    int? initialPage,
+    bool? enableInfiniteScroll,
+    bool? reverse,
+    bool? autoPlay,
+    Duration? autoPlayInterval,
+    Duration? autoPlayAnimationDuration,
+    Curve? autoPlayCurve,
+    bool? enlargeCenterPage,
+    Axis? scrollDirection,
+    CarouselController? carouselController,
+    Function(int index, CarouselPageChangedReason reason)? onPageChanged,
+    ValueChanged<double?>? onScrolled,
+    ScrollPhysics? scrollPhysics,
+    bool? pageSnapping,
+    bool? pauseAutoPlayOnTouch,
+    bool? pauseAutoPlayOnManualNavigate,
+    bool? pauseAutoPlayInFiniteScroll,
+    PageStorageKey<dynamic>? pageViewKey,
+    CenterPageEnlargeStrategy? enlargeStrategy,
+    bool? disableCenter,
+    SlideIndicator? slideIndicator,
+    bool? showIndicator,
+    bool? floatingIndicator,
+    bool? keepPage,
+    bool? padEnds,
+    Clip? clipBehavior,
+  }) {
+    return CarouselOptions(
+      height: height ?? this.height,
+      aspectRatio: aspectRatio ?? this.aspectRatio,
+      viewportFraction: viewportFraction ?? this.viewportFraction,
+      initialPage: initialPage ?? this.initialPage,
+      enableInfiniteScroll: enableInfiniteScroll ?? this.enableInfiniteScroll,
+      reverse: reverse ?? this.reverse,
+      autoPlay: autoPlay ?? this.autoPlay,
+      autoPlayInterval: autoPlayInterval ?? this.autoPlayInterval,
+      autoPlayAnimationDuration:
+          autoPlayAnimationDuration ?? this.autoPlayAnimationDuration,
+      autoPlayCurve: autoPlayCurve ?? this.autoPlayCurve,
+      enlargeCenterPage: enlargeCenterPage ?? this.enlargeCenterPage,
+      onPageChanged: onPageChanged ?? this.onPageChanged,
+      onScrolled: onScrolled ?? this.onScrolled,
+      scrollPhysics: scrollPhysics ?? this.scrollPhysics,
+      pageSnapping: pageSnapping ?? this.pageSnapping,
+      scrollDirection: scrollDirection ?? this.scrollDirection,
+      pauseAutoPlayOnTouch: pauseAutoPlayOnTouch ?? this.pauseAutoPlayOnTouch,
+      pauseAutoPlayOnManualNavigate:
+          pauseAutoPlayOnManualNavigate ?? this.pauseAutoPlayOnManualNavigate,
+      pauseAutoPlayInFiniteScroll:
+          pauseAutoPlayInFiniteScroll ?? this.pauseAutoPlayInFiniteScroll,
+      pageViewKey: pageViewKey ?? this.pageViewKey,
+      keepPage: keepPage ?? this.keepPage,
+      enlargeStrategy: enlargeStrategy ?? this.enlargeStrategy,
+      disableCenter: disableCenter ?? this.disableCenter,
+      showIndicator: showIndicator ?? this.showIndicator,
+      floatingIndicator: floatingIndicator ?? this.floatingIndicator,
+      slideIndicator: slideIndicator ?? this.slideIndicator,
+      padEnds: padEnds ?? this.padEnds,
+      clipBehavior: clipBehavior ?? this.clipBehavior,
+    );
+  }
 }

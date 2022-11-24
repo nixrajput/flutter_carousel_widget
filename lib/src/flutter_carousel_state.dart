@@ -18,7 +18,7 @@ class CarouselState {
   /// Defaults to 10000 to simulate infinite backwards scrolling.
   int realPage = 100000;
 
-  /// The initial index of the [PageView] on [CarouselSlider] init.
+  /// The initial index of the [PageView] on [FlutterCarouselWidget] init.
   ///
   int initialPage = 0;
 

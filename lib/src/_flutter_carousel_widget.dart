@@ -86,21 +86,21 @@ class FlutterCarouselState extends State<FlutterCarousel>
       changeMode,
     );
 
-    _currentPage = widget.options.initialPage;
-
     _carouselState!.itemCount = widget.itemCount;
     carouselController.state = _carouselState;
     _carouselState!.initialPage = widget.options.initialPage;
     _carouselState!.realPage = options.enableInfiniteScroll
-        ? _carouselState!.realPage * widget.itemCount! +
-            _carouselState!.initialPage
+        ? _carouselState!.realPage + _carouselState!.initialPage
         : _carouselState!.initialPage;
+
+    /// For Indicator
+    _currentPage = widget.options.initialPage;
 
     handleAutoPlay();
 
     _pageController = PageController(
       viewportFraction: options.viewportFraction,
-      keepPage: widget.options.keepPage,
+      keepPage: options.keepPage,
       initialPage: _carouselState!.realPage,
     );
 
@@ -116,19 +116,21 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
   @override
   void didUpdateWidget(FlutterCarousel oldWidget) {
-    super.didUpdateWidget(oldWidget);
     _carouselState!.options = options;
     _carouselState!.itemCount = widget.itemCount;
 
-    /// [pageController] needs to be re-initialized to respond
+    /// [_pageController] needs to be re-initialized to respond
     /// to state changes
     _pageController = PageController(
       viewportFraction: options.viewportFraction,
-      keepPage: widget.options.keepPage,
+      keepPage: options.keepPage,
       initialPage: _carouselState!.realPage,
     );
 
     _carouselState!.pageController = _pageController;
+
+    /// handle autoplay when state changes
+    handleAutoPlay();
 
     _pageController!.addListener(() {
       setState(() {
@@ -137,40 +139,41 @@ class FlutterCarouselState extends State<FlutterCarousel>
       });
     });
 
-    /// handle autoplay when state changes
-    handleAutoPlay();
+    super.didUpdateWidget(oldWidget);
   }
 
   /// Timer
   Timer? getTimer() {
-    return widget.options.autoPlay
-        ? Timer.periodic(widget.options.autoPlayInterval, (_) {
-            final route = ModalRoute.of(context);
-            if (route?.isCurrent == false) {
-              return;
-            }
+    if (widget.options.autoPlay == true) {
+      return Timer.periodic(widget.options.autoPlayInterval, (_) {
+        final route = ModalRoute.of(context);
+        if (route?.isCurrent == false) {
+          return;
+        }
 
-            var previousReason = mode;
-            changeMode(CarouselPageChangedReason.timed);
-            var nextPage = _carouselState!.pageController!.page!.round() + 1;
-            var itemCount = widget.itemCount ?? widget.items!.length;
+        var previousReason = mode;
+        changeMode(CarouselPageChangedReason.timed);
+        var nextPage = _carouselState!.pageController!.page!.round() + 1;
+        var itemCount = widget.itemCount ?? widget.items!.length;
 
-            if (nextPage >= itemCount &&
-                widget.options.enableInfiniteScroll == false) {
-              if (widget.options.pauseAutoPlayInFiniteScroll) {
-                clearTimer();
-                return;
-              }
-              nextPage = 0;
-            }
+        if (nextPage >= itemCount &&
+            widget.options.enableInfiniteScroll == false) {
+          if (widget.options.pauseAutoPlayInFiniteScroll) {
+            clearTimer();
+            return;
+          }
+          nextPage = 0;
+        }
 
-            _carouselState!.pageController!
-                .animateToPage(nextPage,
-                    duration: widget.options.autoPlayAnimationDuration,
-                    curve: widget.options.autoPlayCurve)
-                .then((_) => changeMode(previousReason));
-          })
-        : null;
+        _carouselState!.pageController!
+            .animateToPage(nextPage,
+                duration: widget.options.autoPlayAnimationDuration,
+                curve: widget.options.autoPlayCurve)
+            .then((_) => changeMode(previousReason));
+      });
+    }
+
+    return null;
   }
 
   /// Clear Timer
@@ -183,9 +186,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
   /// Resume Timer
   void resumeTimer() {
-    if (_timer != null) {
-      _timer = getTimer();
-    }
+    _timer ??= getTimer();
   }
 
   /// Autoplay
@@ -299,8 +300,15 @@ class FlutterCarouselState extends State<FlutterCarousel>
   }
 
   /// The method that builds the carousel
-  Widget _buildCarouselWidget() {
+  Widget _buildCarouselWidget(BuildContext context) {
     return PageView.builder(
+      padEnds: widget.options.padEnds,
+      scrollBehavior: ScrollConfiguration.of(context).copyWith(
+        scrollbars: false,
+        overscroll: false,
+        dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
+      ),
+      clipBehavior: widget.options.clipBehavior,
       physics: widget.options.scrollPhysics,
       scrollDirection: widget.options.scrollDirection,
       pageSnapping: widget.options.pageSnapping,
@@ -312,7 +320,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
         var currentPage = getRealIndex(index + _carouselState!.initialPage,
             _carouselState!.realPage, widget.itemCount);
         if (widget.options.onPageChanged != null) {
-          widget.options.onPageChanged?.call(currentPage, mode);
+          widget.options.onPageChanged!(currentPage, mode);
         }
       },
       itemBuilder: (BuildContext context, int idx) {
@@ -329,21 +337,26 @@ class FlutterCarouselState extends State<FlutterCarousel>
                   ? widget.items![index]
                   : const SizedBox())
               : widget.itemBuilder!(context, index, idx),
-          builder: (BuildContext context, child) {
+          builder: (BuildContext context, Widget? child) {
             var distortionValue = 1.0;
 
             /// if `enlargeCenterPage` is true, we must calculate the carousel
             /// item's height to display the visual effect
             if (widget.options.enlargeCenterPage != null &&
                 widget.options.enlargeCenterPage == true) {
-              double? itemOffset;
-
               /// pageController.page can only be accessed after the first
               /// build, so in the first build we calculate the item
               /// offset manually
-              try {
-                itemOffset = _carouselState!.pageController!.page! - idx;
-              } catch (e) {
+              var itemOffset = 0.0;
+              var position = _carouselState?.pageController?.position;
+              if (position != null &&
+                  position.hasPixels &&
+                  position.hasContentDimensions) {
+                var page = _carouselState?.pageController?.page;
+                if (page != null) {
+                  itemOffset = page - idx;
+                }
+              } else {
                 var storageContext = _carouselState!
                     .pageController!.position.context.storageContext;
                 final previousSavedPosition = PageStorage.of(storageContext)
@@ -410,7 +423,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
         return getGestureWrapper(
           child: Stack(
             children: [
-              _buildCarouselWidget(),
+              _buildCarouselWidget(context),
               Positioned(
                 bottom: 8.0,
                 left: 0.0,
@@ -427,7 +440,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(child: _buildCarouselWidget()),
+            Expanded(child: _buildCarouselWidget(context)),
             const SizedBox(height: 8.0),
             _buildSlideIndicator()
           ],
@@ -435,7 +448,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
       );
     }
 
-    return getGestureWrapper(child: _buildCarouselWidget());
+    return getGestureWrapper(child: _buildCarouselWidget(context));
   }
 }
 

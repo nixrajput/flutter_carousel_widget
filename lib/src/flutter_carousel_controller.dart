@@ -47,7 +47,7 @@ class CarouselControllerImpl implements CarouselController {
   @override
   Future<void> get onReady => _readyCompleter.future;
 
-  /// Animates the controlled [CarouselSlider] to the next page.
+  /// Animates the controlled [FlutterCarouselWidget] to the next page.
   ///
   /// The animation lasts for the given duration and follows the given curve.
   /// The returned [Future] resolves when the animation completes.
@@ -66,7 +66,7 @@ class CarouselControllerImpl implements CarouselController {
     }
   }
 
-  /// Animates the controlled [CarouselSlider] to the previous page.
+  /// Animates the controlled [FlutterCarouselWidget] to the previous page.
   ///
   /// The animation lasts for the given duration and follows the given curve.
   /// The returned [Future] resolves when the animation completes.
@@ -86,7 +86,7 @@ class CarouselControllerImpl implements CarouselController {
     }
   }
 
-  /// Changes which page is displayed in the controlled [CarouselSlider].
+  /// Changes which page is displayed in the controlled [FlutterCarouselWidget].
   ///
   /// Jumps the page position from its current value to the given value,
   /// without animation, and without checking if the new value is in range.
@@ -100,7 +100,7 @@ class CarouselControllerImpl implements CarouselController {
     return _state!.pageController!.jumpToPage(pageToJump);
   }
 
-  /// Animates the controlled [CarouselSlider] from the current page to the given page.
+  /// Animates the controlled [FlutterCarouselWidget] from the current page to the given page.
   ///
   /// The animation lasts for the given duration and follows the given curve.
   /// The returned [Future] resolves when the animation completes.
@@ -124,7 +124,7 @@ class CarouselControllerImpl implements CarouselController {
     }
   }
 
-  /// Starts the controlled [CarouselSlider] autoplay.
+  /// Starts the controlled [FlutterCarouselWidget] autoplay.
   ///
   /// The carousel will only autoPlay if the [autoPlay] parameter
   /// in [CarouselOptions] is true.
@@ -133,7 +133,7 @@ class CarouselControllerImpl implements CarouselController {
     _state!.onResumeTimer();
   }
 
-  /// Stops the controlled [CarouselSlider] from autoplaying.
+  /// Stops the controlled [FlutterCarouselWidget] from autoplaying.
   ///
   /// This is a more on-demand way of doing this. Use the [autoPlay]
   /// parameter in [CarouselOptions] to specify the autoPlay behaviour of the carousel.

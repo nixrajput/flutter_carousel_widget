@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.3
+
+* Fix: bug auto play carousel is not working.
+* All known bug fixed and removed.
+* Performance improvements.
+* Removed unnecessary codes.
+
 ## 1.2.2
 
 * Fix: `issue #7` bug show indicator when no custom `CarouselController` is set and `showIndicator` is set to `true` and `onPageChanged` is called.

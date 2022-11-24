@@ -26,7 +26,7 @@ Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-  flutter_carousel_widget: ^1.2.2
+  flutter_carousel_widget: ^1.2.3
 ```
 
 And import it:
