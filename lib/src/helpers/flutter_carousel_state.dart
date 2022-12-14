@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
-
-import 'flutter_carousel_options.dart';
+import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
+import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_options.dart';
 
 class CarouselState {
   /// The [CarouselOptions] to create this state

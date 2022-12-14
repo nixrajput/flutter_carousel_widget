@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
-import 'flutter_carousel_options.dart';
-import 'flutter_carousel_state.dart';
-import 'flutter_carousel_utils.dart';
+import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
+import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_state.dart';
+import 'package:flutter_carousel_widget/src/utils/flutter_carousel_utils.dart';
 
 abstract class CarouselController {
   bool get ready;

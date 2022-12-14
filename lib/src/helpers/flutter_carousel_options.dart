@@ -1,11 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_carousel_widget/src/flutter_carousel_controller.dart';
+import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
+import 'package:flutter_carousel_widget/src/enums/center_page_enlarge_strategy.dart';
+import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_controller.dart';
 import 'package:flutter_carousel_widget/src/indicators/circular_slide_indicator.dart';
 import 'package:flutter_carousel_widget/src/indicators/slide_indicator.dart';
-
-enum CarouselPageChangedReason { timed, manual, controller }
-
-enum CenterPageEnlargeStrategy { scale, height }
 
 class CarouselOptions {
   /// Set carousel height and overrides any existing [aspectRatio].
@@ -70,7 +69,7 @@ class CarouselOptions {
   final Axis scrollDirection;
 
   /// A [MapController], used to control the map.
-  final CarouselController? carouselController;
+  final CarouselController? controller;
 
   /// Called whenever the page in the center of the viewport changes.
   final Function(int index, CarouselPageChangedReason reason)? onPageChanged;
@@ -87,7 +86,36 @@ class CarouselOptions {
   /// [PageScrollPhysics] prior to being used.
   ///
   /// Defaults to matching platform conventions.
-  final ScrollPhysics? scrollPhysics;
+  final ScrollPhysics? physics;
+
+  ///A ScrollBehavior that will be applied to this widget individually.
+  //
+  // Defaults to null, wherein the inherited ScrollBehavior is copied and modified to alter the viewport decoration, like Scrollbars.
+  //
+  // ScrollBehaviors also provide ScrollPhysics. If an explicit ScrollPhysics is provided in physics, it will take precedence, followed by scrollBehavior, and then the inherited ancestor ScrollBehavior.
+  //
+  // The ScrollBehavior of the inherited ScrollConfiguration will be modified by default to not apply a Scrollbar.
+  final ScrollBehavior? scrollBehavior;
+
+  /// Determines the way that drag start behavior is handled.
+  ///
+  /// Corresponds to Material's PageView's dragStartBehavior parameter: https://api.flutter.dev/flutter/widgets/PageView-class.html
+  final DragStartBehavior dragStartBehavior;
+
+  /// Controls whether the widget's pages will respond to [RenderObject.showOnScreen], which will allow for implicit accessibility scrolling.
+  ///
+  /// Corresponds to Material's PageView's allowImplicitScrolling parameter: https://api.flutter.dev/flutter/widgets/PageView-class.html
+  final bool allowImplicitScrolling;
+
+  /// Restoration ID to save and restore the scroll offset of the scrollable.
+  ///
+  /// Corresponds to Material's PageView's restorationId parameter: https://api.flutter.dev/flutter/widgets/PageView-class.html
+  final String? restorationId;
+
+  /// The content will be clipped (or not) according to this option.
+  ///
+  /// Corresponds to Material's PageView's clipBehavior parameter: https://api.flutter.dev/flutter/widgets/PageView-class.html
+  final Clip clipBehavior;
 
   /// Set to false to disable page snapping, useful for custom scroll behavior.
   ///
@@ -143,12 +171,9 @@ class CarouselOptions {
   /// This property defaults to true and must not be null.
   final bool padEnds;
 
-  /// Exposed clipBehavior of PageView
-  final Clip clipBehavior;
-
   CarouselOptions({
     this.height,
-    this.aspectRatio = 1 / 1,
+    this.aspectRatio,
     this.viewportFraction = 0.9,
     this.initialPage = 0,
     this.enableInfiniteScroll = false,
@@ -158,11 +183,10 @@ class CarouselOptions {
     this.autoPlayAnimationDuration = const Duration(milliseconds: 300),
     this.autoPlayCurve = Curves.easeInCubic,
     this.enlargeCenterPage = false,
-    this.carouselController,
+    this.controller,
     this.onPageChanged,
     this.onScrolled,
-    this.scrollPhysics = const BouncingScrollPhysics(),
-    this.pageSnapping = true,
+    this.physics = const BouncingScrollPhysics(),
     this.scrollDirection = Axis.horizontal,
     this.pauseAutoPlayOnTouch = true,
     this.pauseAutoPlayOnManualNavigate = true,
@@ -176,6 +200,11 @@ class CarouselOptions {
     this.slideIndicator = const CircularSlideIndicator(),
     this.padEnds = true,
     this.clipBehavior = Clip.hardEdge,
+    this.scrollBehavior,
+    this.pageSnapping = true,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.allowImplicitScrolling = false,
+    this.restorationId,
   }) : assert(showIndicator == true ? slideIndicator != null : true);
 
   /// Copy With Constructor
@@ -195,7 +224,7 @@ class CarouselOptions {
     CarouselController? carouselController,
     Function(int index, CarouselPageChangedReason reason)? onPageChanged,
     ValueChanged<double?>? onScrolled,
-    ScrollPhysics? scrollPhysics,
+    ScrollPhysics? physics,
     bool? pageSnapping,
     bool? pauseAutoPlayOnTouch,
     bool? pauseAutoPlayOnManualNavigate,
@@ -209,6 +238,10 @@ class CarouselOptions {
     bool? keepPage,
     bool? padEnds,
     Clip? clipBehavior,
+    DragStartBehavior? dragStartBehavior,
+    ScrollBehavior? scrollBehavior,
+    bool? allowImplicitScrolling,
+    String? restorationId,
   }) {
     return CarouselOptions(
       height: height ?? this.height,
@@ -225,7 +258,7 @@ class CarouselOptions {
       enlargeCenterPage: enlargeCenterPage ?? this.enlargeCenterPage,
       onPageChanged: onPageChanged ?? this.onPageChanged,
       onScrolled: onScrolled ?? this.onScrolled,
-      scrollPhysics: scrollPhysics ?? this.scrollPhysics,
+      physics: physics ?? this.physics,
       pageSnapping: pageSnapping ?? this.pageSnapping,
       scrollDirection: scrollDirection ?? this.scrollDirection,
       pauseAutoPlayOnTouch: pauseAutoPlayOnTouch ?? this.pauseAutoPlayOnTouch,
@@ -242,6 +275,11 @@ class CarouselOptions {
       slideIndicator: slideIndicator ?? this.slideIndicator,
       padEnds: padEnds ?? this.padEnds,
       clipBehavior: clipBehavior ?? this.clipBehavior,
+      dragStartBehavior: dragStartBehavior ?? this.dragStartBehavior,
+      scrollBehavior: scrollBehavior ?? this.scrollBehavior,
+      allowImplicitScrolling:
+          allowImplicitScrolling ?? this.allowImplicitScrolling,
+      restorationId: restorationId ?? this.restorationId,
     );
   }
 }

@@ -4,16 +4,16 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/src/components/overflow_page.dart';
 import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
-import 'package:flutter_carousel_widget/src/enums/center_page_enlarge_strategy.dart';
 import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_controller.dart';
 import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_options.dart';
 import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_state.dart';
 import 'package:flutter_carousel_widget/src/typedefs/widget_builder.dart';
 import 'package:flutter_carousel_widget/src/utils/flutter_carousel_utils.dart';
 
-class FlutterCarousel extends StatefulWidget {
-  /// [CarouselOptions] to create a [FlutterCarouselState] with
+class ExpandableCarousel extends StatefulWidget {
+  /// [ExpandableCarouselOptions] to create a [ExpandableCarouselState] with
   final CarouselOptions options;
 
   /// The widgets to be shown in the carousel of default constructor
@@ -27,10 +27,15 @@ class FlutterCarousel extends StatefulWidget {
   /// The count of items to be shown in the carousel
   final int? itemCount;
 
+  /// Setting it to a value much bigger than most pages' sizes might result in a
+  /// reversed - "expand and shrink" - effect.
+  final double estimatedPageSize;
+
   /// The default constructor
-  const FlutterCarousel({
+  const ExpandableCarousel({
     required this.items,
     required this.options,
+    this.estimatedPageSize = 0.0,
     Key? key,
   })  : itemBuilder = null,
         itemCount = items != null ? items.length : 0,
@@ -38,10 +43,11 @@ class FlutterCarousel extends StatefulWidget {
         super(key: key);
 
   /// The on demand item builder constructor
-  const FlutterCarousel.builder({
+  const ExpandableCarousel.builder({
     required this.itemCount,
     required this.itemBuilder,
     required this.options,
+    this.estimatedPageSize = 0.0,
     Key? key,
   })  : items = null,
         assert(itemCount != null),
@@ -49,10 +55,10 @@ class FlutterCarousel extends StatefulWidget {
         super(key: key);
 
   @override
-  FlutterCarouselState createState() => FlutterCarouselState();
+  ExpandableCarouselState createState() => ExpandableCarouselState();
 }
 
-class FlutterCarouselState extends State<FlutterCarousel>
+class ExpandableCarouselState extends State<ExpandableCarousel>
     with TickerProviderStateMixin {
   CarouselControllerImpl get carouselController =>
       widget.options.controller != null
@@ -70,8 +76,21 @@ class FlutterCarouselState extends State<FlutterCarousel>
   /// mode is related to why the page is being changed
   CarouselPageChangedReason mode = CarouselPageChangedReason.controller;
 
+  late List<double> _sizes;
   int _currentPage = 0;
+  int _previousPage = 0;
   double _pageDelta = 0.0;
+  bool _shouldDisposePageController = false;
+  bool _firstPageLoaded = false;
+
+  double get _currentSize => _sizes[_currentPage];
+
+  double get _previousSize => _sizes[_previousPage];
+
+  bool get isBuilder => widget.itemBuilder != null;
+
+  bool get _isHorizontalScroll =>
+      widget.options.scrollDirection == Axis.horizontal;
 
   @override
   void initState() {
@@ -110,11 +129,18 @@ class FlutterCarouselState extends State<FlutterCarousel>
         _pageDelta = _pageController!.page! - _pageController!.page!.floor();
       });
     });
+
+    _sizes = _prepareSizes();
+    _pageController?.addListener(_updatePage);
+    _currentPage = _pageController!.initialPage.clamp(0, _sizes.length - 1);
+    _previousPage = _currentPage - 1 < 0 ? 0 : _currentPage - 1;
+    _shouldDisposePageController = widget.options.controller == null;
   }
 
   @override
-  void didUpdateWidget(covariant FlutterCarousel oldWidget) {
+  void didUpdateWidget(covariant ExpandableCarousel oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     _carouselState!.options = options;
     _carouselState!.itemCount = widget.itemCount;
 
@@ -131,18 +157,35 @@ class FlutterCarouselState extends State<FlutterCarousel>
     /// handle autoplay when state changes
     _handleAutoPlay();
 
-    _pageController!.addListener(() {
+    _pageController?.addListener(() {
       setState(() {
         _currentPage = _pageController!.page!.floor();
         _pageDelta = _pageController!.page! - _pageController!.page!.floor();
       });
     });
+
+    if (oldWidget.options.controller != widget.options.controller) {
+      _pageController?.addListener(_updatePage);
+      _shouldDisposePageController = widget.options.controller == null;
+    }
+
+    if (_shouldReinitializeHeights(oldWidget)) {
+      _reinitializeSizes();
+    }
   }
 
   @override
   void dispose() {
+    _pageController?.removeListener(_updatePage);
+    if (_shouldDisposePageController) {
+      _pageController?.dispose();
+    }
     _clearTimer();
     super.dispose();
+  }
+
+  void _changeMode(CarouselPageChangedReason mode) {
+    mode = mode;
   }
 
   /// Timer
@@ -177,10 +220,6 @@ class FlutterCarouselState extends State<FlutterCarousel>
     }
 
     return null;
-  }
-
-  void _changeMode(CarouselPageChangedReason mode) {
-    mode = mode;
   }
 
   /// Clear Timer
@@ -226,19 +265,96 @@ class FlutterCarouselState extends State<FlutterCarousel>
     }
   }
 
-  Widget _getGestureWrapper({required Widget child}) {
-    Widget wrapper;
-    if (widget.options.height != null) {
-      wrapper = SizedBox(
-        height: widget.options.height,
-        child: child,
-      );
-    } else {
-      wrapper = AspectRatio(
-        aspectRatio: widget.options.aspectRatio ?? 1 / 1,
-        child: child,
-      );
+  bool _shouldReinitializeHeights(ExpandableCarousel oldWidget) {
+    if (oldWidget.itemBuilder != null && isBuilder) {
+      return oldWidget.itemCount != widget.itemCount;
     }
+    return oldWidget.items?.length != widget.items?.length;
+  }
+
+  void _reinitializeSizes() {
+    final currentPageSize = _sizes[_currentPage];
+    _sizes = _prepareSizes();
+
+    if (_currentPage >= _sizes.length) {
+      final differenceFromPreviousToCurrent = _previousPage - _currentPage;
+      _currentPage = _sizes.length - 1;
+      var previousReason = mode;
+      _changeMode(CarouselPageChangedReason.timed);
+      widget.options.onPageChanged?.call(_currentPage, previousReason);
+
+      _previousPage = (_currentPage + differenceFromPreviousToCurrent)
+          .clamp(0, _sizes.length - 1);
+    }
+
+    _previousPage = _previousPage.clamp(0, _sizes.length - 1);
+    _sizes[_currentPage] = currentPageSize;
+  }
+
+  Duration _getDuration() {
+    if (_firstPageLoaded) {
+      return widget.options.autoPlayAnimationDuration;
+    }
+    return Duration.zero;
+  }
+
+  List<double> _prepareSizes() {
+    if (isBuilder) {
+      return List.filled(widget.itemCount!, widget.estimatedPageSize);
+    } else {
+      return widget.items!.map((child) => widget.estimatedPageSize).toList();
+    }
+  }
+
+  void _updatePage() {
+    final newPage = _pageController?.page!.round();
+    if (_currentPage != newPage) {
+      setState(() {
+        _firstPageLoaded = true;
+        _previousPage = _currentPage;
+        _currentPage = newPage!;
+      });
+    }
+  }
+
+  Widget _itemBuilder(BuildContext context, int index) {
+    final idx = getRealIndex(
+      index + _carouselState!.initialPage,
+      _carouselState!.realPage,
+      widget.itemCount,
+    );
+    final item = widget.itemBuilder!(context, idx, index);
+    return OverflowPage(
+      onSizeChange: (size) => setState(
+        () => _sizes[index] = _isHorizontalScroll ? size.height : size.width,
+      ),
+      alignment: Alignment.topCenter,
+      scrollDirection: widget.options.scrollDirection,
+      child: item,
+    );
+  }
+
+  List<Widget> _sizeReportingChildren() => widget.items!
+      .asMap()
+      .map(
+        (index, child) => MapEntry(
+          index,
+          OverflowPage(
+            onSizeChange: (size) => setState(
+              () => _sizes[index] =
+                  _isHorizontalScroll ? size.height : size.width,
+            ),
+            alignment: Alignment.topCenter,
+            scrollDirection: widget.options.scrollDirection,
+            child: child,
+          ),
+        ),
+      )
+      .values
+      .toList();
+
+  Widget _getGestureWrapper({required Widget child}) {
+    var wrapper = child;
 
     return RawGestureDetector(
       gestures: {
@@ -271,53 +387,47 @@ class FlutterCarouselState extends State<FlutterCarousel>
     );
   }
 
-  Widget _getCenterWrapper(Widget child) {
-    if (widget.options.disableCenter) {
-      return SizedBox(child: child);
-    }
-    return Center(child: child);
-  }
-
-  Widget _getEnlargeWrapper(Widget? child,
-      {double? width, double? height, double? scale}) {
-    /// If [enlargeStrategy] is [CenterPageEnlargeStrategy.height]
-    if (widget.options.enlargeStrategy == CenterPageEnlargeStrategy.height) {
-      return SizedBox(
-        width: width,
-        height: height,
-        child: child,
-      );
-    }
-    return Transform.scale(
-      scale: scale,
-      child: SizedBox(
-        width: width,
-        height: height,
-        child: child,
-      ),
-    );
-  }
-
   /// The method that builds the carousel
   Widget _buildCarouselWidget(BuildContext context) {
-    return PageView.builder(
+    if (isBuilder) {
+      return PageView.builder(
+        key: widget.options.pageViewKey,
+        controller: _pageController,
+        itemBuilder: _itemBuilder,
+        itemCount: widget.itemCount,
+        scrollBehavior: widget.options.scrollBehavior ??
+            ScrollConfiguration.of(context).copyWith(
+              scrollbars: false,
+              overscroll: false,
+              dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
+            ),
+        onPageChanged: (int index) {
+          var currentPage = getRealIndex(index + _carouselState!.initialPage,
+              _carouselState!.realPage, widget.itemCount);
+          if (widget.options.onPageChanged != null) {
+            widget.options.onPageChanged!(currentPage, mode);
+          }
+        },
+        reverse: widget.options.reverse,
+        physics: widget.options.physics,
+        pageSnapping: widget.options.pageSnapping,
+        clipBehavior: widget.options.clipBehavior,
+        scrollDirection: widget.options.scrollDirection,
+        dragStartBehavior: widget.options.dragStartBehavior,
+        allowImplicitScrolling: widget.options.allowImplicitScrolling,
+        restorationId: widget.options.restorationId,
+        padEnds: widget.options.padEnds,
+      );
+    }
+    return PageView(
       key: widget.options.pageViewKey,
+      controller: _pageController,
       scrollBehavior: widget.options.scrollBehavior ??
           ScrollConfiguration.of(context).copyWith(
             scrollbars: false,
             overscroll: false,
             dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
           ),
-      clipBehavior: widget.options.clipBehavior,
-      physics: widget.options.physics,
-      scrollDirection: widget.options.scrollDirection,
-      pageSnapping: widget.options.pageSnapping,
-      controller: _carouselState!.pageController,
-      reverse: widget.options.reverse,
-      dragStartBehavior: widget.options.dragStartBehavior,
-      allowImplicitScrolling: widget.options.allowImplicitScrolling,
-      restorationId: widget.options.restorationId,
-      padEnds: widget.options.padEnds,
       onPageChanged: (int index) {
         var currentPage = getRealIndex(index + _carouselState!.initialPage,
             _carouselState!.realPage, widget.itemCount);
@@ -325,85 +435,16 @@ class FlutterCarouselState extends State<FlutterCarousel>
           widget.options.onPageChanged!(currentPage, mode);
         }
       },
-      itemCount: widget.options.enableInfiniteScroll ? null : widget.itemCount,
-      itemBuilder: (BuildContext context, int idx) {
-        final index = getRealIndex(
-          idx + _carouselState!.initialPage,
-          _carouselState!.realPage,
-          widget.itemCount,
-        );
-
-        return AnimatedBuilder(
-          animation: _carouselState!.pageController!,
-          child: (widget.items != null)
-              ? (widget.items!.isNotEmpty
-                  ? widget.items![index]
-                  : const SizedBox())
-              : widget.itemBuilder!(context, index, idx),
-          builder: (BuildContext context, Widget? child) {
-            var distortionValue = 1.0;
-
-            /// if `enlargeCenterPage` is true, we must calculate the carousel
-            /// item's height to display the visual effect
-            if (widget.options.enlargeCenterPage != null &&
-                widget.options.enlargeCenterPage == true) {
-              /// pageController.page can only be accessed after the first
-              /// build, so in the first build we calculate the item
-              /// offset manually
-              var itemOffset = 0.0;
-              var position = _carouselState?.pageController?.position;
-              if (position != null &&
-                  position.hasPixels &&
-                  position.hasContentDimensions) {
-                var page = _carouselState?.pageController?.page;
-                if (page != null) {
-                  itemOffset = page - idx;
-                }
-              } else {
-                var storageContext = _carouselState!
-                    .pageController!.position.context.storageContext;
-                final previousSavedPosition = PageStorage.of(storageContext)
-                    ?.readState(storageContext) as double?;
-                if (previousSavedPosition != null) {
-                  itemOffset = previousSavedPosition - idx.toDouble();
-                } else {
-                  itemOffset =
-                      _carouselState!.realPage.toDouble() - idx.toDouble();
-                }
-              }
-
-              /// Calculate [distortionRatio]
-              final distortionRatio =
-                  1 - (itemOffset.abs() * 0.25).clamp(0.0, 1.0);
-              distortionValue = Curves.easeOut.transform(distortionRatio);
-            }
-
-            /// Calculate [height]
-            final height = widget.options.height ??
-                MediaQuery.of(context).size.width *
-                    (1 / (widget.options.aspectRatio ?? 1 / 1));
-
-            /// If [scrollDirection] option is [Axis.horizontal]
-            if (widget.options.scrollDirection == Axis.horizontal) {
-              return _getCenterWrapper(
-                _getEnlargeWrapper(
-                  child,
-                  height: distortionValue * height,
-                  scale: distortionValue,
-                ),
-              );
-            } else {
-              return _getCenterWrapper(
-                _getEnlargeWrapper(
-                  child,
-                  width: distortionValue * MediaQuery.of(context).size.width,
-                  scale: distortionValue,
-                ),
-              );
-            }
-          },
-        );
-      },
+      reverse: widget.options.reverse,
+      physics: widget.options.physics,
+      pageSnapping: widget.options.pageSnapping,
+      clipBehavior: widget.options.clipBehavior,
+      scrollDirection: widget.options.scrollDirection,
+      dragStartBehavior: widget.options.dragStartBehavior,
+      allowImplicitScrolling: widget.options.allowImplicitScrolling,
+      restorationId: widget.options.restorationId,
+      padEnds: widget.options.padEnds,
+      children: _sizeReportingChildren(),
     );
   }
 
@@ -464,7 +505,17 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
   @override
   Widget build(BuildContext context) {
-    return _buildWidget(context);
+    return TweenAnimationBuilder<double>(
+      curve: widget.options.autoPlayCurve,
+      duration: _getDuration(),
+      tween: Tween<double>(begin: _previousSize, end: _currentSize),
+      builder: (context, value, child) => SizedBox(
+        height: _isHorizontalScroll ? value : null,
+        width: !_isHorizontalScroll ? value : null,
+        child: child,
+      ),
+      child: _buildWidget(context),
+    );
   }
 }
 

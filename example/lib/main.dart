@@ -3,19 +3,50 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 import 'app_themes.dart';
 
-final List<String> imgList = [
-  'https://source.unsplash.com/random/1920x1920/?abstracts',
-  'https://source.unsplash.com/random/1920x1920/?fruits,flowers',
-  'https://source.unsplash.com/random/1080x640/?sports',
-  'https://source.unsplash.com/random/1920x1920/?nature',
-  'https://source.unsplash.com/random/1920x1920/?science',
-  'https://source.unsplash.com/random/1920x1920/?computer'
-];
+class Slide {
+  final String title;
+  final double height;
+  final Color color;
 
-void main() => runApp(const CarouselDemo());
+  Slide({
+    required this.title,
+    required this.height,
+    required this.color,
+  });
+}
 
-class CarouselDemo extends StatelessWidget {
-  const CarouselDemo({Key? key}) : super(key: key);
+var slides = List.generate(
+  6,
+  (index) => Slide(
+    title: 'Slide ${index + 1}',
+    height: 100.0 + index * 50,
+    color: Colors.primaries[index % Colors.primaries.length],
+  ),
+);
+
+final List<Widget> sliders = slides
+    .map(
+      (item) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+          child: Container(
+            color: item.color,
+            width: double.infinity,
+            height: item.height,
+            child: Center(
+              child: Text(item.title),
+            ),
+          ),
+        ),
+      ),
+    )
+    .toList();
+
+void main() => runApp(const FlutterCarouselWidgetDemo());
+
+class FlutterCarouselWidgetDemo extends StatelessWidget {
+  const FlutterCarouselWidgetDemo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +60,8 @@ class CarouselDemo extends StatelessWidget {
         '/manual': (ctx) => const ManuallyControlledSlider(),
         '/fullscreen': (ctx) => const FullscreenSliderDemo(),
         '/indicator': (ctx) => const CarouselWithIndicatorDemo(),
-        '/position': (ctx) => const KeepPageViewPositionDemo(),
         '/multiple': (ctx) => const MultipleItemDemo(),
+        '/expandable': (ctx) => const ExpandableCarouselDemo(),
       },
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
@@ -110,8 +141,8 @@ class CarouselDemoHome extends StatelessWidget {
               DemoItem('Manually Controlled Slider', '/manual'),
               DemoItem('Fullscreen Carousel Slider', '/fullscreen'),
               DemoItem('Carousel with Custom Indicator Demo', '/indicator'),
-              DemoItem('Keep PageView Position Demo', '/position'),
               DemoItem('Multiple Item in One Screen Demo', '/multiple'),
+              DemoItem('Expandable Carousel Demo', '/expandable'),
             ],
           ),
         ),
@@ -119,44 +150,6 @@ class CarouselDemoHome extends StatelessWidget {
     );
   }
 }
-
-final List<Widget> imageSliders = imgList
-    .map((item) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-            child: Image.network(
-              item,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              loadingBuilder: (BuildContext ctx, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Center(
-                  child: CircularProgressIndicator(
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                        : null,
-                  ),
-                );
-              },
-              errorBuilder: (
-                BuildContext context,
-                Object exception,
-                StackTrace? stackTrace,
-              ) {
-                return const Text(
-                  'Oops!! An error occurred. 😢',
-                  style: TextStyle(fontSize: 16.0),
-                );
-              },
-            ),
-          ),
-        ))
-    .toList();
-
-const sliders = ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4', 'Slide 5'];
 
 class ComplicatedImageDemo extends StatelessWidget {
   const ComplicatedImageDemo({Key? key}) : super(key: key);
@@ -173,22 +166,9 @@ class ComplicatedImageDemo extends StatelessWidget {
           child: FlutterCarousel(
             options: CarouselOptions(
               autoPlay: true,
+              autoPlayInterval: const Duration(seconds: 5),
             ),
-            items: sliders
-                .map(
-                  (item) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: ClipRRect(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(4.0)),
-                      child: Container(
-                        color: Theme.of(context).bottomAppBarColor,
-                        child: Center(child: Text(item)),
-                      ),
-                    ),
-                  ),
-                )
-                .toList(),
+            items: sliders,
           ),
         ),
       ),
@@ -206,15 +186,14 @@ class EnlargeStrategyDemo extends StatelessWidget {
       body: Center(
         child: FlutterCarousel(
           options: CarouselOptions(
-            enlargeCenterPage: true,
             autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 2),
+            autoPlayInterval: const Duration(seconds: 10),
             viewportFraction: 0.8,
-            enlargeStrategy: CenterPageEnlargeStrategy.height,
+            enlargeCenterPage: true,
             slideIndicator: CircularWaveSlideIndicator(),
             floatingIndicator: false,
           ),
-          items: imageSliders,
+          items: sliders,
         ),
       ),
     );
@@ -234,91 +213,57 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
   final CarouselController _controller = CarouselController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Manually Controlled Slider')),
       body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 800.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              FlutterCarousel(
-                items: imgList
-                    .map((img) => Image.network(
-                          img,
-                          width: MediaQuery.of(context).size.width,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (BuildContext ctx, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          },
-                          errorBuilder: (
-                            BuildContext context,
-                            Object exception,
-                            StackTrace? stackTrace,
-                          ) {
-                            return const Text(
-                              'Oops!! An error occurred. 😢',
-                              style: TextStyle(fontSize: 16.0),
-                            );
-                          },
-                        ))
-                    .toList(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: FlutterCarousel(
+                items: sliders,
                 options: CarouselOptions(
                   viewportFraction: 1.0,
                   autoPlay: false,
                   floatingIndicator: false,
                   enableInfiniteScroll: true,
-                  carouselController: _controller,
+                  controller: _controller,
                   slideIndicator: CircularWaveSlideIndicator(),
                 ),
               ),
-              const SizedBox(height: 16.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: ElevatedButton(
-                        onPressed: _controller.previousPage,
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.arrow_back),
-                        ),
+            ),
+            const SizedBox(height: 16.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 16.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: ElevatedButton(
+                      onPressed: _controller.previousPage,
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(Icons.arrow_back),
                       ),
                     ),
-                    Flexible(
-                      child: ElevatedButton(
-                        onPressed: _controller.nextPage,
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.arrow_forward),
-                        ),
+                  ),
+                  Flexible(
+                    child: ElevatedButton(
+                      onPressed: _controller.nextPage,
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(Icons.arrow_forward),
                       ),
                     ),
-                  ],
-                ),
-              )
-            ],
-          ),
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -346,15 +291,7 @@ class FullscreenSliderDemo extends StatelessWidget {
                 autoPlayInterval: const Duration(seconds: 2),
                 slideIndicator: CircularWaveSlideIndicator(),
               ),
-              items: imgList
-                  .map((item) => Center(
-                          child: Image.network(
-                        item,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        height: height,
-                      )))
-                  .toList(),
+              items: sliders,
             );
           },
         ),
@@ -379,87 +316,45 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Custom Indicator Demo')),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: FlutterCarousel(
-              items: imageSliders,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FlutterCarousel(
+              items: sliders,
               options: CarouselOptions(
                   autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 1),
+                  autoPlayInterval: const Duration(seconds: 4),
                   viewportFraction: 1.0,
                   showIndicator: false,
+                  height: 400.0,
                   onPageChanged: (index, reason) {
                     setState(() {
                       _current = index;
                     });
                   }),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: imgList.asMap().entries.map((entry) {
-              return Container(
-                width: 12.0,
-                height: 12.0,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                decoration: BoxDecoration(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: slides.asMap().entries.map((entry) {
+                return Container(
+                  width: 12.0,
+                  height: 12.0,
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 4.0),
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: (Theme.of(context).brightness == Brightness.dark
                             ? Colors.white
                             : Colors.black)
-                        .withOpacity(_current == entry.key ? 0.9 : 0.4)),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class KeepPageViewPositionDemo extends StatelessWidget {
-  const KeepPageViewPositionDemo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Keep PageView Position Demo')),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 800.0),
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemBuilder: (ctx, index) {
-              if (index == 2) {
-                return FlutterCarousel(
-                  options: CarouselOptions(
-                    viewportFraction: 1.0,
-                    aspectRatio: 16 / 9,
-                    enlargeCenterPage: false,
-                    showIndicator: true,
-                    autoPlay: true,
-                    slideIndicator: CircularStaticIndicator(),
-                    pageViewKey:
-                        const PageStorageKey<String>('carousel_slider'),
-                  ),
-                  items: imageSliders,
-                );
-              } else {
-                return Container(
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  color: Colors.blue,
-                  height: 200,
-                  child: const Center(
-                    child: Text('other content'),
+                        .withOpacity(_current == entry.key ? 0.9 : 0.4),
                   ),
                 );
-              }
-            },
-          ),
+              }).toList(),
+            ),
+          ],
         ),
       ),
     );
@@ -487,7 +382,7 @@ class MultipleItemDemo extends StatelessWidget {
               autoPlay: true,
               slideIndicator: CircularStaticIndicator(),
             ),
-            itemCount: (imgList.length / 2).round(),
+            itemCount: (slides.length / 2).round(),
             itemBuilder: (context, index, realIdx) {
               final first = index * 2;
               final second = first + 1;
@@ -497,10 +392,12 @@ class MultipleItemDemo extends StatelessWidget {
                     flex: 1,
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Image.network(
-                        imgList[idx],
-                        fit: BoxFit.cover,
-                        width: double.infinity,
+                      child: Container(
+                        color: slides[idx].color,
+                        height: slides[idx].height,
+                        child: Center(
+                          child: Text(slides[idx].title),
+                        ),
                       ),
                     ),
                   );
@@ -514,122 +411,68 @@ class MultipleItemDemo extends StatelessWidget {
   }
 }
 
-const weekDays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
-
-class NextPrevState extends StatefulWidget {
-  const NextPrevState({Key? key}) : super(key: key);
+class ExpandableCarouselDemo extends StatefulWidget {
+  const ExpandableCarouselDemo({Key? key}) : super(key: key);
 
   @override
-  State<NextPrevState> createState() => NextPrevStateState();
+  State<ExpandableCarouselDemo> createState() => _ExpandableCarouselDemoState();
 }
 
-class NextPrevStateState extends State<NextPrevState> {
-  Future<String>? _value;
+class _ExpandableCarouselDemoState extends State<ExpandableCarouselDemo> {
   final CarouselController _controller = CarouselController();
-
-  Future<String> getValue() async {
-    await Future.delayed(const Duration(seconds: 3));
-    return 'Flutter Devs';
-  }
-
-  var current = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _value = getValue();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Image Slider Demo')),
-      body: Column(
-        children: [
-          FutureBuilder<String>(
-            future: _value,
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              if (snapshot.hasData) {
-                return Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: GestureDetector(
-                            onTap: _controller.previousPage,
-                            child: Icon(
-                              Icons.chevron_left,
-                              size: 50,
-                              color: Colors.green.shade600,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              snapshot.data!,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: GestureDetector(
-                            onTap: _controller.nextPage,
-                            child: Icon(
-                              Icons.chevron_right,
-                              size: 50,
-                              color: Colors.green.shade600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    FlutterCarousel(
-                      options: CarouselOptions(
-                        autoPlay: false,
-                        carouselController: _controller,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            current = index;
-                          });
-                        },
+      appBar: AppBar(title: const Text('Expandable Carousel Demo')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ExpandableCarousel(
+              options: CarouselOptions(
+                viewportFraction: 1.0,
+                autoPlay: true,
+                controller: _controller,
+                floatingIndicator: false,
+                restorationId: 'expandable_carousel',
+              ),
+              items: sliders,
+            ),
+            const SizedBox(height: 16.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 16.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: ElevatedButton(
+                      onPressed: _controller.previousPage,
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(Icons.arrow_back),
                       ),
-                      items: weekDays.map((i) {
-                        return Builder(
-                          builder: (BuildContext ctx) {
-                            return Text(i);
-                          },
-                        );
-                      }).toList(),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: weekDays.map((i) {
-                        final idx = weekDays.indexOf(i);
-                        return Container(
-                          height: 10,
-                          width: 10,
-                          margin: const EdgeInsets.symmetric(horizontal: 2.0),
-                          decoration: BoxDecoration(
-                            color: current == idx
-                                ? Colors.green.shade600
-                                : Colors.grey,
-                            shape: BoxShape.circle,
-                          ),
-                        );
-                      }).toList(),
-                    )
-                  ],
-                );
-              }
-              return const Center(child: Text('Loading'));
-            },
-          )
-        ],
+                  ),
+                  Flexible(
+                    child: ElevatedButton(
+                      onPressed: _controller.nextPage,
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(Icons.arrow_forward),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
