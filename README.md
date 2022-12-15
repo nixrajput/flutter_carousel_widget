@@ -16,6 +16,11 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
 * Pre-built Carousel Indicators
 * Custom Indicators
 
+## New Features
+
+* Expandable Carousel Widget.
+* Auto-sized child support.
+
 ## Demo
 
 [View Demo](https://nixrajput.github.io/flutter_carousel_widget)
@@ -26,7 +31,7 @@ Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-  flutter_carousel_widget: ^1.2.3
+  flutter_carousel_widget: ^2.0.0
 ```
 
 And import it:
@@ -37,7 +42,9 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 ## Usage
 
-Simply create a `FlutterCarousel` widget, and pass the required params:
+### Using `FlutterCarousel` Widget
+
+Flutter Carousel is a carousel widget which supports infinite scrolling, auto scrolling, custom child widget, custom animations and pre-built indicators.
 
 ```dart
 FlutterCarousel(
@@ -45,6 +52,33 @@ FlutterCarousel(
     height: 400.0, 
     showIndicator: true,
     slideIndicator: CircularSlideIndicator(),
+  ),
+  items: [1,2,3,4,5].map((i) {
+    return Builder(
+      builder: (BuildContext context) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          margin: EdgeInsets.symmetric(horizontal: 5.0),
+          decoration: BoxDecoration(
+            color: Colors.amber
+          ),
+          child: Text('text $i', style: TextStyle(fontSize: 16.0),)
+        );
+      },
+    );
+  }).toList(),
+)
+```
+
+### Using `ExpandableCarousel` Widget
+
+Expandable Carousel is a carousel widget which automatically expands to the size of its child widget. It is useful when you want to show a carousel with different sized child widgets.
+
+```dart
+ExpandableCarousel(
+  options: CarouselOptions(
+    autoPlay: false,
+    autoPlayInterval: const Duration(seconds: 2),
   ),
   items: [1,2,3,4,5].map((i) {
     return Builder(
@@ -112,7 +146,17 @@ FlutterCarousel.builder(
 )
 ```
 
-## Carousel controller
+```dart
+ExpandableCarousel.builder(
+  itemCount: 15,
+  itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+  Container(
+    child: Text(itemIndex.toString()),
+  ),
+)
+```
+
+## Carousel Controller
 
 In order to manually control the pageview's position, you can create your own `CarouselController`,
 and pass it to `CarouselSlider`. Then you can use the `CarouselController` instance to manipulate
@@ -124,7 +168,7 @@ class CarouselDemo extends StatelessWidget {
 
  @override
   Widget build(BuildContext context) => Column(
-    children: <Widget>[
+    children: [
       FlutterCarousel(
         items: child,
         options: CarouselOptions(

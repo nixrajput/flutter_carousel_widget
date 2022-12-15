@@ -1,15 +1,25 @@
 # Changelog
 
+## 2.0.0
+
+* **New Feature**: `ExpandableCarousel` widget added.
+* **Breaking Change**: `scrollPhysics` is now `physics` in `CarouselOptions`.
+* **Breaking Change**: `carouselController` is now `controller` in `CarouselOptions`.
+* **Breaking Change**: Project architecture changed.
+* **Fix**: All known bug fixed and removed.
+* **Improvement**: Performance improvements.
+* **Optimization**: Removed unnecessary codes.
+
 ## 1.2.3
 
-* Fix: bug auto play carousel is not working.
+* **Fix**: bug auto play carousel is not working.
 * All known bug fixed and removed.
 * Performance improvements.
 * Removed unnecessary codes.
 
 ## 1.2.2
 
-* Fix: `issue #7` bug show indicator when no custom `CarouselController` is set and `showIndicator` is set to `true` and `onPageChanged` is called.
+* **Fix**: `issue #7` bug show indicator when no custom `CarouselController` is set and `showIndicator` is set to `true` and `onPageChanged` is called.
 * Custom `CarouselController` can be set via `CarouselOptions` property.
 * All known bugs are fixed.
 * Performance improvements.
