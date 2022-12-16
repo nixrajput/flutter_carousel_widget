@@ -1,5 +1,7 @@
 export 'package:flutter_carousel_widget/src/_expandable_carousel_widget.dart';
 export 'package:flutter_carousel_widget/src/_flutter_carousel_widget.dart';
+export 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
+export 'package:flutter_carousel_widget/src/enums/center_page_enlarge_strategy.dart';
 export 'package:flutter_carousel_widget/src/helpers/flutter_carousel_controller.dart';
 export 'package:flutter_carousel_widget/src/helpers/flutter_carousel_options.dart';
 export 'package:flutter_carousel_widget/src/helpers/flutter_carousel_state.dart';

@@ -330,7 +330,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
                   viewportFraction: 1.0,
                   showIndicator: false,
                   height: 400.0,
-                  onPageChanged: (index, reason) {
+                  onPageChanged: (int index, CarouselPageChangedReason reason) {
                     setState(() {
                       _current = index;
                     });

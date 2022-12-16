@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.0+1
+
+* **Fix**: Enums are now exported.
+* **New Feature**: `ExpandableCarousel` widget added.
+* **Breaking Change**: `scrollPhysics` is now `physics` in `CarouselOptions`.
+* **Breaking Change**: `carouselController` is now `controller` in `CarouselOptions`.
+* **Breaking Change**: Project architecture changed.
+* **Fix**: All known bug fixed and removed.
+* **Improvement**: Performance improvements.
+* **Optimization**: Removed unnecessary codes.
+
 ## 2.0.0
 
 * **New Feature**: `ExpandableCarousel` widget added.

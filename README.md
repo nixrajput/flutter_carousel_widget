@@ -31,7 +31,7 @@ Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-  flutter_carousel_widget: ^2.0.0
+  flutter_carousel_widget: ^2.0.0+1
 ```
 
 And import it:
@@ -77,7 +77,7 @@ Expandable Carousel is a carousel widget which automatically expands to the size
 ```dart
 ExpandableCarousel(
   options: CarouselOptions(
-    autoPlay: false,
+    autoPlay: true,
     autoPlayInterval: const Duration(seconds: 2),
   ),
   items: [1,2,3,4,5].map((i) {
