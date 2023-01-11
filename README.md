@@ -236,5 +236,5 @@ Animate to the given page.
 [releases]: https://github.com/nixrajput/flutter_carousel_widget/releases
 [repo]: https://github.com/nixrajput/flutter_carousel_widget
 [issues]: https://github.com/nixrajput/flutter_carousel_widget/issues
-[license]: https://github.com/nixrajput/flutter_carousel_widgetblob/master/LICENSE.md
+[license]: https://github.com/nixrajput/flutter_carousel_widget/blob/master/LICENSE.md
 [pulls]: https://github.com/nixrajput/flutter_carousel_widget/pulls
