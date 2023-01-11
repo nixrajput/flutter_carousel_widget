@@ -3,9 +3,16 @@
 A customizable carousel slider widget in Flutter which supports infinite scrolling, auto scrolling, custom child widget, custom animations and pre-built indicators.
 
 [![pub package](https://img.shields.io/pub/v/flutter_carousel_widget.svg)][pub]
-[![Flutter](https://img.shields.io/badge/Flutter-3.3.0-blue.svg)](https://flutter.io/)
-[![Dart](https://img.shields.io/badge/Dart-2.18.0-blue.svg)](https://www.dartlang.org/)
-[![Code Climate](https://codeclimate.com/github/nixrajput/flutter_carousel_widget/badges/gpa.svg)](https://codeclimate.com/github/nixrajput/flutter_carousel_widget)
+[![Stars](https://img.shields.io/github/stars/nixrajput/flutter_carousel_widget?label=Stars)][repo]
+[![Forks](https://img.shields.io/github/forks/nixrajput/flutter_carousel_widget?label=Forks)][repo]
+[![Watchers](https://img.shields.io/github/watchers/nixrajput/flutter_carousel_widget?label=Watchers)][repo]
+[![Contributors](https://img.shields.io/github/contributors/nixrajput/flutter_carousel_widget?label=Contributors)][repo]
+
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/nixrajput/flutter_carousel_widget?label=Latest)][releases]
+[![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/flutter_carousel_widget?label=Last+Commit)][repo]
+[![GitHub issues](https://img.shields.io/github/issues/nixrajput/flutter_carousel_widget?label=Issues)][issues]
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/flutter_carousel_widget?label=Pull+Requests)][pulls]
+[![GitHub Licence](https://img.shields.io/github/license/nixrajput/flutter_carousel_widget?label=Licence)][license]
 
 ## Features
 
@@ -31,7 +38,7 @@ Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-  flutter_carousel_widget: ^2.0.0+1
+  flutter_carousel_widget: latest_version
 ```
 
 And import it:
@@ -208,42 +215,26 @@ Jump to the given page.
 
 Animate to the given page.
 
-## Screenshots
+## Activities
 
-Basic Flutter Carousel:
-
-![simple](screenshots/simple.png)
-
-Enlarge Center Widget Flutter Carousel:
-
-![simple](screenshots/enlarge.png)
-
-Manually Controlled Flutter Carousel:
-
-![simple](screenshots/manual.png)
-
-Flutter Carousel with Custom Indicator:
-
-![simple](screenshots/custom.png)
+![Alt](https://repobeats.axiom.co/api/embed/841225761cb31adc7197f30708fd62f1bc210c6c.svg "Repobeats analytics image")
 
 ## Connect With Me
 
-[<img align="left" alt="nixrajput | Website" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/globe-icon.svg" />][website]
-
-[<img align="left" alt="nixrajput | GitHub" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/github-brands.svg" />][github]
-
-[<img align="left" alt="nixrajput | Instagram" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/instagram-brands.svg" />][instagram]
-
-[<img align="left" alt="nixrajput | Facebook" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/facebook-brands.svg" />][facebook]
-
-[<img align="left" alt="nixrajput | Twitter" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/twitter-brands.svg" />][twitter]
-
-[<img align="left" alt="nixrajput | LinkedIn" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/linkedin-in-brands.svg" />][linkedin]
+[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-282C34?logo=Instagram&logoColor=fff)][instagram]
+[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-282C34?logo=Linkedin&logoColor=fff)][linkedin]
+[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-282C34?logo=Github&logoColor=fff)][github]
+[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-282C34?logo=Twitter&logoColor=fff)][twitter]
+[![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput07-282C34?logo=Facebook&logoColor=fff)][facebook]
 
 [pub]: https://pub.dev/packages/flutter_carousel_widget
 [github]: https://github.com/nixrajput
-[website]: https://nixlab.co.in
 [facebook]: https://facebook.com/nixrajput07
 [twitter]: https://twitter.com/nixrajput07
 [instagram]: https://instagram.com/nixrajput
 [linkedin]: https://linkedin.com/in/nixrajput
+[releases]: https://github.com/nixrajput/flutter_carousel_widget/releases
+[repo]: https://github.com/nixrajput/flutter_carousel_widget
+[issues]: https://github.com/nixrajput/flutter_carousel_widget/issues
+[license]: https://github.com/nixrajput/flutter_carousel_widgetblob/master/LICENSE.md
+[pulls]: https://github.com/nixrajput/flutter_carousel_widget/pulls

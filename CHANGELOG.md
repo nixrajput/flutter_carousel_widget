@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1
+
+* **Documentation**: Updated the documentation to reflect the new Github Pages deployment
+* **Fix**: All known bug fixed and removed.
+
 ## 2.0.0+1
 
 * **Fix**: Enums are now exported.
