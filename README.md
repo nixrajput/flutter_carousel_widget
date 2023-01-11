@@ -221,11 +221,11 @@ Animate to the given page.
 
 ## Connect With Me
 
-[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-282C34?logo=Instagram&logoColor=fff)][instagram]
-[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-282C34?logo=Linkedin&logoColor=fff)][linkedin]
-[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-282C34?logo=Github&logoColor=fff)][github]
-[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-282C34?logo=Twitter&logoColor=fff)][twitter]
-[![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput07-282C34?logo=Facebook&logoColor=fff)][facebook]
+[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Instagram&logoColor=fff)][instagram]
+[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Linkedin&logoColor=fff)][linkedin]
+[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Github&logoColor=fff)][github]
+[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-141430?logo=Twitter&logoColor=fff)][twitter]
+[![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput07-141430?logo=Facebook&logoColor=fff)][facebook]
 
 [pub]: https://pub.dev/packages/flutter_carousel_widget
 [github]: https://github.com/nixrajput
