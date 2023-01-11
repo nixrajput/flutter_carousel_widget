@@ -2,7 +2,7 @@
 
 A customizable carousel slider widget in Flutter which supports infinite scrolling, auto scrolling, custom child widget, custom animations and pre-built indicators.
 
-[![pub package](https://img.shields.io/pub/v/flutter_carousel_widget.svg)][pub]
+[![pub package](https://img.shields.io/pub/v/flutter_carousel_widget.svg?label=Version)][pub]
 [![Stars](https://img.shields.io/github/stars/nixrajput/flutter_carousel_widget?label=Stars)][repo]
 [![Forks](https://img.shields.io/github/forks/nixrajput/flutter_carousel_widget?label=Forks)][repo]
 [![Watchers](https://img.shields.io/github/watchers/nixrajput/flutter_carousel_widget?label=Watchers)][repo]
