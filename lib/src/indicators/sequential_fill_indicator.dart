@@ -4,16 +4,6 @@ import 'package:flutter/scheduler.dart';
 import 'slide_indicator.dart';
 
 class SequentialFillIndicator extends SlideIndicator {
-  final double itemSpacing;
-  final double indicatorRadius;
-  final EdgeInsets? padding;
-  final AlignmentGeometry alignment;
-  final Color? currentIndicatorColor;
-  final Color? indicatorBackgroundColor;
-  final bool enableAnimation;
-  final double indicatorBorderWidth;
-  final Color? indicatorBorderColor;
-
   SequentialFillIndicator({
     this.itemSpacing = 20,
     this.indicatorRadius = 6,
@@ -25,6 +15,16 @@ class SequentialFillIndicator extends SlideIndicator {
     this.indicatorBorderWidth = 1,
     this.indicatorBorderColor,
   });
+
+  final AlignmentGeometry alignment;
+  final Color? currentIndicatorColor;
+  final bool enableAnimation;
+  final Color? indicatorBackgroundColor;
+  final Color? indicatorBorderColor;
+  final double indicatorBorderWidth;
+  final double indicatorRadius;
+  final double itemSpacing;
+  final EdgeInsets? padding;
 
   @override
   Widget build(int currentPage, double pageDelta, int itemCount) {
@@ -63,17 +63,6 @@ class SequentialFillIndicator extends SlideIndicator {
 }
 
 class SequentialFillIndicatorPainter extends CustomPainter {
-  final int itemCount;
-  final double radius;
-  final Paint indicatorPaint = Paint();
-  final Paint currentIndicatorPaint = Paint();
-  final int currentPage;
-  final double pageDelta;
-  final bool enableAnimation;
-
-  final Paint borderIndicatorPaint = Paint();
-  final Color? indicatorBorderColor;
-
   SequentialFillIndicatorPainter({
     required this.currentPage,
     required this.pageDelta,
@@ -101,6 +90,16 @@ class SequentialFillIndicatorPainter extends CustomPainter {
       borderIndicatorPaint.isAntiAlias = true;
     }
   }
+
+  final Paint borderIndicatorPaint = Paint();
+  final Paint currentIndicatorPaint = Paint();
+  final int currentPage;
+  final bool enableAnimation;
+  final Color? indicatorBorderColor;
+  final Paint indicatorPaint = Paint();
+  final int itemCount;
+  final double pageDelta;
+  final double radius;
 
   @override
   void paint(Canvas canvas, Size size) {

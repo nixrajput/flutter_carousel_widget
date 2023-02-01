@@ -4,15 +4,6 @@ import 'package:flutter/scheduler.dart';
 import 'slide_indicator.dart';
 
 class CircularWaveSlideIndicator implements SlideIndicator {
-  final double itemSpacing;
-  final double indicatorRadius;
-  final EdgeInsets? padding;
-  final AlignmentGeometry alignment;
-  final Color? currentIndicatorColor;
-  final Color? indicatorBackgroundColor;
-  final double indicatorBorderWidth;
-  final Color? indicatorBorderColor;
-
   CircularWaveSlideIndicator({
     this.itemSpacing = 20,
     this.indicatorRadius = 6,
@@ -23,6 +14,15 @@ class CircularWaveSlideIndicator implements SlideIndicator {
     this.indicatorBorderWidth = 1,
     this.indicatorBorderColor,
   });
+
+  final AlignmentGeometry alignment;
+  final Color? currentIndicatorColor;
+  final Color? indicatorBackgroundColor;
+  final Color? indicatorBorderColor;
+  final double indicatorBorderWidth;
+  final double indicatorRadius;
+  final double itemSpacing;
+  final EdgeInsets? padding;
 
   @override
   Widget build(int currentPage, double pageDelta, int itemCount) {
@@ -60,16 +60,6 @@ class CircularWaveSlideIndicator implements SlideIndicator {
 }
 
 class CircularWaveIndicatorPainter extends CustomPainter {
-  final int? itemCount;
-  final int? currentPage;
-  final double? pageDelta;
-  final double? radius;
-  final Paint indicatorPaint = Paint();
-  final Paint currentIndicatorPaint = Paint();
-
-  final Paint borderIndicatorPaint = Paint();
-  final Color? indicatorBorderColor;
-
   CircularWaveIndicatorPainter({
     this.itemCount,
     this.currentPage,
@@ -94,6 +84,15 @@ class CircularWaveIndicatorPainter extends CustomPainter {
       borderIndicatorPaint.isAntiAlias = true;
     }
   }
+
+  final Paint borderIndicatorPaint = Paint();
+  final Paint currentIndicatorPaint = Paint();
+  final int? currentPage;
+  final Color? indicatorBorderColor;
+  final Paint indicatorPaint = Paint();
+  final int? itemCount;
+  final double? pageDelta;
+  final double? radius;
 
   @override
   void paint(Canvas canvas, Size size) {

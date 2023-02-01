@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 
 class SizeReportingWidget extends StatefulWidget {
-  final Widget child;
-  final ValueChanged<Size> onSizeChange;
-
   const SizeReportingWidget({
     Key? key,
     required this.child,
     required this.onSizeChange,
   }) : super(key: key);
 
+  final Widget child;
+  final ValueChanged<Size> onSizeChange;
+
   @override
   SizeReportingWidgetState createState() => SizeReportingWidgetState();
 }
 
 class SizeReportingWidgetState extends State<SizeReportingWidget> {
-  final _widgetKey = GlobalKey();
   Size? _oldSize;
+  final _widgetKey = GlobalKey();
+
+  void _notifySize() {
+    final context = _widgetKey.currentContext;
+    if (context == null) return;
+    final size = context.size;
+    if (_oldSize != size) {
+      _oldSize = size;
+      widget.onSizeChange(size!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +43,5 @@ class SizeReportingWidgetState extends State<SizeReportingWidget> {
         ),
       ),
     );
-  }
-
-  void _notifySize() {
-    final context = _widgetKey.currentContext;
-    if (context == null) return;
-    final size = context.size;
-    if (_oldSize != size) {
-      _oldSize = size;
-      widget.onSizeChange(size!);
-    }
   }
 }

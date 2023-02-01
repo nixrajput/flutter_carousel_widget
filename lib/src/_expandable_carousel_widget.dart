@@ -13,24 +13,6 @@ import 'package:flutter_carousel_widget/src/typedefs/widget_builder.dart';
 import 'package:flutter_carousel_widget/src/utils/flutter_carousel_utils.dart';
 
 class ExpandableCarousel extends StatefulWidget {
-  /// [ExpandableCarouselOptions] to create a [ExpandableCarouselState] with
-  final CarouselOptions options;
-
-  /// The widgets to be shown in the carousel of default constructor
-  final List<Widget>? items;
-
-  /// The widget item builder that will be used to build item on demand
-  /// The third argument is the PageView's real index, can be used to cooperate
-  /// with Hero.
-  final ExtendedWidgetBuilder? itemBuilder;
-
-  /// The count of items to be shown in the carousel
-  final int? itemCount;
-
-  /// Setting it to a value much bigger than most pages' sizes might result in a
-  /// reversed - "expand and shrink" - effect.
-  final double estimatedPageSize;
-
   /// The default constructor
   const ExpandableCarousel({
     required this.items,
@@ -54,88 +36,42 @@ class ExpandableCarousel extends StatefulWidget {
         assert(itemBuilder != null),
         super(key: key);
 
+  /// Setting it to a value much bigger than most pages' sizes might result in a
+  /// reversed - "expand and shrink" - effect.
+  final double estimatedPageSize;
+
+  /// The widget item builder that will be used to build item on demand
+  /// The third argument is the PageView's real index, can be used to cooperate
+  /// with Hero.
+  final ExtendedWidgetBuilder? itemBuilder;
+
+  /// The count of items to be shown in the carousel
+  final int? itemCount;
+
+  /// The widgets to be shown in the carousel of default constructor
+  final List<Widget>? items;
+
+  /// [ExpandableCarouselOptions] to create a [ExpandableCarouselState] with
+  final CarouselOptions options;
+
   @override
   ExpandableCarouselState createState() => ExpandableCarouselState();
 }
 
 class ExpandableCarouselState extends State<ExpandableCarousel>
     with TickerProviderStateMixin {
-  CarouselControllerImpl get carouselController =>
-      widget.options.controller != null
-          ? widget.options.controller as CarouselControllerImpl
-          : CarouselController() as CarouselControllerImpl;
-
-  Timer? _timer;
-
-  CarouselOptions get options => widget.options;
-
-  CarouselState? _carouselState;
-
-  PageController? _pageController;
-
   /// mode is related to why the page is being changed
   CarouselPageChangedReason mode = CarouselPageChangedReason.controller;
 
-  late List<double> _sizes;
+  CarouselState? _carouselState;
   int _currentPage = 0;
-  int _previousPage = 0;
-  double _pageDelta = 0.0;
-  bool _shouldDisposePageController = false;
   bool _firstPageLoaded = false;
-
-  double get _currentSize => _sizes[_currentPage];
-
-  double get _previousSize => _sizes[_previousPage];
-
-  bool get isBuilder => widget.itemBuilder != null;
-
-  bool get _isHorizontalScroll =>
-      widget.options.scrollDirection == Axis.horizontal;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _carouselState = CarouselState(
-      options,
-      _clearTimer,
-      _resumeTimer,
-      _changeMode,
-    );
-
-    _carouselState!.itemCount = widget.itemCount;
-    carouselController.state = _carouselState;
-    _carouselState!.initialPage = widget.options.initialPage;
-    _carouselState!.realPage = options.enableInfiniteScroll
-        ? _carouselState!.realPage + _carouselState!.initialPage
-        : _carouselState!.initialPage;
-
-    /// For Indicator
-    _currentPage = widget.options.initialPage;
-
-    _handleAutoPlay();
-
-    _pageController = PageController(
-      viewportFraction: options.viewportFraction,
-      keepPage: options.keepPage,
-      initialPage: _carouselState!.realPage,
-    );
-
-    _carouselState!.pageController = _pageController;
-
-    _pageController!.addListener(() {
-      setState(() {
-        _currentPage = _pageController!.page!.floor();
-        _pageDelta = _pageController!.page! - _pageController!.page!.floor();
-      });
-    });
-
-    _sizes = _prepareSizes();
-    _pageController?.addListener(_updatePage);
-    _currentPage = _pageController!.initialPage.clamp(0, _sizes.length - 1);
-    _previousPage = _currentPage - 1 < 0 ? 0 : _currentPage - 1;
-    _shouldDisposePageController = widget.options.controller == null;
-  }
+  PageController? _pageController;
+  double _pageDelta = 0.0;
+  int _previousPage = 0;
+  bool _shouldDisposePageController = false;
+  late List<double> _sizes;
+  Timer? _timer;
 
   @override
   void didUpdateWidget(covariant ExpandableCarousel oldWidget) {
@@ -183,6 +119,67 @@ class ExpandableCarouselState extends State<ExpandableCarousel>
     _clearTimer();
     super.dispose();
   }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _carouselState = CarouselState(
+      options,
+      _clearTimer,
+      _resumeTimer,
+      _changeMode,
+    );
+
+    _carouselState!.itemCount = widget.itemCount;
+    carouselController.state = _carouselState;
+    _carouselState!.initialPage = widget.options.initialPage;
+    _carouselState!.realPage = options.enableInfiniteScroll
+        ? _carouselState!.realPage + _carouselState!.initialPage
+        : _carouselState!.initialPage;
+
+    /// For Indicator
+    _currentPage = widget.options.initialPage;
+
+    _handleAutoPlay();
+
+    _pageController = PageController(
+      viewportFraction: options.viewportFraction,
+      keepPage: options.keepPage,
+      initialPage: _carouselState!.realPage,
+    );
+
+    _carouselState!.pageController = _pageController;
+
+    _pageController!.addListener(() {
+      setState(() {
+        _currentPage = _pageController!.page!.floor();
+        _pageDelta = _pageController!.page! - _pageController!.page!.floor();
+      });
+    });
+
+    _sizes = _prepareSizes();
+    _pageController?.addListener(_updatePage);
+    _currentPage = _pageController!.initialPage.clamp(0, _sizes.length - 1);
+    _previousPage = _currentPage - 1 < 0 ? 0 : _currentPage - 1;
+    _shouldDisposePageController = widget.options.controller == null;
+  }
+
+  CarouselControllerImpl get carouselController =>
+      widget.options.controller != null
+          ? widget.options.controller as CarouselControllerImpl
+          : CarouselController() as CarouselControllerImpl;
+
+  CarouselOptions get options => widget.options;
+
+  bool get isBuilder => widget.itemBuilder != null;
+
+  double get _currentSize => _sizes[_currentPage];
+
+  double get _previousSize => _sizes[_previousPage];
+
+  bool get _isHorizontalScroll =>
+      widget.options.scrollDirection == Axis.horizontal;
 
   void _changeMode(CarouselPageChangedReason mode) {
     mode = mode;

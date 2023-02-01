@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.2
+
+* **Add**: `indicatorMargin` property added to `CarouselOptions`.
+* **Improvement**: Removed unnecessary dependencies.
+* **Fix**: All known bug fixed and removed.
+* **Improvement**: Performance improvements.
+* **Optimization**: Removed unnecessary codes.
+
 ## 2.0.1
 
 * **Documentation**: Updated the documentation to reflect the new Github Pages deployment

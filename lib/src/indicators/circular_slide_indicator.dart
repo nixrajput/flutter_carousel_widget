@@ -4,15 +4,6 @@ import 'package:flutter/scheduler.dart';
 import 'slide_indicator.dart';
 
 class CircularSlideIndicator implements SlideIndicator {
-  final double itemSpacing;
-  final double indicatorRadius;
-  final double indicatorBorderWidth;
-  final Color? indicatorBorderColor;
-  final EdgeInsets? padding;
-  final AlignmentGeometry alignment;
-  final Color? currentIndicatorColor;
-  final Color? indicatorBackgroundColor;
-
   const CircularSlideIndicator({
     this.itemSpacing = 20,
     this.indicatorRadius = 6,
@@ -24,6 +15,15 @@ class CircularSlideIndicator implements SlideIndicator {
     this.indicatorBackgroundColor,
   });
 
+  final AlignmentGeometry alignment;
+  final Color? currentIndicatorColor;
+  final Color? indicatorBackgroundColor;
+  final Color? indicatorBorderColor;
+  final double indicatorBorderWidth;
+  final double indicatorRadius;
+  final double itemSpacing;
+  final EdgeInsets? padding;
+
   @override
   Widget build(int currentPage, double pageDelta, int itemCount) {
     var activeColor = const Color(0xFFFFFFFF);
@@ -32,7 +32,7 @@ class CircularSlideIndicator implements SlideIndicator {
     if (SchedulerBinding.instance.window.platformBrightness ==
         Brightness.light) {
       activeColor = const Color(0xFF000000);
-      backgroundColor = const Color(0xFF878484);
+      backgroundColor = const Color.fromARGB(255, 163, 159, 159);
     }
 
     return Container(
@@ -60,15 +60,6 @@ class CircularSlideIndicator implements SlideIndicator {
 }
 
 class CircularIndicatorPainter extends CustomPainter {
-  final int itemCount;
-  final double radius;
-  final Paint indicatorPaint = Paint();
-  final Paint currentIndicatorPaint = Paint();
-  final int currentPage;
-  final double pageDelta;
-  final Paint borderIndicatorPaint = Paint();
-  final Color? indicatorBorderColor;
-
   CircularIndicatorPainter({
     required this.currentPage,
     required this.pageDelta,
@@ -93,6 +84,15 @@ class CircularIndicatorPainter extends CustomPainter {
       borderIndicatorPaint.isAntiAlias = true;
     }
   }
+
+  final Paint borderIndicatorPaint = Paint();
+  final Paint currentIndicatorPaint = Paint();
+  final int currentPage;
+  final Color? indicatorBorderColor;
+  final Paint indicatorPaint = Paint();
+  final int itemCount;
+  final double pageDelta;
+  final double radius;
 
   @override
   void paint(Canvas canvas, Size size) {

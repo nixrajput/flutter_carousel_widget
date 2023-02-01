@@ -4,15 +4,15 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'app_themes.dart';
 
 class Slide {
-  final String title;
-  final double height;
-  final Color color;
-
   Slide({
     required this.title,
     required this.height,
     required this.color,
   });
+
+  final Color color;
+  final double height;
+  final String title;
 }
 
 var slides = List.generate(
@@ -35,7 +35,14 @@ final List<Widget> sliders = slides
             width: double.infinity,
             height: item.height,
             child: Center(
-              child: Text(item.title),
+              child: Text(
+                item.title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ),
@@ -71,10 +78,10 @@ class FlutterCarouselWidgetDemo extends StatelessWidget {
 }
 
 class DemoItem extends StatelessWidget {
-  final String title;
-  final String route;
-
   const DemoItem(this.title, this.route, {Key? key}) : super(key: key);
+
+  final String route;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -156,17 +163,25 @@ class ComplicatedImageDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(title: const Text('Image Slider Demo')),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Container(
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.width,
           ),
           child: FlutterCarousel(
             options: CarouselOptions(
-              autoPlay: true,
+              autoPlay: false,
               autoPlayInterval: const Duration(seconds: 5),
+              disableCenter: true,
+              viewportFraction: 0.8,
+              height: deviceSize.height * 0.45,
+              indicatorMargin: 12.0,
+              enableInfiniteScroll: false,
+              slideIndicator: const CircularSlideIndicator(),
             ),
             items: sliders,
           ),
@@ -216,8 +231,11 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Manually Controlled Slider')),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(

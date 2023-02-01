@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/src/components/size_reporting_widget.dart';
 
 class OverflowPage extends StatelessWidget {
-  final ValueChanged<Size> onSizeChange;
-  final Widget child;
-  final Alignment alignment;
-  final Axis scrollDirection;
-
   const OverflowPage({
     super.key,
     required this.onSizeChange,
@@ -14,6 +9,11 @@ class OverflowPage extends StatelessWidget {
     required this.alignment,
     required this.scrollDirection,
   });
+
+  final Alignment alignment;
+  final Widget child;
+  final ValueChanged<Size> onSizeChange;
+  final Axis scrollDirection;
 
   @override
   Widget build(BuildContext context) {

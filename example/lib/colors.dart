@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-const Color lightColor = Color.fromRGBO(250, 250, 250, 1);
-const Color lightBGColor = Color.fromRGBO(220, 220, 220, 1);
-const Color darkBGColor = Color.fromRGBO(20, 20, 30, 1);
-const Color darkColor = Color.fromRGBO(10, 10, 40, 1.0);
-const Color darkColor2 = Color.fromRGBO(21, 21, 36, 1.0);
-Color lightShadowColor = const Color(0x1A505050);
-Color darkShadowColor = const Color(0x0ddcdcdc);
+const Color lightColor = Color.fromARGB(255, 252, 252, 252);
+const Color lightBGColor = Color.fromARGB(255, 240, 240, 240);
+const Color darkBGColor = Color.fromARGB(255, 20, 20, 30);
+const Color darkColor = Color.fromARGB(255, 10, 10, 40);
+const Color darkColor2 = Color.fromARGB(255, 21, 21, 36);
+Color lightShadowColor = const Color.fromARGB(26, 80, 80, 80);
+Color darkShadowColor = const Color.fromARGB(13, 220, 220, 220);

@@ -5,59 +5,6 @@ import 'colors.dart';
 class AppThemes {
   AppThemes._();
 
-  static final lightTheme = ThemeData.light().copyWith(
-    scaffoldBackgroundColor: lightBGColor,
-    visualDensity: VisualDensity.adaptivePlatformDensity,
-    bottomSheetTheme: const BottomSheetThemeData(
-      backgroundColor: lightColor,
-      modalBackgroundColor: lightColor,
-    ),
-    dialogBackgroundColor: lightBGColor,
-    popupMenuTheme: const PopupMenuThemeData(
-      color: lightColor,
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.redAccent),
-      ),
-    ),
-    textButtonTheme: TextButtonThemeData(
-      style: ButtonStyle(
-        foregroundColor: MaterialStateProperty.all(darkColor),
-      ),
-    ),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: lightBGColor,
-      elevation: 0.0,
-      titleTextStyle: TextStyle(
-        color: darkColor,
-        fontSize: 20.0,
-        fontWeight: FontWeight.bold,
-      ),
-      iconTheme: IconThemeData(
-        color: darkColor,
-      ),
-    ),
-    iconTheme: const IconThemeData(
-      color: darkColor,
-    ),
-    textTheme: const TextTheme(
-      bodyText1: TextStyle(color: darkColor),
-      bodyText2: TextStyle(color: darkColor),
-      subtitle1: TextStyle(color: darkColor),
-      subtitle2: TextStyle(color: darkColor),
-      caption: TextStyle(color: darkColor),
-      headline1: TextStyle(color: darkColor),
-      headline2: TextStyle(color: darkColor),
-      headline3: TextStyle(color: darkColor),
-      headline4: TextStyle(color: darkColor),
-      headline5: TextStyle(color: darkColor),
-      headline6: TextStyle(color: darkColor),
-      button: TextStyle(color: darkColor),
-      overline: TextStyle(color: darkColor),
-    ),
-  );
-
   static final darkTheme = ThemeData.dark().copyWith(
     scaffoldBackgroundColor: darkBGColor,
     visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -80,8 +27,8 @@ class AppThemes {
       ),
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: darkBGColor,
-      elevation: 0.0,
+      backgroundColor: darkColor2,
+      elevation: 2.0,
       titleTextStyle: TextStyle(
         color: lightColor,
         fontSize: 20.0,
@@ -95,19 +42,70 @@ class AppThemes {
       color: lightColor,
     ),
     textTheme: const TextTheme(
-      bodyText1: TextStyle(color: lightColor),
-      bodyText2: TextStyle(color: lightColor),
-      subtitle1: TextStyle(color: lightColor),
-      subtitle2: TextStyle(color: lightColor),
-      caption: TextStyle(color: lightColor),
-      headline1: TextStyle(color: lightColor),
-      headline2: TextStyle(color: lightColor),
-      headline3: TextStyle(color: lightColor),
-      headline4: TextStyle(color: lightColor),
-      headline5: TextStyle(color: lightColor),
-      headline6: TextStyle(color: lightColor),
-      button: TextStyle(color: lightColor),
-      overline: TextStyle(color: lightColor),
+      bodyLarge: TextStyle(color: lightColor),
+      bodyMedium: TextStyle(color: lightColor),
+      bodySmall: TextStyle(color: lightColor),
+      titleLarge: TextStyle(color: lightColor),
+      titleMedium: TextStyle(color: lightColor),
+      titleSmall: TextStyle(color: lightColor),
+      displayLarge: TextStyle(color: lightColor),
+      displayMedium: TextStyle(color: lightColor),
+      displaySmall: TextStyle(color: lightColor),
+      labelLarge: TextStyle(color: lightColor),
+      labelMedium: TextStyle(color: lightColor),
+      labelSmall: TextStyle(color: lightColor),
+    ),
+  );
+
+  static final lightTheme = ThemeData.light().copyWith(
+    scaffoldBackgroundColor: lightBGColor,
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: lightColor,
+      modalBackgroundColor: lightColor,
+    ),
+    dialogBackgroundColor: lightBGColor,
+    popupMenuTheme: const PopupMenuThemeData(
+      color: lightColor,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.redAccent),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: MaterialStateProperty.all(darkColor),
+      ),
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: lightColor,
+      elevation: 2.0,
+      titleTextStyle: TextStyle(
+        color: darkColor,
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold,
+      ),
+      iconTheme: IconThemeData(
+        color: darkColor,
+      ),
+    ),
+    iconTheme: const IconThemeData(
+      color: darkColor,
+    ),
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(color: darkColor),
+      bodyMedium: TextStyle(color: darkColor),
+      bodySmall: TextStyle(color: darkColor),
+      titleLarge: TextStyle(color: darkColor),
+      titleMedium: TextStyle(color: darkColor),
+      titleSmall: TextStyle(color: darkColor),
+      displayLarge: TextStyle(color: darkColor),
+      displayMedium: TextStyle(color: darkColor),
+      displaySmall: TextStyle(color: darkColor),
+      labelLarge: TextStyle(color: darkColor),
+      labelMedium: TextStyle(color: darkColor),
+      labelSmall: TextStyle(color: darkColor),
     ),
   );
 }
