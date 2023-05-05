@@ -121,7 +121,7 @@ FlutterCarousel(
   autoPlayAnimationDuration: const Duration(milliseconds: 800),
   autoPlayCurve: Curves.fastOutSlowIn,
   enlargeCenterPage: false,
-  carouselController: CarouselController(),
+  controller: CarouselController(),
   onPageChanged: callbackFunction,
   pageSnapping: true,
   scrollDirection: Axis.horizontal,
@@ -180,7 +180,7 @@ class CarouselDemo extends StatelessWidget {
         items: child,
         options: CarouselOptions(
           autoPlay: false,
-          carouselController: buttonCarouselController,
+          controller: buttonCarouselController,
           enlargeCenterPage: true,
           viewportFraction: 0.9,
           aspectRatio: 2.0,
