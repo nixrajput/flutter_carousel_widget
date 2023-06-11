@@ -2,8 +2,7 @@ name: Bug Report
 description: File a bug report
 title: "[Bug]: "
 labels: ["bug", "triage"]
-assignees:
-  - nixrajput
+assignees: ["nixrajput"]
 body:
   - type: input
     id: contact
