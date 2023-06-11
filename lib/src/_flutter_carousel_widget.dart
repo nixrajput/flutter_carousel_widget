@@ -279,7 +279,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
     return Center(child: child);
   }
 
-  /// The methoda that build enlarge wrapper
+  /// The method that build enlarge wrapper
   Widget _getEnlargeWrapper(Widget? child,
       {double? width, double? height, double? scale}) {
     /// If [enlargeStrategy] is [CenterPageEnlargeStrategy.height]
