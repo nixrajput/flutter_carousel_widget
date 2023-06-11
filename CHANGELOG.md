@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.4
+
+* **Optimization**: Removed unnecessary codes.
+
+## 2.0.3
+
+* **Improvement**: Removed unnecessary dependencies.
+* **Fix**: All known bug fixed and removed.
+* **Improvement**: Performance improvements.
+* **Optimization**: Removed unnecessary codes.
+
 ## 2.0.2
 
 * **Add**: `indicatorMargin` property added to `CarouselOptions`.

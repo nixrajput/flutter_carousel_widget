@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 import 'slide_indicator.dart';
 
@@ -29,11 +28,11 @@ class CircularSlideIndicator implements SlideIndicator {
     var activeColor = const Color(0xFFFFFFFF);
     var backgroundColor = const Color(0x66FFFFFF);
 
-    if (SchedulerBinding.instance.window.platformBrightness ==
-        Brightness.light) {
-      activeColor = const Color(0xFF000000);
-      backgroundColor = const Color.fromARGB(255, 163, 159, 159);
-    }
+    // if (SchedulerBinding.instance.window.platformBrightness ==
+    //     Brightness.light) {
+    //   activeColor = const Color(0xFF000000);
+    //   backgroundColor = const Color.fromARGB(255, 163, 159, 159);
+    // }
 
     return Container(
       alignment: alignment,
