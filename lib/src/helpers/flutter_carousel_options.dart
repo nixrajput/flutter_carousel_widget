@@ -187,12 +187,12 @@ class CarouselOptions {
   final bool reverse;
 
   ///A ScrollBehavior that will be applied to this widget individually.
-  //
-  // Defaults to null, wherein the inherited ScrollBehavior is copied and modified to alter the viewport decoration, like Scrollbars.
-  //
-  // ScrollBehaviors also provide ScrollPhysics. If an explicit ScrollPhysics is provided in physics, it will take precedence, followed by scrollBehavior, and then the inherited ancestor ScrollBehavior.
-  //
-  // The ScrollBehavior of the inherited ScrollConfiguration will be modified by default to not apply a Scrollbar.
+  ///
+  /// Defaults to null, wherein the inherited ScrollBehavior is copied and modified to alter the viewport decoration, like Scrollbars.
+  ///
+  /// ScrollBehaviors also provide ScrollPhysics. If an explicit ScrollPhysics is provided in physics, it will take precedence, followed by scrollBehavior, and then the inherited ancestor ScrollBehavior.
+  ///
+  /// The ScrollBehavior of the inherited ScrollConfiguration will be modified by default to not apply a Scrollbar.
   final ScrollBehavior? scrollBehavior;
 
   /// The axis along which the page view scrolls.
