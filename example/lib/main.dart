@@ -166,24 +166,26 @@ class ComplicatedImageDemo extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(title: const Text('Image Slider Demo')),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.width,
-          ),
-          child: FlutterCarousel(
-            options: CarouselOptions(
-              autoPlay: false,
-              autoPlayInterval: const Duration(seconds: 5),
-              disableCenter: true,
-              viewportFraction: 0.8,
-              height: deviceSize.height * 0.45,
-              indicatorMargin: 12.0,
-              enableInfiniteScroll: false,
-              slideIndicator: const CircularSlideIndicator(),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.width,
             ),
-            items: sliders,
+            child: FlutterCarousel(
+              options: CarouselOptions(
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 3),
+                disableCenter: true,
+                viewportFraction: 0.8,
+                height: deviceSize.height * 0.45,
+                indicatorMargin: 12.0,
+                enableInfiniteScroll: true,
+                slideIndicator: const CircularSlideIndicator(),
+              ),
+              items: sliders,
+            ),
           ),
         ),
       ),
@@ -231,57 +233,59 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Manually Controlled Slider')),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: FlutterCarousel(
-                items: sliders,
-                options: CarouselOptions(
-                  viewportFraction: 1.0,
-                  autoPlay: false,
-                  floatingIndicator: false,
-                  enableInfiniteScroll: true,
-                  controller: _controller,
-                  slideIndicator: CircularWaveSlideIndicator(),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: FlutterCarousel(
+                  items: sliders,
+                  options: CarouselOptions(
+                    viewportFraction: 1.0,
+                    autoPlay: false,
+                    floatingIndicator: false,
+                    enableInfiniteScroll: true,
+                    controller: _controller,
+                    slideIndicator: CircularWaveSlideIndicator(),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: ElevatedButton(
-                      onPressed: _controller.previousPage,
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.arrow_back),
+              const SizedBox(height: 16.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 16.0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: ElevatedButton(
+                        onPressed: _controller.previousPage,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(Icons.arrow_back),
+                        ),
                       ),
                     ),
-                  ),
-                  Flexible(
-                    child: ElevatedButton(
-                      onPressed: _controller.nextPage,
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.arrow_forward),
+                    Flexible(
+                      child: ElevatedButton(
+                        onPressed: _controller.nextPage,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(Icons.arrow_forward),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

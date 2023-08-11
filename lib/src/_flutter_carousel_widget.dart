@@ -65,7 +65,6 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
   @override
   void didUpdateWidget(covariant FlutterCarousel oldWidget) {
-    super.didUpdateWidget(oldWidget);
     _carouselState!.options = options;
     _carouselState!.itemCount = widget.itemCount;
 
@@ -83,11 +82,18 @@ class FlutterCarouselState extends State<FlutterCarousel>
     _handleAutoPlay();
 
     _pageController!.addListener(() {
+      var realIndex = getRealIndex(
+        _carouselState!.pageController!.page!.floor(),
+        _carouselState!.realPage,
+        widget.itemCount ?? widget.items?.length,
+      );
       setState(() {
-        _currentPage = _pageController!.page!.floor();
+        _currentPage = realIndex;
         _pageDelta = _pageController!.page! - _pageController!.page!.floor();
       });
     });
+
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -114,9 +120,6 @@ class FlutterCarouselState extends State<FlutterCarousel>
         ? _carouselState!.realPage + _carouselState!.initialPage
         : _carouselState!.initialPage;
 
-    /// For Indicator
-    _currentPage = widget.options.initialPage;
-
     _handleAutoPlay();
 
     _pageController = PageController(
@@ -128,8 +131,13 @@ class FlutterCarouselState extends State<FlutterCarousel>
     _carouselState!.pageController = _pageController;
 
     _pageController!.addListener(() {
+      var realIndex = getRealIndex(
+        _carouselState!.pageController!.page!.floor(),
+        _carouselState!.realPage,
+        widget.itemCount ?? widget.items?.length,
+      );
       setState(() {
-        _currentPage = _pageController!.page!.floor();
+        _currentPage = realIndex;
         _pageDelta = _pageController!.page! - _pageController!.page!.floor();
       });
     });
@@ -144,36 +152,39 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
   /// Timer
   Timer? _getTimer() {
-    if (widget.options.autoPlay == true) {
-      return Timer.periodic(widget.options.autoPlayInterval, (_) {
-        final route = ModalRoute.of(context);
-        if (route?.isCurrent == false) {
-          return;
-        }
-
-        var previousReason = mode;
-        _changeMode(CarouselPageChangedReason.timed);
-        var nextPage = _carouselState!.pageController!.page!.round() + 1;
-        var itemCount = widget.itemCount ?? widget.items!.length;
-
-        if (nextPage >= itemCount &&
-            widget.options.enableInfiniteScroll == false) {
-          if (widget.options.pauseAutoPlayInFiniteScroll) {
-            _clearTimer();
-            return;
-          }
-          nextPage = 0;
-        }
-
-        _carouselState!.pageController!
-            .animateToPage(nextPage,
-                duration: widget.options.autoPlayAnimationDuration,
-                curve: widget.options.autoPlayCurve)
-            .then((_) => _changeMode(previousReason));
-      });
+    if (!widget.options.autoPlay) {
+      return null;
     }
 
-    return null;
+    return Timer.periodic(widget.options.autoPlayInterval, (_) {
+      final route = ModalRoute.of(context);
+      if (route?.isCurrent == false) {
+        return;
+      }
+
+      var previousReason = mode;
+      _changeMode(CarouselPageChangedReason.timed);
+
+      var itemCount = widget.itemCount ?? widget.items!.length;
+      var nextPage = _carouselState!.pageController!.page!.round() + 1;
+
+      if (nextPage >= itemCount &&
+          widget.options.enableInfiniteScroll == false) {
+        if (widget.options.pauseAutoPlayInFiniteScroll) {
+          _clearTimer();
+          return;
+        }
+        nextPage = 0;
+      }
+
+      _carouselState!.pageController!
+          .animateToPage(
+            nextPage,
+            duration: widget.options.autoPlayAnimationDuration,
+            curve: widget.options.autoPlayCurve,
+          )
+          .then((_) => _changeMode(previousReason));
+    });
   }
 
   void _changeMode(CarouselPageChangedReason mode) {
@@ -308,7 +319,10 @@ class FlutterCarouselState extends State<FlutterCarousel>
           ScrollConfiguration.of(context).copyWith(
             scrollbars: false,
             overscroll: false,
-            dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
+            dragDevices: {
+              PointerDeviceKind.touch,
+              PointerDeviceKind.mouse,
+            },
           ),
       clipBehavior: widget.options.clipBehavior,
       physics: widget.options.physics,
@@ -321,8 +335,12 @@ class FlutterCarouselState extends State<FlutterCarousel>
       restorationId: widget.options.restorationId,
       padEnds: widget.options.padEnds,
       onPageChanged: (int index) {
-        var currentPage = getRealIndex(index + _carouselState!.initialPage,
-            _carouselState!.realPage, widget.itemCount);
+        var currentPage = getRealIndex(
+          index + _carouselState!.initialPage,
+          _carouselState!.realPage,
+          widget.itemCount,
+        );
+
         if (widget.options.onPageChanged != null) {
           widget.options.onPageChanged!(currentPage, mode);
         }
@@ -412,7 +430,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
   /// The method to build the slide indicator
   Widget _buildSlideIndicator() {
     return widget.options.slideIndicator!.build(
-      _currentPage % widget.itemCount!,
+      _currentPage,
       _pageDelta,
       widget.itemCount!,
     );
