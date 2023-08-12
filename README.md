@@ -30,7 +30,7 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
 
 ## Demo
 
-[View Demo](https://nixrajput.github.io/flutter_carousel_widget)
+<a href="https://nixrajput.github.io/flutter_carousel_widget" target="_blank">View Demo</a>
 
 ## Installation
 
@@ -38,7 +38,7 @@ Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-  flutter_carousel_widget: latest_version
+  flutter_carousel_widget: "latest_version"
 ```
 
 And import it:

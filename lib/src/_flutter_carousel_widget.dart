@@ -55,13 +55,27 @@ class FlutterCarousel extends StatefulWidget {
 class FlutterCarouselState extends State<FlutterCarousel>
     with TickerProviderStateMixin {
   /// mode is related to why the page is being changed
-  CarouselPageChangedReason mode = CarouselPageChangedReason.controller;
+  CarouselPageChangedReason changeReasonMode =
+      CarouselPageChangedReason.controller;
 
   CarouselState? _carouselState;
   int _currentPage = 0;
   PageController? _pageController;
   double _pageDelta = 0.0;
   Timer? _timer;
+
+  void changeIndexPageDelta() {
+    var realIndex = getRealIndex(
+      _carouselState!.pageController!.page!.floor(),
+      _carouselState!.realPage,
+      widget.itemCount ?? widget.items?.length,
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+          _currentPage = realIndex;
+          _pageDelta = _pageController!.page! - _pageController!.page!.floor();
+        }));
+  }
 
   @override
   void didUpdateWidget(covariant FlutterCarousel oldWidget) {
@@ -81,17 +95,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
     /// handle autoplay when state changes
     _handleAutoPlay();
 
-    _pageController!.addListener(() {
-      var realIndex = getRealIndex(
-        _carouselState!.pageController!.page!.floor(),
-        _carouselState!.realPage,
-        widget.itemCount ?? widget.items?.length,
-      );
-      setState(() {
-        _currentPage = realIndex;
-        _pageDelta = _pageController!.page! - _pageController!.page!.floor();
-      });
-    });
+    _pageController!.addListener(changeIndexPageDelta);
 
     super.didUpdateWidget(oldWidget);
   }
@@ -110,7 +114,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
       options,
       _clearTimer,
       _resumeTimer,
-      _changeMode,
+      changeMode,
     );
 
     _carouselState!.itemCount = widget.itemCount;
@@ -130,17 +134,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
     _carouselState!.pageController = _pageController;
 
-    _pageController!.addListener(() {
-      var realIndex = getRealIndex(
-        _carouselState!.pageController!.page!.floor(),
-        _carouselState!.realPage,
-        widget.itemCount ?? widget.items?.length,
-      );
-      setState(() {
-        _currentPage = realIndex;
-        _pageDelta = _pageController!.page! - _pageController!.page!.floor();
-      });
-    });
+    _pageController!.addListener(changeIndexPageDelta);
   }
 
   CarouselControllerImpl get carouselController =>
@@ -162,8 +156,8 @@ class FlutterCarouselState extends State<FlutterCarousel>
         return;
       }
 
-      var previousReason = mode;
-      _changeMode(CarouselPageChangedReason.timed);
+      var previousReason = changeReasonMode;
+      changeMode(CarouselPageChangedReason.timed);
 
       var itemCount = widget.itemCount ?? widget.items!.length;
       var nextPage = _carouselState!.pageController!.page!.round() + 1;
@@ -183,12 +177,12 @@ class FlutterCarouselState extends State<FlutterCarousel>
             duration: widget.options.autoPlayAnimationDuration,
             curve: widget.options.autoPlayCurve,
           )
-          .then((_) => _changeMode(previousReason));
+          .then((_) => changeMode(previousReason));
     });
   }
 
-  void _changeMode(CarouselPageChangedReason mode) {
-    mode = mode;
+  void changeMode(CarouselPageChangedReason _mode) {
+    changeReasonMode = _mode;
   }
 
   /// Clear Timer
@@ -218,7 +212,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
   /// onStart
   void _onStart() {
-    _changeMode(CarouselPageChangedReason.manual);
+    changeMode(CarouselPageChangedReason.manual);
   }
 
   /// onPanDown
@@ -227,7 +221,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
       _clearTimer();
     }
 
-    _changeMode(CarouselPageChangedReason.manual);
+    changeMode(CarouselPageChangedReason.manual);
   }
 
   /// onPanEnd
@@ -342,7 +336,10 @@ class FlutterCarouselState extends State<FlutterCarousel>
         );
 
         if (widget.options.onPageChanged != null) {
-          widget.options.onPageChanged!(currentPage, mode);
+          widget.options.onPageChanged!(
+            currentPage,
+            changeReasonMode,
+          );
         }
       },
       itemCount: widget.options.enableInfiniteScroll ? null : widget.itemCount,

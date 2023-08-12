@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.1.0
+
+* **Fix**: `issue #27` LICENSE updated to MIT.
+* **Fix**: `issue #24` fixed.
+* **Fix**: `issue #22` fixed.
+* **Fix**: `issue #20` fixed.
+* **Fix**: `issue #17` fixed.
+* **Improvement**: Performance improvements.
+
 ## 2.0.4
 
 * **Optimization**: Removed unnecessary codes.

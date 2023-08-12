@@ -69,6 +69,7 @@ class FlutterCarouselWidgetDemo extends StatelessWidget {
         '/indicator': (ctx) => const CarouselWithIndicatorDemo(),
         '/multiple': (ctx) => const MultipleItemDemo(),
         '/expandable': (ctx) => const ExpandableCarouselDemo(),
+        '/page_changed_reason': (ctx) => const PageChangedReason(),
       },
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
@@ -150,6 +151,7 @@ class CarouselDemoHome extends StatelessWidget {
               DemoItem('Carousel with Custom Indicator Demo', '/indicator'),
               DemoItem('Multiple Item in One Screen Demo', '/multiple'),
               DemoItem('Expandable Carousel Demo', '/expandable'),
+              DemoItem('Page Changed Reason Demo', "/page_changed_reason"),
             ],
           ),
         ),
@@ -178,7 +180,7 @@ class ComplicatedImageDemo extends StatelessWidget {
                 autoPlay: true,
                 autoPlayInterval: const Duration(seconds: 3),
                 disableCenter: true,
-                viewportFraction: 0.8,
+                viewportFraction: deviceSize.width > 800.0 ? 0.8 : 1.0,
                 height: deviceSize.height * 0.45,
                 indicatorMargin: 12.0,
                 enableInfiniteScroll: true,
@@ -211,6 +213,80 @@ class EnlargeStrategyDemo extends StatelessWidget {
             floatingIndicator: false,
           ),
           items: sliders,
+        ),
+      ),
+    );
+  }
+}
+
+class PageChangedReason extends StatefulWidget {
+  const PageChangedReason({Key? key}) : super(key: key);
+
+  @override
+  State<PageChangedReason> createState() => _PageChangedReasonState();
+}
+
+class _PageChangedReasonState extends State<PageChangedReason> {
+  CarouselController? controller = CarouselController();
+  bool autoplay = false;
+  CarouselPageChangedReason? lastReason;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 10,
+        title: const Text('Page Changed Reason'),
+        actions: [
+          IconButton(
+            onPressed: () => setState(() {
+              autoplay = !autoplay;
+              print('autoplay toggled');
+            }),
+            icon: Icon(autoplay ? Icons.pause : Icons.play_arrow),
+          ),
+          IconButton(
+            onPressed: () => setState(() {
+              controller = controller == null ? CarouselController() : null;
+              print('controller toggled');
+            }),
+            icon: Icon(
+              controller == null ? Icons.gamepad_outlined : Icons.gamepad,
+            ),
+          )
+        ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+                'Last changed reason:\n${lastReason != null ? lastReason!.toString() : 'None'}'),
+            Expanded(
+              child: FlutterCarousel(
+                items: const [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Placeholder(
+                      fallbackHeight: 200.0,
+                      fallbackWidth: 200.0,
+                    ),
+                  )
+                ],
+                options: CarouselOptions(
+                  onPageChanged: (_, reason) => setState(
+                    () {
+                      lastReason = reason;
+                      print(reason);
+                    },
+                  ),
+                  controller: controller,
+                  enableInfiniteScroll: true,
+                  autoPlay: autoplay,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
