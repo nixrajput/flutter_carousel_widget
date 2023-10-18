@@ -277,5 +277,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [releases]: https://github.com/nixrajput/flutter_carousel_widget/releases
 [repo]: https://github.com/nixrajput/flutter_carousel_widget
 [issues]: https://github.com/nixrajput/flutter_carousel_widget/issues
-[license]: https://github.com/nixrajput/flutter_carousel_widget/blob/master/LICENSE.md
+[license]: https://github.com/nixrajput/flutter_carousel_widget/blob/master/LICENSE
 [pulls]: https://github.com/nixrajput/flutter_carousel_widget/pulls
