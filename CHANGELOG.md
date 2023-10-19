@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.2
+
+* **Documentation**: Updated the documentation to display the sceenshots.
+
+## 2.1.1
+
+* **Documentation**: Updated the documentation to display the sceenshots.
+
 ## 2.1.0
 
 * **Fix**: `issue #27` LICENSE updated to MIT.
@@ -30,7 +38,7 @@
 
 ## 2.0.1
 
-* **Documentation**: Updated the documentation to reflect the new Github Pages deployment
+* **Documentation**: Updated the documentation to reflect the new Github Pages deployment.
 * **Fix**: All known bug fixed and removed.
 
 ## 2.0.0+1
