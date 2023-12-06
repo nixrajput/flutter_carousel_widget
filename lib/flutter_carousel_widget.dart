@@ -9,3 +9,4 @@ export 'package:flutter_carousel_widget/src/indicators/circular_slide_indicator.
 export 'package:flutter_carousel_widget/src/indicators/circular_static_indicator.dart';
 export 'package:flutter_carousel_widget/src/indicators/circular_wave_slide_indicator.dart';
 export 'package:flutter_carousel_widget/src/indicators/sequential_fill_indicator.dart';
+export 'package:flutter_carousel_widget/src/indicators/slide_indicator.dart';
