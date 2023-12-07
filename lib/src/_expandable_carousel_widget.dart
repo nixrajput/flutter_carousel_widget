@@ -73,6 +73,65 @@ class ExpandableCarouselState extends State<ExpandableCarousel>
   late List<double> _sizes;
   Timer? _timer;
 
+  CarouselOptions get options => widget.options;
+
+  bool get isBuilder => widget.itemBuilder != null;
+
+  double get _currentSize => _sizes[_currentPage];
+
+  double get _previousSize => _sizes[_previousPage];
+
+  bool get _isHorizontalScroll =>
+      widget.options.scrollDirection == Axis.horizontal;
+
+  void _changeMode(CarouselPageChangedReason mode) {
+    mode = mode;
+  }
+
+  void _updatePage() {
+    final newPage = _pageController?.page!.round();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {
+          _firstPageLoaded = true;
+          _previousPage = _currentPage;
+          _currentPage = newPage!;
+        });
+      }
+    });
+
+    // if (_currentPage != newPage) {
+    //   //...
+    // }
+  }
+
+  void _changeIndexPageDelta() {
+    var realIndex = getRealIndex(
+      _carouselState!.pageController!.page!.floor(),
+      _carouselState!.realPage,
+      widget.itemCount ?? widget.items?.length,
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {
+          _currentPage = realIndex;
+          _pageDelta = _pageController!.page! - _pageController!.page!.floor();
+        });
+      }
+    });
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (mounted) {
+    //     setState(() {
+    //       _currentPage = _pageController!.page!.floor();
+    //       _pageDelta = _pageController!.page! - _pageController!.page!.floor();
+    //     });
+    //   }
+    // });
+  }
+
   @override
   void didUpdateWidget(covariant ExpandableCarousel oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -93,12 +152,7 @@ class ExpandableCarouselState extends State<ExpandableCarousel>
     /// handle autoplay when state changes
     _handleAutoPlay();
 
-    _pageController?.addListener(() {
-      setState(() {
-        _currentPage = _pageController!.page!.floor();
-        _pageDelta = _pageController!.page! - _pageController!.page!.floor();
-      });
-    });
+    _pageController?.addListener(_changeIndexPageDelta);
 
     if (oldWidget.options.controller != widget.options.controller) {
       _pageController?.addListener(_updatePage);
@@ -108,16 +162,6 @@ class ExpandableCarouselState extends State<ExpandableCarousel>
     if (_shouldReinitializeHeights(oldWidget)) {
       _reinitializeSizes();
     }
-  }
-
-  @override
-  void dispose() {
-    _pageController?.removeListener(_updatePage);
-    if (_shouldDisposePageController) {
-      _pageController?.dispose();
-    }
-    _clearTimer();
-    super.dispose();
   }
 
   @override
@@ -151,12 +195,7 @@ class ExpandableCarouselState extends State<ExpandableCarousel>
 
     _carouselState!.pageController = _pageController;
 
-    _pageController!.addListener(() {
-      setState(() {
-        _currentPage = _pageController!.page!.floor();
-        _pageDelta = _pageController!.page! - _pageController!.page!.floor();
-      });
-    });
+    _pageController!.addListener(_changeIndexPageDelta);
 
     _sizes = _prepareSizes();
     _pageController?.addListener(_updatePage);
@@ -165,25 +204,21 @@ class ExpandableCarouselState extends State<ExpandableCarousel>
     _shouldDisposePageController = widget.options.controller == null;
   }
 
+  @override
+  void dispose() {
+    _pageController?.removeListener(_changeIndexPageDelta);
+    _pageController?.removeListener(_updatePage);
+    if (_shouldDisposePageController) {
+      _pageController?.dispose();
+    }
+    _clearTimer();
+    super.dispose();
+  }
+
   CarouselControllerImpl get carouselController =>
       widget.options.controller != null
           ? widget.options.controller as CarouselControllerImpl
           : CarouselController() as CarouselControllerImpl;
-
-  CarouselOptions get options => widget.options;
-
-  bool get isBuilder => widget.itemBuilder != null;
-
-  double get _currentSize => _sizes[_currentPage];
-
-  double get _previousSize => _sizes[_previousPage];
-
-  bool get _isHorizontalScroll =>
-      widget.options.scrollDirection == Axis.horizontal;
-
-  void _changeMode(CarouselPageChangedReason mode) {
-    mode = mode;
-  }
 
   /// Timer
   Timer? _getTimer() {
@@ -300,17 +335,6 @@ class ExpandableCarouselState extends State<ExpandableCarousel>
       return List.filled(widget.itemCount!, widget.estimatedPageSize);
     } else {
       return widget.items!.map((child) => widget.estimatedPageSize).toList();
-    }
-  }
-
-  void _updatePage() {
-    final newPage = _pageController?.page!.round();
-    if (_currentPage != newPage) {
-      setState(() {
-        _firstPageLoaded = true;
-        _previousPage = _currentPage;
-        _currentPage = newPage!;
-      });
     }
   }
 

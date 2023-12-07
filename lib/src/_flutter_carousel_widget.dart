@@ -64,17 +64,21 @@ class FlutterCarouselState extends State<FlutterCarousel>
   double _pageDelta = 0.0;
   Timer? _timer;
 
-  void changeIndexPageDelta() {
+  void _changeIndexPageDelta() {
     var realIndex = getRealIndex(
       _carouselState!.pageController!.page!.floor(),
       _carouselState!.realPage,
       widget.itemCount ?? widget.items?.length,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {
           _currentPage = realIndex;
           _pageDelta = _pageController!.page! - _pageController!.page!.floor();
-        }));
+        });
+      }
+    });
   }
 
   @override
@@ -95,13 +99,15 @@ class FlutterCarouselState extends State<FlutterCarousel>
     /// handle autoplay when state changes
     _handleAutoPlay();
 
-    _pageController!.addListener(changeIndexPageDelta);
+    _pageController!.addListener(_changeIndexPageDelta);
 
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void dispose() {
+    _pageController?.removeListener(_changeIndexPageDelta);
+    _pageController?.dispose();
     _clearTimer();
     super.dispose();
   }
@@ -134,7 +140,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
     _carouselState!.pageController = _pageController;
 
-    _pageController!.addListener(changeIndexPageDelta);
+    _pageController!.addListener(_changeIndexPageDelta);
   }
 
   CarouselControllerImpl get carouselController =>
