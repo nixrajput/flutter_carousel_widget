@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.0
+
+* **New Feature**: Support for custom slide indicators added.
+
 ## 2.1.2
 
 * **Documentation**: Updated the documentation to display the sceenshots.

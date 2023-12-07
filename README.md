@@ -19,7 +19,6 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
 - [flutter\_carousel\_widget](#flutter_carousel_widget)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
-  - [Screenshots](#screenshots)
   - [Demo](#demo)
   - [Installation](#installation)
   - [Usage](#usage)
@@ -33,7 +32,7 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
       - [`.previousPage({Duration duration, Curve curve})`](#previouspageduration-duration-curve-curve)
       - [`.jumpToPage(int page)`](#jumptopageint-page)
       - [`.animateToPage(int page, {Duration duration, Curve curve})`](#animatetopageint-page-duration-duration-curve-curve)
-  - [Slide indicators](#slide-indicators)
+  - [Custom Slide Indicators](#custom-slide-indicators)
   - [Contributing](#contributing)
   - [License](#license)
   - [Sponsor Me](#sponsor-me)
@@ -51,15 +50,9 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
 - Expandable Carousel Widget.
 - Auto-sized child support.
 
-## Screenshots
-
-![Screenshot 1](https://raw.githubusercontent.com/nixrajput/flutter_carousel_widget/master/screenshots/screenshot-1.png)
-![Screenshot 2](https://raw.githubusercontent.com/nixrajput/flutter_carousel_widget/master/screenshots/screenshot-2.png)
-![Screenshot 3](https://raw.githubusercontent.com/nixrajput/flutter_carousel_widget/master/screenshots/screenshot-3.png)
-![Screenshot 4](https://raw.githubusercontent.com/nixrajput/flutter_carousel_widget/master/screenshots/screenshot-4.png)
-![Screenshot 5](https://raw.githubusercontent.com/nixrajput/flutter_carousel_widget/master/screenshots/screenshot-5.png)
-
 ## Demo
+
+![Demo](https://raw.githubusercontent.com/nixrajput/flutter_carousel_widget/master/screenshots/flutter_carousel_widget_demo.gif)
 
 [View Demo](https://nixrajput.github.io/flutter_carousel_widget)
 
@@ -242,13 +235,14 @@ Jump to the given page.
 
 Animate to the given page.
 
-## Slide indicators
+## Custom Slide Indicators
 
 The `flutter_carousel_widget` package comes with a few [predefined slide indicators](https://github.com/nixrajput/flutter_carousel_widget/tree/master/lib/src/indicators) with their own unique behaviors. This helps drastically and brings focus towards the actual implementation of your carousel widget.
 
 However, there might be cases where you want to control the look or behavior of the slide indicator or implement a totally new one. You can do that by implementing the `SlideIndicator` contract.
 
 The following example implements an indicator which tells the percentage of the slide the user is on:
+
 ```dart
 class SlidePercentageIndicator implements SlideIndicator {
   SlidePercentageIndicator({
