@@ -33,6 +33,7 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
       - [`.previousPage({Duration duration, Curve curve})`](#previouspageduration-duration-curve-curve)
       - [`.jumpToPage(int page)`](#jumptopageint-page)
       - [`.animateToPage(int page, {Duration duration, Curve curve})`](#animatetopageint-page-duration-duration-curve-curve)
+  - [Slide indicators](#slide-indicators)
   - [Contributing](#contributing)
   - [License](#license)
   - [Sponsor Me](#sponsor-me)
@@ -240,6 +241,45 @@ Jump to the given page.
 #### `.animateToPage(int page, {Duration duration, Curve curve})`
 
 Animate to the given page.
+
+## Slide indicators
+
+The `flutter_carousel_widget` package comes with a few [predefined slide indicators](https://github.com/nixrajput/flutter_carousel_widget/tree/master/lib/src/indicators) with their own unique behaviors. This helps drastically and brings focus towards the actual implementation of your carousel widget.
+
+However, there might be cases where you want to control the look or behavior of the slide indicator or implement a totally new one. You can do that by implementing the `SlideIndicator` contract.
+
+The following example implements an indicator which tells the percentage of the slide the user is on:
+```dart
+class SlidePercentageIndicator implements SlideIndicator {
+  SlidePercentageIndicator({
+    this.decimalPlaces = 0,
+    this.style,
+  });
+
+  /// The number of decimal places to show in the output
+  final int decimalPlaces;
+
+  /// The text style to be used by the percentage text
+  final TextStyle? style;
+
+  @override
+  Widget build(int currentPage, double pageDelta, int itemCount) {
+    if (itemCount < 2) return const SizedBox.shrink();
+    final step = 100 / (itemCount - 1);
+    final percentage = step * (pageDelta + currentPage);
+    return Center(
+      child: Text(
+        '${percentage.toStringAsFixed(decimalPlaces)}%',
+        style: style ??
+            const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
+      ),
+    );
+  }
+}
+```
 
 ## Contributing
 
