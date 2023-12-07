@@ -3,14 +3,20 @@
 ## 2.2.0
 
 * **New Feature**: Support for custom slide indicators added.
+* **Documentation**: Updated the documentation to show all contributors.
+* **Documentation**: Updated the documentation to demonstrate the use of custom slide indicator.
+* **Fix**: `issue #28` fixed.
+* **Fix**: `issue #30` fixed.
+* **Improvement**: Performance improvements.
+* **Optimization**: Removed unnecessary codes.
 
 ## 2.1.2
 
-* **Documentation**: Updated the documentation to display the sceenshots.
+* **Documentation**: Updated the documentation to display the screenshots.
 
 ## 2.1.1
 
-* **Documentation**: Updated the documentation to display the sceenshots.
+* **Documentation**: Updated the documentation to display the screenshots.
 
 ## 2.1.0
 

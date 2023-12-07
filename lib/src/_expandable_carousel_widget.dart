@@ -100,10 +100,6 @@ class ExpandableCarouselState extends State<ExpandableCarousel>
         });
       }
     });
-
-    // if (_currentPage != newPage) {
-    //   //...
-    // }
   }
 
   void _changeIndexPageDelta() {
@@ -121,15 +117,6 @@ class ExpandableCarouselState extends State<ExpandableCarousel>
         });
       }
     });
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (mounted) {
-    //     setState(() {
-    //       _currentPage = _pageController!.page!.floor();
-    //       _pageDelta = _pageController!.page! - _pageController!.page!.floor();
-    //     });
-    //   }
-    // });
   }
 
   @override

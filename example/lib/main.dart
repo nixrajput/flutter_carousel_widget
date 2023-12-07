@@ -3,6 +3,11 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 import 'app_themes.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const FlutterCarouselWidgetDemo());
+}
+
 class Slide {
   Slide({
     required this.title,
@@ -49,8 +54,6 @@ final List<Widget> sliders = slides
       ),
     )
     .toList();
-
-void main() => runApp(const FlutterCarouselWidgetDemo());
 
 class FlutterCarouselWidgetDemo extends StatelessWidget {
   const FlutterCarouselWidgetDemo({Key? key}) : super(key: key);
