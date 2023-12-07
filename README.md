@@ -69,7 +69,7 @@ Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
 ```dart
 dependencies:
-flutter_carousel_widget: ^latest_version
+  flutter_carousel_widget: ^latest_version
 ```
 
 And import it:
@@ -86,25 +86,25 @@ Flutter Carousel is a carousel widget which supports infinite scrolling, auto sc
 
 ```dart
 FlutterCarousel(
-options: CarouselOptions(
-height: 400.0,
-showIndicator: true,
-slideIndicator: CircularSlideIndicator(),
-),
-items: [1,2,3,4,5].map((i) {
-return Builder(
-builder: (BuildContext context) {
-return Container(
-width: MediaQuery.of(context).size.width,
-margin: EdgeInsets.symmetric(horizontal: 5.0),
-decoration: BoxDecoration(
-color: Colors.amber
-),
-child: Text('text $i', style: TextStyle(fontSize: 16.0),)
-);
-},
-);
-}).toList(),
+  options: CarouselOptions(
+    height: 400.0, 
+    showIndicator: true,
+    slideIndicator: CircularSlideIndicator(),
+  ),
+  items: [1,2,3,4,5].map((i) {
+    return Builder(
+      builder: (BuildContext context) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          margin: EdgeInsets.symmetric(horizontal: 5.0),
+          decoration: BoxDecoration(
+            color: Colors.amber
+          ),
+          child: Text('text $i', style: TextStyle(fontSize: 16.0),)
+        );
+      },
+    );
+  }).toList(),
 )
 ```
 
@@ -114,24 +114,24 @@ Expandable Carousel is a carousel widget which automatically expands to the size
 
 ```dart
 ExpandableCarousel(
-options: CarouselOptions(
-autoPlay: true,
-autoPlayInterval: const Duration(seconds: 2),
-),
-items: [1,2,3,4,5].map((i) {
-return Builder(
-builder: (BuildContext context) {
-return Container(
-width: MediaQuery.of(context).size.width,
-margin: EdgeInsets.symmetric(horizontal: 5.0),
-decoration: BoxDecoration(
-color: Colors.amber
-),
-child: Text('text $i', style: TextStyle(fontSize: 16.0),)
-);
-},
-);
-}).toList(),
+  options: CarouselOptions(
+    autoPlay: true,
+    autoPlayInterval: const Duration(seconds: 2),
+  ),
+  items: [1,2,3,4,5].map((i) {
+    return Builder(
+      builder: (BuildContext context) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          margin: EdgeInsets.symmetric(horizontal: 5.0),
+          decoration: BoxDecoration(
+            color: Colors.amber
+          ),
+          child: Text('text $i', style: TextStyle(fontSize: 16.0),)
+        );
+      },
+    );
+  }).toList(),
 )
 ```
 
@@ -139,32 +139,32 @@ child: Text('text $i', style: TextStyle(fontSize: 16.0),)
 
 ```dart
 FlutterCarousel(
-items: items,
-options: CarouselOptions(
-height: 400.0,
-aspectRatio: 16 / 9,
-viewportFraction: 1.0,
-initialPage: 0,
-enableInfiniteScroll: true,
-reverse: false,
-autoPlay: false,
-autoPlayInterval: const Duration(seconds: 2),
-autoPlayAnimationDuration: const Duration(milliseconds: 800),
-autoPlayCurve: Curves.fastOutSlowIn,
-enlargeCenterPage: false,
-controller: CarouselController(),
-onPageChanged: callbackFunction,
-pageSnapping: true,
-scrollDirection: Axis.horizontal,
-pauseAutoPlayOnTouch: true,
-pauseAutoPlayOnManualNavigate: true,
-pauseAutoPlayInFiniteScroll: false,
-enlargeStrategy: CenterPageEnlargeStrategy.scale,
-disableCenter: false,
-showIndicator: true,
-floatingIndicator = true,
-slideIndicator: CircularSlideIndicator(),
-)
+  items: items,
+  options: CarouselOptions(
+    height: 400.0,
+    aspectRatio: 16 / 9,
+    viewportFraction: 1.0,
+    initialPage: 0,
+    enableInfiniteScroll: true,
+    reverse: false,
+    autoPlay: false,
+    autoPlayInterval: const Duration(seconds: 2),
+    autoPlayAnimationDuration: const Duration(milliseconds: 800),
+    autoPlayCurve: Curves.fastOutSlowIn,
+    enlargeCenterPage: false,
+    controller: CarouselController(),
+    onPageChanged: callbackFunction,
+    pageSnapping: true,
+    scrollDirection: Axis.horizontal,
+    pauseAutoPlayOnTouch: true,
+    pauseAutoPlayOnManualNavigate: true,
+    pauseAutoPlayInFiniteScroll: false,
+    enlargeStrategy: CenterPageEnlargeStrategy.scale,
+    disableCenter: false,
+    showIndicator: true,
+    floatingIndicator = true,
+    slideIndicator: CircularSlideIndicator(),
+  )
 )
 ```
 
@@ -174,21 +174,21 @@ This method will save memory by building items once it becomes necessary. This w
 
 ```dart
 FlutterCarousel.builder(
-itemCount: 15,
-itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-Container(
-child: Text(itemIndex.toString()),
-),
+  itemCount: 15,
+  itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+  Container(
+    child: Text(itemIndex.toString()),
+  ),
 )
 ```
 
 ```dart
 ExpandableCarousel.builder(
-itemCount: 15,
-itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-Container(
-child: Text(itemIndex.toString()),
-),
+  itemCount: 15,
+  itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+  Container(
+    child: Text(itemIndex.toString()),
+  ),
 )
 ```
 
@@ -200,26 +200,26 @@ In order to manually control the pageview's position, you can create your own `C
 class CarouselDemo extends StatelessWidget {
   CarouselController buttonCarouselController = CarouselController();
 
-  @override
+ @override
   Widget build(BuildContext context) => Column(
-          children: [
-            FlutterCarousel(
-              items: child,
-              options: CarouselOptions(
-                autoPlay: false,
-                controller: buttonCarouselController,
-                enlargeCenterPage: true,
-                viewportFraction: 0.9,
-                aspectRatio: 2.0,
-                initialPage: 2,
-              ),
-            ),
-            RaisedButton(
-              onPressed: () => buttonCarouselController.nextPage(
-                      duration: Duration(milliseconds: 300), curve: Curves.linear),
-              child: Text('→'),
-            )
-          ]
+    children: [
+      FlutterCarousel(
+        items: child,
+        options: CarouselOptions(
+          autoPlay: false,
+          controller: buttonCarouselController,
+          enlargeCenterPage: true,
+          viewportFraction: 0.9,
+          aspectRatio: 2.0,
+          initialPage: 2,
+        ),
+      ),
+      RaisedButton(
+        onPressed: () => buttonCarouselController.nextPage(
+            duration: Duration(milliseconds: 300), curve: Curves.linear),
+        child: Text('→'),
+      )
+    ]
   );
 }
 ```
@@ -265,10 +265,8 @@ class SlidePercentageIndicator implements SlideIndicator {
   @override
   Widget build(int currentPage, double pageDelta, int itemCount) {
     if (itemCount < 2) return const SizedBox.shrink();
-
     final step = 100 / (itemCount - 1);
     final percentage = step * (pageDelta + currentPage);
-
     return Center(
       child: Text(
         '${percentage.toStringAsFixed(decimalPlaces)}%',
