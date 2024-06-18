@@ -540,6 +540,8 @@ class _ExpandableCarouselDemoState extends State<ExpandableCarouselDemo> {
             ExpandableCarousel(
               options: ExpandableCarouselOptions(
                 // viewportFraction: 1.0,
+                enableInfiniteScroll: false,
+                // initialPage: 3,
                 autoPlay: true,
                 controller: _controller,
                 floatingIndicator: false,

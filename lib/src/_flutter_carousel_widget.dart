@@ -165,8 +165,8 @@ class FlutterCarouselState extends State<FlutterCarousel>
       var previousReason = changeReasonMode;
       changeMode(CarouselPageChangedReason.timed);
 
-      var itemCount = widget.itemCount ?? widget.items!.length;
       var nextPage = _carouselState!.pageController!.page!.round() + 1;
+      var itemCount = widget.itemCount ?? widget.items!.length;
 
       if (nextPage >= itemCount &&
           widget.options.enableInfiniteScroll == false) {
@@ -432,10 +432,8 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
   /// The method to build the slide indicator
   Widget _buildSlideIndicator() {
-    final _newCurrentPage =
-        (widget.options.initialPage + _currentPage) % widget.itemCount!;
     return widget.options.slideIndicator!.build(
-      _newCurrentPage,
+      (widget.options.initialPage + _currentPage) % widget.itemCount!,
       _pageDelta,
       widget.itemCount!,
     );
