@@ -94,7 +94,7 @@ class DemoItem extends StatelessWidget {
         Navigator.pushNamed(context, route);
       },
       child: Card(
-        color: Colors.blueAccent,
+        color: Colors.green,
         margin: const EdgeInsets.only(
           bottom: 16.0,
           left: 16.0,
@@ -115,7 +115,10 @@ class DemoItem extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              const Icon(Icons.arrow_forward_ios)
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              )
             ],
           ),
         ),
@@ -188,6 +191,7 @@ class ComplicatedImageDemo extends StatelessWidget {
                 indicatorMargin: 12.0,
                 enableInfiniteScroll: true,
                 slideIndicator: const CircularSlideIndicator(),
+                initialPage: 2,
               ),
               items: sliders,
             ),
@@ -520,7 +524,8 @@ class ExpandableCarouselDemo extends StatefulWidget {
 }
 
 class _ExpandableCarouselDemoState extends State<ExpandableCarouselDemo> {
-  final CarouselController _controller = CarouselController();
+  final ExpandableCarouselController _controller =
+      ExpandableCarouselController();
 
   @override
   Widget build(BuildContext context) {
@@ -533,8 +538,8 @@ class _ExpandableCarouselDemoState extends State<ExpandableCarouselDemo> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ExpandableCarousel(
-              options: CarouselOptions(
-                viewportFraction: 1.0,
+              options: ExpandableCarouselOptions(
+                // viewportFraction: 1.0,
                 autoPlay: true,
                 controller: _controller,
                 floatingIndicator: false,

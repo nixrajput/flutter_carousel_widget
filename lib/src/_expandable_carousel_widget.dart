@@ -4,11 +4,8 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_carousel_widget/src/components/overflow_page.dart';
-import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_controller.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_options.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_state.dart';
 import 'package:flutter_carousel_widget/src/typedefs/widget_builder.dart';
 import 'package:flutter_carousel_widget/src/utils/flutter_carousel_utils.dart';
 
@@ -51,19 +48,20 @@ class ExpandableCarousel extends StatefulWidget {
   /// The widgets to be shown in the carousel of default constructor
   final List<Widget>? items;
 
-  /// [ExpandableCarouselOptions] to create a [ExpandableCarouselState] with
-  final CarouselOptions options;
+  /// [ExpandableCarouselOptions] to create a [ExpandableCarouselWidgetState] with
+  final ExpandableCarouselOptions options;
 
   @override
-  ExpandableCarouselState createState() => ExpandableCarouselState();
+  ExpandableCarouselWidgetState createState() =>
+      ExpandableCarouselWidgetState();
 }
 
-class ExpandableCarouselState extends State<ExpandableCarousel>
+class ExpandableCarouselWidgetState extends State<ExpandableCarousel>
     with TickerProviderStateMixin {
   /// mode is related to why the page is being changed
   CarouselPageChangedReason mode = CarouselPageChangedReason.controller;
 
-  CarouselState? _carouselState;
+  ExpandableCarouselState? _carouselState;
   int _currentPage = 0;
   bool _firstPageLoaded = false;
   PageController? _pageController;
@@ -73,7 +71,7 @@ class ExpandableCarouselState extends State<ExpandableCarousel>
   late List<double> _sizes;
   Timer? _timer;
 
-  CarouselOptions get options => widget.options;
+  ExpandableCarouselOptions get options => widget.options;
 
   bool get isBuilder => widget.itemBuilder != null;
 
@@ -155,7 +153,7 @@ class ExpandableCarouselState extends State<ExpandableCarousel>
   void initState() {
     super.initState();
 
-    _carouselState = CarouselState(
+    _carouselState = ExpandableCarouselState(
       options,
       _clearTimer,
       _resumeTimer,
@@ -202,10 +200,10 @@ class ExpandableCarouselState extends State<ExpandableCarousel>
     super.dispose();
   }
 
-  CarouselControllerImpl get carouselController =>
+  ExpandableCarouselControllerImpl get carouselController =>
       widget.options.controller != null
-          ? widget.options.controller as CarouselControllerImpl
-          : CarouselController() as CarouselControllerImpl;
+          ? widget.options.controller as ExpandableCarouselControllerImpl
+          : ExpandableCarouselController() as ExpandableCarouselControllerImpl;
 
   /// Timer
   Timer? _getTimer() {

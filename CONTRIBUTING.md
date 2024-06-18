@@ -1,6 +1,6 @@
-# Contributing to the Flutter_Carousel_Widget Package
+# Contributing to the `flutter_carousel_widget` Package
 
-We appreciate your interest in contributing to the Flutter_Carousel_Widget Package built with Dart and Flutter. By contributing, you help make this project better and more accessible for others. Please take a moment to review the following guidelines to ensure a smooth and collaborative development process.
+We appreciate your interest in contributing to the `flutter_carousel_widget` package built with Dart and Flutter. By contributing, you help make this project better and more accessible for others. Please take a moment to review the following guidelines to ensure a smooth and collaborative development process.
 
 ## Code of Conduct
 

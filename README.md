@@ -1,18 +1,18 @@
 # flutter_carousel_widget
 
-A customizable carousel slider widget in Flutter which supports infinite scrolling, auto scrolling, custom child widget, custom animations and pre-built indicators.
+A customizable carousel slider widget for Flutter, offering features such as infinite scrolling, auto-scrolling, custom child widgets, custom animations, pre-built indicators, expandable carousel widgets, and auto-sized child support.
 
-[![pub package](https://img.shields.io/pub/v/flutter_carousel_widget.svg?label=Version)][pub]
-[![Stars](https://img.shields.io/github/stars/nixrajput/flutter_carousel_widget?label=Stars)][repo]
-[![Forks](https://img.shields.io/github/forks/nixrajput/flutter_carousel_widget?label=Forks)][repo]
-[![Watchers](https://img.shields.io/github/watchers/nixrajput/flutter_carousel_widget?label=Watchers)][repo]
-[![Contributors](https://img.shields.io/github/contributors/nixrajput/flutter_carousel_widget?label=Contributors)][repo]
+[![pub package](https://img.shields.io/pub/v/flutter_carousel_widget.svg?label=Version&style=flat)][pub]
+[![Stars](https://img.shields.io/github/stars/nixrajput/flutter_carousel_widget?label=Stars&style=flat)][repo]
+[![Forks](https://img.shields.io/github/forks/nixrajput/flutter_carousel_widget?label=Forks&style=flat)][repo]
+[![Watchers](https://img.shields.io/github/watchers/nixrajput/flutter_carousel_widget?label=Watchers&style=flat)][repo]
+[![Contributors](https://img.shields.io/github/contributors/nixrajput/flutter_carousel_widget?label=Contributors&style=flat)][repo]
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/nixrajput/flutter_carousel_widget?label=Latest)][releases]
-[![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/flutter_carousel_widget?label=Last+Commit)][repo]
-[![GitHub issues](https://img.shields.io/github/issues/nixrajput/flutter_carousel_widget?label=Issues)][issues]
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/flutter_carousel_widget?label=Pull+Requests)][pulls]
-[![GitHub Licence](https://img.shields.io/github/license/nixrajput/flutter_carousel_widget?label=Licence)][license]
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/nixrajput/flutter_carousel_widget?label=Latest&style=flat)][releases]
+[![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/flutter_carousel_widget?label=Last+Commit&style=flat)][repo]
+[![GitHub issues](https://img.shields.io/github/issues/nixrajput/flutter_carousel_widget?label=Issues&style=flat)][issues]
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/flutter_carousel_widget?label=Pull+Requests&style=flat)][pulls]
+[![GitHub Licence](https://img.shields.io/github/license/nixrajput/flutter_carousel_widget?label=Licence&style=flat)][license]
 
 ## Table of Contents
 
@@ -20,11 +20,12 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Demo](#demo)
+    - [Click here to experience the demo in a Web App](#click-here-to-experience-the-demo-in-a-web-app)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Using `FlutterCarousel` Widget](#using-fluttercarousel-widget)
     - [Using `ExpandableCarousel` Widget](#using-expandablecarousel-widget)
-    - [Option Customization](#option-customization)
+    - [Carousel Options Customization](#carousel-options-customization)
     - [Build item widgets on demand](#build-item-widgets-on-demand)
   - [Carousel Controller](#carousel-controller)
     - [`CarouselController` methods](#carouselcontroller-methods)
@@ -33,7 +34,6 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
       - [`.jumpToPage(int page)`](#jumptopageint-page)
       - [`.animateToPage(int page, {Duration duration, Curve curve})`](#animatetopageint-page-duration-duration-curve-curve)
   - [Custom Slide Indicators](#custom-slide-indicators)
-  - [Contributors](#contributors)
   - [Contributing](#contributing)
   - [License](#license)
   - [Sponsor Me](#sponsor-me)
@@ -42,35 +42,30 @@ A customizable carousel slider widget in Flutter which supports infinite scrolli
 
 ## Features
 
-- Infinite Scroll
-- Custom Child Widget
-- Auto Play
-- Horizontal and Vertical Alignment
-- Pre-built Carousel Indicators
-- Custom Indicators
-- Expandable Carousel Widget.
-- Auto-sized child support.
+- **Infinite Scrolling:** Seamlessly scroll through items in a loop.
+- **Auto Scrolling:** Automatically advance slides at a configurable interval.
+- **Custom Child Widgets:** Use any Flutter widget as a carousel item.
+- **Custom Animations:** Apply custom animations to the carousel transitions.
+- **Pre-built Indicators:** Easily add indicators to show the current slide position.
+- **Expandable Carousel Widget:** Expand the carousel widget to fit the available space.
+- **Auto-sized Child Support:** Automatically adjust the size of the carousel items to fit their content.
 
 ## Demo
 
 ![Demo](https://raw.githubusercontent.com/nixrajput/flutter_carousel_widget/master/screenshots/flutter_carousel_widget_demo.gif)
 
-[View Demo](https://nixrajput.github.io/flutter_carousel_widget)
+### [Click here to experience the demo in a Web App](https://nixrajput.github.io/flutter_carousel_widget)
 
 ## Installation
 
 Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
 
-```dart
+```yaml
 dependencies:
   flutter_carousel_widget: ^latest_version
 ```
 
-And import it:
-
-```dart
-import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
-```
+Then run `flutter pub get` to fetch the package.
 
 ## Usage
 
@@ -129,35 +124,80 @@ ExpandableCarousel(
 )
 ```
 
-### Option Customization
+### Carousel Options Customization
 
 ```dart
 FlutterCarousel(
   items: items,
   options: CarouselOptions(
     height: 400.0,
+    // Sets the height of the carousel widget.
+
     aspectRatio: 16 / 9,
+    // Defines the aspect ratio of the carousel widget.
+
     viewportFraction: 1.0,
+    // Fraction of the viewport that each page should occupy.
+
     initialPage: 0,
+    // The initial page to display when the carousel is first shown.
+
     enableInfiniteScroll: true,
+    // Enables infinite looping of the carousel items.
+
     reverse: false,
+    // Reverses the order of the carousel items.
+
     autoPlay: false,
+    // Enables automatic scrolling through the carousel items.
+
     autoPlayInterval: const Duration(seconds: 2),
+    // Duration between automatic scrolls when autoPlay is enabled.
+
     autoPlayAnimationDuration: const Duration(milliseconds: 800),
+    // Duration of the animation when automatically scrolling between items.
+
     autoPlayCurve: Curves.fastOutSlowIn,
+    // Curve for the auto-play animation to control the animation's speed.
+
     enlargeCenterPage: false,
+    // Enlarges the center page of the carousel to make it more prominent.
+
     controller: CarouselController(),
+    // Controls the carousel programmatically.
+
     onPageChanged: callbackFunction,
+    // Callback function that is triggered when the page is changed.
+
     pageSnapping: true,
+    // Enables snapping of the carousel pages to ensure they stop at each item.
+
     scrollDirection: Axis.horizontal,
+    // Direction of the carousel scroll (horizontal or vertical).
+
     pauseAutoPlayOnTouch: true,
+    // Pauses auto-play when the user touches the carousel.
+
     pauseAutoPlayOnManualNavigate: true,
+    // Pauses auto-play when the user manually navigates through the carousel.
+
     pauseAutoPlayInFiniteScroll: false,
+    // Pauses auto-play in infinite scroll mode.
+
     enlargeStrategy: CenterPageEnlargeStrategy.scale,
+    // Strategy to enlarge the center page, such as scaling or zooming.
+
     disableCenter: false,
+    // Disables centering of the carousel items.
+
     showIndicator: true,
-    floatingIndicator = true,
+    // Shows an indicator to display the current slide position.
+
+    floatingIndicator: true,
+    // Shows a floating indicator above the carousel.
+
     slideIndicator: CircularSlideIndicator(),
+    // Sets a custom indicator widget for the carousel slides.
   )
 )
 ```
@@ -276,27 +316,6 @@ class SlidePercentageIndicator implements SlideIndicator {
 }
 ```
 
-## Contributors
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://nixrajput.vercel.app"><img src="https://avatars.githubusercontent.com/u/10887215?s=100&v=4" width="100px;" alt="Nikhil Rajput"/><br /><sub><b>Nikhil Rajput</b></sub></a><br /><a href="#question-nixrajput" title="Answering Questions">💬</a> <a href="https://github.com/nixrajput/flutter_carousel_widget/commits?author=nixrajput" title="Documentation">📖</a> <a href="#maintenance-nixrajput" title="Maintenance">🚧</a> <a href="#infra-nixrajput" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/nixrajput/flutter_carousel_widget/pulls?q=is%3Apr+reviewed-by%3Anixrajput" title="Reviewed Pull Requests">👀</a> <a href="#talk-nixrajput" title="Talks">📢</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/DDavidPrime"><img src="https://avatars.githubusercontent.com/u/61236867?s=100&v=4" width="100px;" alt="David Djordjevic"/><br /><sub><b>David Djordjevic</b></sub></a><br /> <a href="https://github.com/nixrajput/flutter_carousel_widget/commits?author=DDavidPrime" title="Documentation">📖</a> <a href="https://github.com/nixrajput/flutter_carousel_widget/pulls?q=is%3Apr+reviewed-by%3ADDavidPrime" title="Reviewed Pull Requests">👀</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/MatthewJones517"><img src="https://avatars.githubusercontent.com/u/35195921?s=100&v=4" width="100px;" alt="Matthew Jones"/><br /><sub><b>Matthew Jones</b></sub></a><br /><a href="https://github.com/nixrajput/flutter_carousel_widget/commits?author=MatthewJones517" title="Documentation">📖</a> <a href="https://github.com/nixrajput/flutter_carousel_widget/pulls?q=is%3Apr+reviewed-by%3AMatthewJones517" title="Reviewed Pull Requests">👀</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/DjordjeMancic97"><img src="https://avatars.githubusercontent.com/u/58264548?s=100&v=4" width="100px;" alt="DjordjeMancic97"/><br /><sub><b>DjordjeMancic97</b></sub></a><br /><a href="https://github.com/nixrajput/flutter_carousel_widget/commits?author=DjordjeMancic97" title="Documentation">📖</a> <a href="https://github.com/nixrajput/flutter_carousel_widget/pulls?q=is%3Apr+reviewed-by%3ADjordjeMancic97" title="Reviewed Pull Requests">👀</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
 ## Contributing
 
 If you would like to contribute to this project, feel free to fork the repository, make your changes, and submit a pull request. Please follow the guidelines in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
@@ -307,19 +326,26 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Sponsor Me
 
-- By sponsoring my efforts, you're not merely contributing to the development of my projects; you're investing in its growth and sustainability.
-- Your support empowers me to dedicate more time and resources to improving the project's features, addressing issues, and ensuring its continued relevance in the rapidly evolving landscape of technology.
-- Your sponsorship directly fuels innovation, fosters a vibrant community, and helps maintain the project's high standards of quality. Together, we can shape the future of the projects and make a lasting impact in the open-source community.
-- Thank you for considering sponsoring my work!
+By sponsoring my efforts, you're not merely contributing to the development of my projects; you're investing in its growth and sustainability.
+
+Your support empowers me to dedicate more time and resources to improving the project's features, addressing issues, and ensuring its continued relevance in the rapidly evolving landscape of technology.
+
+Your sponsorship directly fuels innovation, fosters a vibrant community, and helps maintain the project's high standards of quality. Together, we can shape the future of the projects and make a lasting impact in the open-source community.
+
+Thank you for considering sponsoring my work!
 
 [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/nixrajput)
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/nixrajput)
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/nixrajput)
 
 ## Connect With Me
 
 [![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=GitHub&logoColor=333&link=https://www.github.com/nixrajput)][github]
 [![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=LinkedIn&logoColor=blue&link=https://www.linkedin.com/in/nixrajput)][linkedin]
 [![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=Instagram&link=https://www.instagram.com/nixrajput)][instagram]
-[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput-EFF7F6?logo=X&logoColor=333&link=https://x.com/nixrajput)][twitter]
+[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-EFF7F6?logo=X&logoColor=333&link=https://x.com/nixrajput07)][twitter]
 [![Telegram: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=Telegram&link=https://telegram.me/nixrajput)][telegram]
 [![Gmail: nkr.nikhi.nkr@gmail.com](https://img.shields.io/badge/nkr.nikhil.nkr@gmail.com-EFF7F6?logo=Gmail&link=mailto:nkr.nikhil.nkr@gmail.com)][gmail]
 

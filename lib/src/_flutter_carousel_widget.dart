@@ -432,8 +432,10 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
   /// The method to build the slide indicator
   Widget _buildSlideIndicator() {
+    final _newCurrentPage =
+        (widget.options.initialPage + _currentPage) % widget.itemCount!;
     return widget.options.slideIndicator!.build(
-      _currentPage,
+      _newCurrentPage,
       _pageDelta,
       widget.itemCount!,
     );
