@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'slide_indicator.dart';
 
 class CircularSlideIndicator implements SlideIndicator {
-  const CircularSlideIndicator({
-    this.itemSpacing = 20,
-    this.indicatorRadius = 6,
-    this.indicatorBorderWidth = 1,
-    this.indicatorBorderColor,
-    this.padding,
-    this.alignment = Alignment.bottomCenter,
-    this.currentIndicatorColor,
-    this.indicatorBackgroundColor,
-  });
+  const CircularSlideIndicator(
+      {this.itemSpacing = 20,
+      this.indicatorRadius = 6,
+      this.indicatorBorderWidth = 1,
+      this.indicatorBorderColor,
+      this.padding,
+      this.alignment = Alignment.bottomCenter,
+      this.currentIndicatorColor,
+      this.indicatorBackgroundColor,
+      this.haloDecoration,
+      this.haloPadding});
 
   final AlignmentGeometry alignment;
   final Color? currentIndicatorColor;
@@ -22,6 +23,8 @@ class CircularSlideIndicator implements SlideIndicator {
   final double indicatorRadius;
   final double itemSpacing;
   final EdgeInsets? padding;
+  final BoxDecoration? haloDecoration;
+  final EdgeInsets? haloPadding;
 
   @override
   Widget build(int currentPage, double pageDelta, int itemCount) {
@@ -37,20 +40,24 @@ class CircularSlideIndicator implements SlideIndicator {
     return Container(
       alignment: alignment,
       padding: padding,
-      child: SizedBox(
-        width: itemCount * itemSpacing,
-        height: indicatorRadius * 2,
-        child: CustomPaint(
-          painter: CircularIndicatorPainter(
-            currentIndicatorColor: currentIndicatorColor ?? activeColor,
-            indicatorBackgroundColor:
-                indicatorBackgroundColor ?? backgroundColor,
-            currentPage: currentPage,
-            pageDelta: pageDelta,
-            itemCount: itemCount,
-            radius: indicatorRadius,
-            indicatorBorderColor: indicatorBorderColor,
-            borderWidth: indicatorBorderWidth,
+      child: Container(
+        decoration: haloDecoration,
+        padding: haloPadding,
+        child: SizedBox(
+          width: itemCount * itemSpacing,
+          height: indicatorRadius * 2,
+          child: CustomPaint(
+            painter: CircularIndicatorPainter(
+              currentIndicatorColor: currentIndicatorColor ?? activeColor,
+              indicatorBackgroundColor:
+                  indicatorBackgroundColor ?? backgroundColor,
+              currentPage: currentPage,
+              pageDelta: pageDelta,
+              itemCount: itemCount,
+              radius: indicatorRadius,
+              indicatorBorderColor: indicatorBorderColor,
+              borderWidth: indicatorBorderWidth,
+            ),
           ),
         ),
       ),
