@@ -14,8 +14,12 @@ class CircularStaticIndicator extends SlideIndicator {
       alignment: slideIndicatorOptions.alignment,
       padding: slideIndicatorOptions.padding,
       child: Container(
-        decoration: slideIndicatorOptions.haloDecoration,
-        padding: slideIndicatorOptions.haloPadding,
+        decoration: slideIndicatorOptions.enableHalo
+            ? slideIndicatorOptions.haloDecoration
+            : null,
+        padding: slideIndicatorOptions.enableHalo
+            ? slideIndicatorOptions.haloPadding
+            : null,
         child: SizedBox(
           width: itemCount * slideIndicatorOptions.itemSpacing,
           height: slideIndicatorOptions.indicatorRadius * 2,
