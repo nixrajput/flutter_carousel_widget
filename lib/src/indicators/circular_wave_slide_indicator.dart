@@ -1,62 +1,40 @@
 import 'package:flutter/material.dart';
-
-import 'slide_indicator.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 class CircularWaveSlideIndicator implements SlideIndicator {
-  CircularWaveSlideIndicator(
-      {this.itemSpacing = 20,
-      this.indicatorRadius = 6,
-      this.padding,
-      this.alignment = Alignment.bottomCenter,
-      this.currentIndicatorColor,
-      this.indicatorBackgroundColor,
-      this.indicatorBorderWidth = 1,
-      this.indicatorBorderColor,
-      this.haloDecoration,
-      this.haloPadding});
+  CircularWaveSlideIndicator({
+    this.slideIndicatorOptions = const SlideIndicatorOptions(),
+  });
 
-  final AlignmentGeometry alignment;
-  final Color? currentIndicatorColor;
-  final Color? indicatorBackgroundColor;
-  final Color? indicatorBorderColor;
-  final double indicatorBorderWidth;
-  final double indicatorRadius;
-  final double itemSpacing;
-  final EdgeInsets? padding;
-  final BoxDecoration? haloDecoration;
-  final EdgeInsets? haloPadding;
+  final SlideIndicatorOptions slideIndicatorOptions;
 
   @override
   Widget build(int currentPage, double pageDelta, int itemCount) {
-    var activeColor = const Color(0xFFFFFFFF);
-    var backgroundColor = const Color(0x66FFFFFF);
-
-    // if (SchedulerBinding.instance.window.platformBrightness ==
-    //     Brightness.light) {
-    //   activeColor = const Color(0xFF000000);
-    //   backgroundColor = const Color(0xFF878484);
-    // }
-
     return Container(
-      alignment: alignment,
-      padding: padding,
+      alignment: slideIndicatorOptions.alignment,
+      padding: slideIndicatorOptions.padding,
       child: Container(
-        decoration: haloDecoration,
-        padding: haloPadding,
+        decoration: slideIndicatorOptions.enableHalo
+            ? slideIndicatorOptions.haloDecoration
+            : null,
+        padding: slideIndicatorOptions.enableHalo
+            ? slideIndicatorOptions.haloPadding
+            : null,
         child: SizedBox(
-          width: itemCount * itemSpacing,
-          height: indicatorRadius * 2,
+          width: itemCount * slideIndicatorOptions.itemSpacing,
+          height: slideIndicatorOptions.indicatorRadius * 2,
           child: CustomPaint(
             painter: CircularWaveIndicatorPainter(
-              currentIndicatorColor: currentIndicatorColor ?? activeColor,
+              currentIndicatorColor:
+                  slideIndicatorOptions.currentIndicatorColor,
               indicatorBackgroundColor:
-                  indicatorBackgroundColor ?? backgroundColor,
+                  slideIndicatorOptions.indicatorBackgroundColor,
               currentPage: currentPage,
               pageDelta: pageDelta,
               itemCount: itemCount,
-              radius: indicatorRadius,
-              indicatorBorderColor: indicatorBorderColor,
-              borderWidth: indicatorBorderWidth,
+              radius: slideIndicatorOptions.indicatorRadius,
+              indicatorBorderColor: slideIndicatorOptions.indicatorBorderColor,
+              borderWidth: slideIndicatorOptions.indicatorBorderWidth,
             ),
           ),
         ),
