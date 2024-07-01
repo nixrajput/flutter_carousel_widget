@@ -11,5 +11,6 @@ export 'package:flutter_carousel_widget/src/helpers/flutter_expandable_carousel_
 export 'package:flutter_carousel_widget/src/indicators/circular_slide_indicator.dart';
 export 'package:flutter_carousel_widget/src/indicators/circular_static_indicator.dart';
 export 'package:flutter_carousel_widget/src/indicators/circular_wave_slide_indicator.dart';
+export 'package:flutter_carousel_widget/src/indicators/models/slide_indicator_options_model.dart';
 export 'package:flutter_carousel_widget/src/indicators/sequential_fill_indicator.dart';
 export 'package:flutter_carousel_widget/src/indicators/slide_indicator.dart';
