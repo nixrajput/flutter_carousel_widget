@@ -1,5 +1,12 @@
 # Changelog
 
+
+## 2.4.0
+
+* **Breaking Change**: All slide indicator properties have been consolidated into the `SlideIndicatorOptions` class.
+* **Enhancement**: `issue #44` Added optional halo effect for slide indicators, customizable via `SlideIndicatorOptions` properties (`enableHalo`, `haloPadding`, `haloDecoration`).
+* **Chore**: Removed dead code. 
+
 ## 2.2.0
 
 * **New Feature**: Support for custom slide indicators added.
