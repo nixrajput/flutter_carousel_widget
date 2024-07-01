@@ -56,7 +56,7 @@ class SlideIndicatorOptions {
   /// Whether to enable the indicator halo.
   final bool enableHalo;
 
-  /// Whether to enable the animation. Only used in [CircularStaticIndicator] and [andSequentialFillIndicator].
+  /// Whether to enable the animation. Only used in [CircularStaticIndicator] and [SequentialFillIndicator].
   final bool enableAnimation;
 
   /// Returns a copy of this [SlideIndicatorOptions] but with the given fields replaced with the new values.
