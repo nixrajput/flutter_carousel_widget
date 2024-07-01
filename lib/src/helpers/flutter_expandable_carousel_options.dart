@@ -1,5 +1,5 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
 import 'package:flutter_carousel_widget/src/helpers/flutter_expandable_carousel_controller.dart';
 import 'package:flutter_carousel_widget/src/indicators/circular_slide_indicator.dart';
