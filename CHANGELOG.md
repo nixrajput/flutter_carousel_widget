@@ -1,5 +1,18 @@
 # Changelog
 
+
+## 2.3.0
+
+* **Breaking Change**: New `ExpandableCarouselOptions` introduced for `ExpandableCarousel`.
+* **Breaking Change**: New `ExpandableCarouselController` introduced for `ExpandableCarousel`.
+* **Breaking Change**: New `ExpandableCarouselState` introduced for `ExpandableCarousel`.
+* **Breaking Change**: All slide indicator properties have been consolidated into the `SlideIndicatorOptions` class.
+* **Enhancement**: `issue #44` Added optional halo effect for slide indicators, customizable via `SlideIndicatorOptions` properties (`enableHalo`, `haloPadding`, `haloDecoration`).
+* **Chore**: Removed dead code.
+* **Fix**: `issue #46` fixed.
+* **Fix**: `issue #44` fixed.
+* **Fix**: `issue #40` fixed.
+
 ## 2.2.0
 
 * **New Feature**: Support for custom slide indicators added.

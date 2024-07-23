@@ -1,59 +1,42 @@
-import 'package:flutter/material.dart' hide CarouselController;
-
-import 'slide_indicator.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 class SequentialFillIndicator extends SlideIndicator {
   SequentialFillIndicator({
-    this.itemSpacing = 20,
-    this.indicatorRadius = 6,
-    this.padding,
-    this.alignment = Alignment.bottomCenter,
-    this.currentIndicatorColor,
-    this.indicatorBackgroundColor,
-    this.enableAnimation = false,
-    this.indicatorBorderWidth = 1,
-    this.indicatorBorderColor,
+    this.slideIndicatorOptions = const SlideIndicatorOptions(),
   });
 
-  final AlignmentGeometry alignment;
-  final Color? currentIndicatorColor;
-  final bool enableAnimation;
-  final Color? indicatorBackgroundColor;
-  final Color? indicatorBorderColor;
-  final double indicatorBorderWidth;
-  final double indicatorRadius;
-  final double itemSpacing;
-  final EdgeInsets? padding;
+  final SlideIndicatorOptions slideIndicatorOptions;
 
   @override
   Widget build(int currentPage, double pageDelta, int itemCount) {
-    var activeColor = const Color(0xFFFFFFFF);
-    var backgroundColor = const Color(0x66FFFFFF);
-
-    // if (SchedulerBinding.instance.window.platformBrightness ==
-    //     Brightness.light) {
-    //   activeColor = const Color(0xFF000000);
-    //   backgroundColor = const Color(0xFF878484);
-    // }
-
     return Container(
-      alignment: alignment,
-      padding: padding,
-      child: SizedBox(
-        width: itemCount * itemSpacing,
-        height: indicatorRadius * 2,
-        child: CustomPaint(
-          painter: SequentialFillIndicatorPainter(
-            currentIndicatorColor: currentIndicatorColor ?? activeColor,
-            indicatorBackgroundColor:
-                indicatorBackgroundColor ?? backgroundColor,
-            currentPage: currentPage,
-            pageDelta: pageDelta,
-            itemCount: itemCount,
-            radius: indicatorRadius,
-            enableAnimation: enableAnimation,
-            indicatorBorderColor: indicatorBorderColor,
-            borderWidth: indicatorBorderWidth,
+      alignment: slideIndicatorOptions.alignment,
+      padding: slideIndicatorOptions.padding,
+      child: Container(
+        decoration: slideIndicatorOptions.enableHalo
+            ? slideIndicatorOptions.haloDecoration
+            : null,
+        padding: slideIndicatorOptions.enableHalo
+            ? slideIndicatorOptions.haloPadding
+            : null,
+        child: SizedBox(
+          width: itemCount * slideIndicatorOptions.itemSpacing,
+          height: slideIndicatorOptions.indicatorRadius * 2,
+          child: CustomPaint(
+            painter: SequentialFillIndicatorPainter(
+              currentIndicatorColor:
+                  slideIndicatorOptions.currentIndicatorColor,
+              indicatorBackgroundColor:
+                  slideIndicatorOptions.indicatorBackgroundColor,
+              currentPage: currentPage,
+              pageDelta: pageDelta,
+              itemCount: itemCount,
+              radius: slideIndicatorOptions.indicatorRadius,
+              enableAnimation: slideIndicatorOptions.enableAnimation,
+              indicatorBorderColor: slideIndicatorOptions.indicatorBorderColor,
+              borderWidth: slideIndicatorOptions.indicatorBorderWidth,
+            ),
           ),
         ),
       ),
