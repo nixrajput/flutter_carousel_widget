@@ -1,5 +1,5 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
 import 'package:flutter_carousel_widget/src/helpers/flutter_expandable_carousel_controller.dart';
 import 'package:flutter_carousel_widget/src/indicators/circular_slide_indicator.dart';
@@ -11,7 +11,7 @@ class ExpandableCarouselOptions {
     this.aspectRatio,
     this.viewportFraction = 0.9,
     this.initialPage = 0,
-    this.enableInfiniteScroll = false,
+    // this.enableInfiniteScroll = false,
     this.reverse = false,
     this.autoPlay = false,
     this.autoPlayInterval = const Duration(seconds: 5),
@@ -91,7 +91,7 @@ class ExpandableCarouselOptions {
   ///Determines if carousel should loop infinitely or be limited to item length.
   ///
   ///Defaults to true, i.e. infinite loop.
-  final bool enableInfiniteScroll;
+  // final bool enableInfiniteScroll;
 
   /// Whether or not to float `SlideIndicator` over `Carousel`.
   final bool floatingIndicator;
@@ -201,7 +201,7 @@ class ExpandableCarouselOptions {
     double? aspectRatio,
     double? viewportFraction,
     int? initialPage,
-    bool? enableInfiniteScroll,
+    // bool? enableInfiniteScroll,
     bool? reverse,
     bool? autoPlay,
     Duration? autoPlayInterval,
@@ -234,7 +234,7 @@ class ExpandableCarouselOptions {
       aspectRatio: aspectRatio ?? this.aspectRatio,
       viewportFraction: viewportFraction ?? this.viewportFraction,
       initialPage: initialPage ?? this.initialPage,
-      enableInfiniteScroll: enableInfiniteScroll ?? this.enableInfiniteScroll,
+      // enableInfiniteScroll: enableInfiniteScroll ?? this.enableInfiniteScroll,
       reverse: reverse ?? this.reverse,
       autoPlay: autoPlay ?? this.autoPlay,
       autoPlayInterval: autoPlayInterval ?? this.autoPlayInterval,

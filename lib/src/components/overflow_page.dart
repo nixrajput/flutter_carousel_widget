@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter_carousel_widget/src/components/size_reporting_widget.dart';
 
 class OverflowPage extends StatelessWidget {

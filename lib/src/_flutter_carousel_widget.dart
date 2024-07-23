@@ -140,7 +140,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
 
     _carouselState!.pageController = _pageController;
 
-    _pageController!.addListener(_changeIndexPageDelta);
+    _pageController?.addListener(_changeIndexPageDelta);
   }
 
   CarouselControllerImpl get carouselController =>
@@ -433,7 +433,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
   /// The method to build the slide indicator
   Widget _buildSlideIndicator() {
     return widget.options.slideIndicator!.build(
-      (widget.options.initialPage + _currentPage) % widget.itemCount!,
+      _currentPage % widget.itemCount!,
       _pageDelta,
       widget.itemCount!,
     );

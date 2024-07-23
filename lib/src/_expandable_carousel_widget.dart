@@ -3,7 +3,7 @@ library flutter_carousel_widget;
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter_carousel_widget/src/components/overflow_page.dart';
 import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
 import 'package:flutter_carousel_widget/src/helpers/flutter_expandable_carousel_controller.dart';
@@ -166,9 +166,10 @@ class ExpandableCarouselWidgetState extends State<ExpandableCarousel>
     _carouselState!.itemCount = widget.itemCount;
     carouselController.state = _carouselState;
     _carouselState!.initialPage = widget.options.initialPage;
-    _carouselState!.realPage = options.enableInfiniteScroll
-        ? _carouselState!.realPage + _carouselState!.initialPage
-        : _carouselState!.initialPage;
+    // _carouselState!.realPage = options.enableInfiniteScroll
+    //     ? _carouselState!.realPage + _carouselState!.initialPage
+    //     : _carouselState!.initialPage;
+    _carouselState!.realPage = _carouselState!.initialPage;
 
     /// For Indicator
     _currentPage = widget.options.initialPage;
@@ -223,8 +224,16 @@ class ExpandableCarouselWidgetState extends State<ExpandableCarousel>
         var nextPage = _carouselState!.pageController!.page!.round() + 1;
         var itemCount = widget.itemCount ?? widget.items!.length;
 
-        if (nextPage >= itemCount &&
-            widget.options.enableInfiniteScroll == false) {
+        // if (nextPage >= itemCount &&
+        //     widget.options.enableInfiniteScroll == false) {
+        //   if (widget.options.pauseAutoPlayInFiniteScroll) {
+        //     _clearTimer();
+        //     return;
+        //   }
+        //   nextPage = 0;
+        // }
+
+        if (nextPage >= itemCount) {
           if (widget.options.pauseAutoPlayInFiniteScroll) {
             _clearTimer();
             return;

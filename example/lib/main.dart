@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 import 'app_themes.dart';
@@ -433,6 +433,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
                   autoPlay: true,
                   autoPlayInterval: const Duration(seconds: 4),
                   viewportFraction: 1.0,
+                  initialPage: 2,
                   showIndicator: false,
                   height: 400.0,
                   onPageChanged: (int index, CarouselPageChangedReason reason) {
@@ -540,8 +541,8 @@ class _ExpandableCarouselDemoState extends State<ExpandableCarouselDemo> {
             ExpandableCarousel(
               options: ExpandableCarouselOptions(
                 // viewportFraction: 1.0,
-                enableInfiniteScroll: false,
-                // initialPage: 3,
+                // enableInfiniteScroll: false,
+                initialPage: 2,
                 autoPlay: true,
                 controller: _controller,
                 floatingIndicator: false,
