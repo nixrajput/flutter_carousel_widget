@@ -69,6 +69,7 @@ class FlutterCarouselWidgetDemo extends StatelessWidget {
         '/enlarge': (ctx) => const EnlargeStrategyDemo(),
         '/manual': (ctx) => const ManuallyControlledSlider(),
         '/fullscreen': (ctx) => const FullscreenSliderDemo(),
+        '/indicator_halo': (ctx) => const CarouselWithIndicatorHalo(),
         '/indicator': (ctx) => const CarouselWithIndicatorDemo(),
         '/multiple': (ctx) => const MultipleItemDemo(),
         '/expandable': (ctx) => const ExpandableCarouselDemo(),
@@ -154,6 +155,7 @@ class CarouselDemoHome extends StatelessWidget {
               DemoItem('Enlarge Strategy Demo', '/enlarge'),
               DemoItem('Manually Controlled Slider', '/manual'),
               DemoItem('Fullscreen Carousel Slider', '/fullscreen'),
+              DemoItem('Carousel with Indicator Halo', '/indicator_halo'),
               DemoItem('Carousel with Custom Indicator Demo', '/indicator'),
               DemoItem('Multiple Item in One Screen Demo', '/multiple'),
               DemoItem('Expandable Carousel Demo', '/expandable'),
@@ -399,6 +401,105 @@ class FullscreenSliderDemo extends StatelessWidget {
               items: sliders,
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class CarouselWithIndicatorHalo extends StatefulWidget {
+  const CarouselWithIndicatorHalo({Key? key}) : super(key: key);
+
+  @override
+  State<CarouselWithIndicatorHalo> createState() =>
+      _CarouselWithIndicatorHaloState();
+}
+
+class _CarouselWithIndicatorHaloState extends State<CarouselWithIndicatorHalo> {
+  bool useCustomIndicatorOptions = false;
+
+  SlideIndicatorOptions defaultOptions = const SlideIndicatorOptions(
+    enableHalo: true,
+  );
+
+  SlideIndicatorOptions customOptions = const SlideIndicatorOptions(
+    enableHalo: true,
+    currentIndicatorColor: Colors.white,
+    haloDecoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          Color(0xFF9B2BFF),
+          Color(0xFF2BFF88),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Carousel with Indicator Halo')),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              const Spacer(
+                flex: 1,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          useCustomIndicatorOptions = false;
+                        });
+                      },
+                      child: const Text("Default Halo")),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          useCustomIndicatorOptions = true;
+                        });
+                      },
+                      child: const Text("Custom Halo")),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.width,
+                ),
+                child: FlutterCarousel(
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    autoPlayInterval: const Duration(seconds: 3),
+                    disableCenter: true,
+                    viewportFraction: deviceSize.width > 800.0 ? 0.8 : 1.0,
+                    height: deviceSize.height * 0.45,
+                    indicatorMargin: 12.0,
+                    enableInfiniteScroll: true,
+                    slideIndicator: CircularSlideIndicator(
+                      slideIndicatorOptions: useCustomIndicatorOptions
+                          ? customOptions
+                          : defaultOptions,
+                    ),
+                    initialPage: 2,
+                  ),
+                  items: sliders,
+                ),
+              ),
+              const Spacer(
+                flex: 5,
+              )
+            ],
+          ),
         ),
       ),
     );
