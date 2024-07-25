@@ -276,11 +276,66 @@ Jump to the given page.
 
 Animate to the given page.
 
+
+## Predefined Slide Indicators
+
+The `flutter_carousel_widget` package comes with a few [predefined slide indicators](https://github.com/nixrajput/flutter_carousel_widget/tree/master/lib/src/indicators) each with its own distinct behavior. To customize the slide indicators, you can pass an instance of `SlideIndicatorOptions` to the indicator you're using.
+
+### Slide Indicator Options Customization
+
+``` dart
+  FlutterCarousel(
+                  ...
+                  options: CarouselOptions(
+                    ...
+                   slideIndicator: CircularSlideIndicator(
+                      slideIndicatorOptions: SlideIndicatorOptions(
+                          /// The alignment of the indicator.
+                          alignment: Alignment.bottomCenter,
+
+                          /// The color of the currently active item indicator.
+                          currentIndicatorColor: Colors.white,
+
+                          /// The background color of all inactive item indicators.
+                          indicatorBackgroundColor: Colors.white.withOpacity(0.5),
+
+                          /// The border color of all item indicators.
+                          indicatorBorderColor: Colors.white,
+
+                          /// The border width of all item indicators.
+                          indicatorBorderWidth: 1,
+
+                          /// The radius of all item indicators.
+                          indicatorRadius: 6,
+
+                          /// The spacing between each item indicator.
+                          itemSpacing: 20,
+
+                          /// The padding of the indicator.
+                          padding: const EdgeInsets.all(8.0),
+
+                          /// The decoration of the indicator halo.
+                          haloDecoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                              color: Colors.black.withOpacity(0.5)),
+
+                          /// The padding of the indicator halo.
+                          haloPadding: const EdgeInsets.all(8.0),
+
+                          /// Whether to enable the indicator halo.
+                          enableHalo: true,
+
+                          /// Whether to enable the animation. Only used in [CircularStaticIndicator] and [SequentialFillIndicator].
+                          enableAnimation: true),
+                    ),
+                  
+                ),
+            );
+``` 
+
 ## Custom Slide Indicators
 
-The `flutter_carousel_widget` package comes with a few [predefined slide indicators](https://github.com/nixrajput/flutter_carousel_widget/tree/master/lib/src/indicators) with their own unique behaviors. This helps drastically and brings focus towards the actual implementation of your carousel widget.
-
-However, there might be cases where you want to control the look or behavior of the slide indicator or implement a totally new one. You can do that by implementing the `SlideIndicator` contract.
+There might be cases where you want to control the look or behavior of the slide indicator or implement a totally new one. You can do that by implementing the `SlideIndicator` contract.
 
 The following example implements an indicator which tells the percentage of the slide the user is on:
 
