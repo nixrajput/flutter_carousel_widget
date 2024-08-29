@@ -334,6 +334,7 @@ class _ManuallyControlledSliderState extends State<ManuallyControlledSlider> {
                     autoPlay: false,
                     floatingIndicator: false,
                     enableInfiniteScroll: true,
+                    initialPage: 3,
                     controller: _controller,
                     slideIndicator: CircularWaveSlideIndicator(),
                   ),
@@ -642,7 +643,7 @@ class _ExpandableCarouselDemoState extends State<ExpandableCarouselDemo> {
             ExpandableCarousel(
               options: ExpandableCarouselOptions(
                 // viewportFraction: 1.0,
-                // enableInfiniteScroll: false,
+                enableInfiniteScroll: true,
                 initialPage: 2,
                 autoPlay: true,
                 controller: _controller,

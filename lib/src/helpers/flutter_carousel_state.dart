@@ -39,7 +39,7 @@ class CarouselState {
   /// This value can be ignored unless you know the carousel will be scrolled
   /// backwards more then 10000 pages.
   /// Defaults to 10000 to simulate infinite backwards scrolling.
-  int realPage = 1000000;
+  int realPage = 10000;
 
   /// The callback to set the Reason Carousel changed
   Function(CarouselPageChangedReason) changeMode;

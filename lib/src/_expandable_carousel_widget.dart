@@ -103,27 +103,78 @@ class ExpandableCarouselWidgetState extends State<ExpandableCarousel>
     });
   }
 
+  /// Update the current page index and delta for smooth animations
   void _changeIndexPageDelta() {
-    var realIndex = getRealIndex(
-      _carouselState!.pageController!.page!.floor(),
-      _carouselState!.realPage,
-      widget.itemCount ?? widget.items?.length,
-    );
+    if (_carouselState!.pageController!.hasClients) {
+      // Get current page index
+      var pageIndex =
+          _carouselState!.pageController!.page ?? _currentPage.toDouble();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        setState(() {
-          _currentPage = realIndex;
-          _pageDelta = _pageController!.page! - _pageController!.page!.floor();
-        });
-      }
-    });
+      // Calculate the actual index in case of infinite scrolling
+      var actualIndex = getRealIndex(
+        pageIndex.floor() + _carouselState!.initialPage, // Floor the page index
+        _carouselState!.realPage, // Initial real page
+        widget.itemCount!, // Total number of items
+      );
+
+      // Update state with the new index and delta (for smooth animations)
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            _currentPage = actualIndex;
+            _pageDelta = pageIndex - pageIndex.floor(); // Calculate delta
+          });
+        }
+      });
+    }
   }
 
+  /// Initialize state when the widget is first created
+  @override
+  void initState() {
+    _carouselState = ExpandableCarouselState(
+      options,
+      _clearTimer,
+      _resumeTimer,
+      _changeMode,
+    );
+
+    _carouselState!.itemCount = widget.itemCount;
+    carouselController.state = _carouselState;
+    _carouselState!.initialPage = widget.options.initialPage;
+    _carouselState!.realPage = options.enableInfiniteScroll
+        ? _carouselState!.initialPage +
+            (_carouselState!.itemCount ?? 0) *
+                10000 // Arbitrary large multiplier
+        : _carouselState!.initialPage;
+
+    /// For Indicator
+    _currentPage = widget.options.initialPage;
+
+    _pageController = PageController(
+      viewportFraction: options.viewportFraction,
+      keepPage: options.keepPage,
+      initialPage: _carouselState!.realPage,
+    );
+
+    _carouselState!.pageController = _pageController;
+
+    _pageController!.addListener(_changeIndexPageDelta);
+
+    _sizes = _prepareSizes();
+    _pageController?.addListener(_updatePage);
+    _currentPage = _pageController!.initialPage.clamp(0, _sizes.length - 1);
+    _previousPage = _currentPage - 1 < 0 ? 0 : _currentPage - 1;
+    _shouldDisposePageController = widget.options.controller == null;
+
+    _handleAutoPlay();
+
+    super.initState();
+  }
+
+  /// Handle updates to the widget when it rebuilds
   @override
   void didUpdateWidget(covariant ExpandableCarousel oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
     _carouselState!.options = options;
     _carouselState!.itemCount = widget.itemCount;
 
@@ -150,49 +201,11 @@ class ExpandableCarouselWidgetState extends State<ExpandableCarousel>
     if (_shouldReinitializeHeights(oldWidget)) {
       _reinitializeSizes();
     }
+
+    super.didUpdateWidget(oldWidget);
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    _carouselState = ExpandableCarouselState(
-      options,
-      _clearTimer,
-      _resumeTimer,
-      _changeMode,
-    );
-
-    _carouselState!.itemCount = widget.itemCount;
-    carouselController.state = _carouselState;
-    _carouselState!.initialPage = widget.options.initialPage;
-    // _carouselState!.realPage = options.enableInfiniteScroll
-    //     ? _carouselState!.realPage + _carouselState!.initialPage
-    //     : _carouselState!.initialPage;
-    _carouselState!.realPage = _carouselState!.initialPage;
-
-    /// For Indicator
-    _currentPage = widget.options.initialPage;
-
-    _handleAutoPlay();
-
-    _pageController = PageController(
-      viewportFraction: options.viewportFraction,
-      keepPage: options.keepPage,
-      initialPage: _carouselState!.realPage,
-    );
-
-    _carouselState!.pageController = _pageController;
-
-    _pageController!.addListener(_changeIndexPageDelta);
-
-    _sizes = _prepareSizes();
-    _pageController?.addListener(_updatePage);
-    _currentPage = _pageController!.initialPage.clamp(0, _sizes.length - 1);
-    _previousPage = _currentPage - 1 < 0 ? 0 : _currentPage - 1;
-    _shouldDisposePageController = widget.options.controller == null;
-  }
-
+  /// Dispose resources when widget is removed from the tree
   @override
   void dispose() {
     _pageController?.removeListener(_changeIndexPageDelta);

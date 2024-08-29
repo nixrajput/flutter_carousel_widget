@@ -134,7 +134,7 @@
 
 * Option to float Slide Indicator over Carousel or to show below Carousel added.
 * Screenshots updated.
-* Source code optimised.
+* Source code optimized.
 * Performance improvements.
 
 ## 1.0.1
@@ -143,12 +143,12 @@
 * Indicator color will change according to System theme.
 * Screenshots updated.
 * Documentation updated.
-* Source code optimised.
+* Source code optimized.
 * Performance improvements.
 
 ## 1.0.0
 
-* Source code optimised.
+* Source code optimized.
 * Bug fixes.
 * Performance improvements.
 * Documentation updated.

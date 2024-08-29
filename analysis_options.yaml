@@ -1,6 +1,8 @@
 include: package:lints/core.yaml
 
 analyzer:
+  errors:
+    omit_local_variable_types: ignore
   language:
     strict-raw-types: true
 

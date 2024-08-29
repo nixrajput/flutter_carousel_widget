@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
+import 'package:flutter/material.dart' hide CarouselController;
+import 'package:flutter_carousel_widget/src/helpers/slide_indicator_options_model.dart';
+import 'package:flutter_carousel_widget/src/indicators/slide_indicator.dart';
 
 class SequentialFillIndicator extends SlideIndicator {
   SequentialFillIndicator({
