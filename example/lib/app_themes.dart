@@ -18,12 +18,12 @@ class AppThemes {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(Colors.redAccent),
+        backgroundColor: MaterialStateProperty.all(Colors.redAccent),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
-        foregroundColor: WidgetStateProperty.all(lightColor),
+        foregroundColor: MaterialStateProperty.all(lightColor),
       ),
     ),
     appBarTheme: const AppBarTheme(
@@ -70,12 +70,12 @@ class AppThemes {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(Colors.redAccent),
+        backgroundColor: MaterialStateProperty.all(Colors.redAccent),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
-        foregroundColor: WidgetStateProperty.all(darkColor),
+        foregroundColor: MaterialStateProperty.all(darkColor),
       ),
     ),
     appBarTheme: const AppBarTheme(
