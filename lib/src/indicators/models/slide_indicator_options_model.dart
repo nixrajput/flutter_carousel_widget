@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' hide CarouselController;
+import 'package:flutter/material.dart';
 
 /// A class that holds the options for the slide indicators.
 class SlideIndicatorOptions {

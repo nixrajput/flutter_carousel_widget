@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide CarouselController;
+import 'package:flutter/material.dart';
 
 /// Abstraction used as a contract for building a slide indicator widget.
 ///
