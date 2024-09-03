@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
 import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_state.dart';
+import 'package:flutter_carousel_widget/src/helpers/flutter_expandable_carousel_controller.dart';
 import 'package:flutter_carousel_widget/src/utils/flutter_carousel_utils.dart';
 
-abstract class CarouselController {
+abstract class CarouselController extends ExpandableCarouselController{
   factory CarouselController() => CarouselControllerImpl();
 
   bool get ready;
