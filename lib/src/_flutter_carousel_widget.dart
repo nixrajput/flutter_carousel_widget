@@ -21,10 +21,12 @@ class FlutterCarousel extends StatefulWidget {
     required this.items, // Items to display in the carousel
     required this.options, // Options for configuring the carousel
     Key? key,
-  })  : itemBuilder = null, // itemBuilder is null when using direct items list
-        itemCount =
-            items != null ? items.length : 0, // Count is based on items length
-        assert(items != null), // Ensure items list is not null
+  })  : itemBuilder = null,
+        // itemBuilder is null when using direct items list
+        itemCount = items != null ? items.length : 0,
+        // Count is based on items length
+        assert(items != null),
+        // Ensure items list is not null
         super(key: key);
 
   /// Constructor for on-demand item builder pattern
@@ -33,9 +35,12 @@ class FlutterCarousel extends StatefulWidget {
     required this.itemBuilder, // Builder function to create items dynamically
     required this.options, // Options for configuring the carousel
     Key? key,
-  })  : items = null, // Items list is null when using item builder
-        assert(itemCount != null), // Ensure itemCount is provided
-        assert(itemBuilder != null), // Ensure itemBuilder function is provided
+  })  : items = null,
+        // Items list is null when using item builder
+        assert(itemCount != null),
+        // Ensure itemCount is provided
+        assert(itemBuilder != null),
+        // Ensure itemBuilder function is provided
         super(key: key);
 
   /// Widget item builder that builds items on-demand
@@ -104,7 +109,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           setState(() {
-            _currentPage = actualIndex;
+            _currentPage = actualIndex; // Update current page
             _pageDelta = pageIndex - pageIndex.floor(); // Calculate delta
           });
         }
@@ -115,39 +120,12 @@ class FlutterCarouselState extends State<FlutterCarousel>
   /// Initialize state when the widget is first created
   @override
   void initState() {
-    // Initialize carousel state with options and callbacks for timer handling
-    _carouselState = CarouselState(
-      options,
-      _clearTimer,
-      _resumeTimer,
-      changeMode,
-    );
-
-    _carouselState!.itemCount =
-        widget.itemCount ?? widget.items!.length; // Set item count in state
-    carouselController.state = _carouselState; // Set carousel controller state
-
-    // Set initial page based on infinite scroll configuration
-    _carouselState!.initialPage = widget.options.initialPage;
-    _carouselState!.realPage = options.enableInfiniteScroll
-        ? _carouselState!.initialPage +
-            (_carouselState!.itemCount ?? 0) *
-                10000 // Offset for infinite scroll
-        : _carouselState!.initialPage;
-
-    _currentPage = _carouselState!.initialPage; // Set current page
-
-    // Initialize page controller with options
-    _pageController = PageController(
-      viewportFraction: options.viewportFraction, // Set viewport fraction
-      keepPage: options.keepPage, // Keep page state
-      initialPage: _carouselState!.realPage, // Set initial page
-    );
-
+    _initCarouselState(); // Initialize the state
+    _pageController = _createPageController(); // Create page controller
     _carouselState!.pageController = _pageController; // Set page controller
 
-    // Add listener to track index and page delta for smooth animations
-    _pageController?.addListener(_changeIndexPageDelta);
+    _pageController
+        ?.addListener(_changeIndexPageDelta); // Listen for page changes
 
     // Initialize auto-play
     _handleAutoPlay();
@@ -158,19 +136,15 @@ class FlutterCarouselState extends State<FlutterCarousel>
   /// Handle updates to the widget when it rebuilds
   @override
   void didUpdateWidget(covariant FlutterCarousel oldWidget) {
-    _carouselState!.itemCount = widget.itemCount; // Update item count
+    _carouselState!.options = options; // Update carousel options
+    _carouselState!.itemCount =
+        widget.itemCount ?? widget.items?.length; // Update item count
 
-    // Reinitialize the page controller with updated options
-    _pageController = PageController(
-      viewportFraction: options.viewportFraction, // Set viewport fraction
-      keepPage: options.keepPage, // Keep page state after updates
-      initialPage: _carouselState!.realPage, // Set initial page
-    );
-
+    _pageController = _createPageController(); // Recreate page controller
     _carouselState!.pageController = _pageController; // Update page controller
 
-    // Add listener to track page delta for smooth animations
-    _pageController!.addListener(_changeIndexPageDelta);
+    _pageController!
+        .addListener(_changeIndexPageDelta); // Listen for page changes
 
     // Handle auto-play when widget updates
     _handleAutoPlay();
@@ -181,10 +155,48 @@ class FlutterCarouselState extends State<FlutterCarousel>
   /// Dispose resources when widget is removed from the tree
   @override
   void dispose() {
+    _clearTimer(); // Clear the timer for auto-play
     _pageController?.removeListener(_changeIndexPageDelta); // Remove listener
     _pageController?.dispose(); // Dispose page controller
-    _clearTimer(); // Clear the timer for auto-play
     super.dispose();
+  }
+
+  /// Initialize the carousel state
+  void _initCarouselState() {
+    // Initialize carousel state with options and callbacks for timer handling
+    _carouselState = CarouselState(
+      options,
+      _clearTimer,
+      _resumeTimer,
+      _changeMode,
+    );
+
+    _carouselState!.itemCount =
+        widget.itemCount ?? widget.items?.length; // Set item count in state
+    carouselController.state = _carouselState; // Assign state to controller
+    _carouselState!.initialPage =
+        widget.options.initialPage; // Set initial page
+    _carouselState!.realPage = options.enableInfiniteScroll
+        ? _carouselState!.initialPage +
+            (_carouselState!.itemCount ?? widget.items?.length ?? 0) *
+                10000 // Arbitrary large multiplier
+        : _carouselState!.initialPage;
+
+    _currentPage = _carouselState!.initialPage; // Set current page
+  }
+
+  /// Create a page controller for the carousel
+  PageController _createPageController() {
+    return PageController(
+      viewportFraction: options.viewportFraction, // Set viewport fraction
+      keepPage: options.keepPage, // Keep page position
+      initialPage: _carouselState!.realPage, // Set initial page for controller
+    );
+  }
+
+  /// Change the page change reason mode
+  void _changeMode(CarouselPageChangedReason _mode) {
+    changeReasonMode = _mode; // Update the change reason mode
   }
 
   /// Create a timer for auto-play functionality
@@ -203,11 +215,11 @@ class FlutterCarouselState extends State<FlutterCarousel>
       // Temporarily store the previous change reason
       var previousReason = changeReasonMode;
       // Set change reason to timed
-      changeMode(CarouselPageChangedReason.timed);
+      _changeMode(CarouselPageChangedReason.timed);
 
       // Calculate the next page index for auto-play
       var nextPage = _carouselState!.pageController!.page!.round() + 1;
-      var itemCount = widget.itemCount ?? widget.items!.length;
+      var itemCount = widget.itemCount ?? widget.items?.length ?? 0;
 
       // Reset to the first page if at the end of the carousel and infinite scroll is disabled
       if (nextPage >= itemCount &&
@@ -227,13 +239,8 @@ class FlutterCarouselState extends State<FlutterCarousel>
                 widget.options.autoPlayAnimationDuration, // Animation duration
             curve: widget.options.autoPlayCurve, // Animation curve
           )
-          .then((_) => changeMode(previousReason)); // Restore previous reason
+          .then((_) => _changeMode(previousReason)); // Restore previous reason
     });
-  }
-
-  /// Change the page change reason mode
-  void changeMode(CarouselPageChangedReason _mode) {
-    changeReasonMode = _mode; // Update the change reason mode
   }
 
   /// Clear the timer to stop auto-play
@@ -285,7 +292,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
             instance
               ..onStart = (_) {
                 _clearTimer(); // Pause auto-play when user interacts
-                changeMode(CarouselPageChangedReason
+                _changeMode(CarouselPageChangedReason
                     .manual); // Change the page change reason mode
               }
               ..onDown = (_) {
@@ -293,7 +300,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
                   _clearTimer(); // Pause auto-play when user interacts
                 }
 
-                changeMode(CarouselPageChangedReason
+                _changeMode(CarouselPageChangedReason
                     .manual); // Change the page change reason mode
               }
               ..onCancel = () {
@@ -380,7 +387,8 @@ class FlutterCarouselState extends State<FlutterCarousel>
       padEnds: widget.options.padEnds,
       itemCount: widget.options.enableInfiniteScroll
           ? null // Infinite scroll mode does not need item count
-          : widget.itemCount ?? widget.items!.length, // Use provided item count
+          : widget.itemCount ?? widget.items!.length,
+      // Use provided item count
       onPageChanged: (int index) {
         // Calculate the current page index in infinite scroll mode
         var currentPage = getRealIndex(
@@ -396,7 +404,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
       },
       itemBuilder: (BuildContext context, int idx) {
         // Calculate the real index in infinite scroll mode
-        final int actualIndex = getRealIndex(
+        final int index = getRealIndex(
           idx + _carouselState!.initialPage,
           _carouselState!.realPage,
           widget.itemCount,
@@ -407,19 +415,19 @@ class FlutterCarouselState extends State<FlutterCarousel>
           builder: (BuildContext context, Widget? child) {
             var distortionValue = 1.0;
 
-            // if `enlargeCenterPage` is true, we must calculate the carousel
-            // item's height to display the visual effect
+            // Calculate distortion for enlargeCenterPage option
             if (widget.options.enlargeCenterPage != null &&
                 widget.options.enlargeCenterPage == true) {
-              // pageController.page can only be accessed after the first
-              // build, so in the first build we calculate the item
-              // offset manually
-              var itemOffset = 0.0;
-              var position = _carouselState?.pageController?.position;
-              if (position != null &&
-                  position.hasPixels &&
-                  position.hasContentDimensions) {
-                var page = _carouselState?.pageController?.page;
+              double? itemOffset = 0.0;
+
+              // Check if the page controller has dimensions
+              final pageControllerPosition =
+                  _carouselState?.pageController?.position;
+              if (pageControllerPosition != null &&
+                  pageControllerPosition.hasPixels &&
+                  pageControllerPosition.hasContentDimensions) {
+                // Calculate item offset
+                final page = _carouselState?.pageController?.page;
                 if (page != null) {
                   itemOffset = page - idx;
                 }
@@ -436,23 +444,27 @@ class FlutterCarouselState extends State<FlutterCarousel>
                 }
               }
 
-              // Calculate [distortionRatio]
+              // Calculate distortion ratio for center page enlargement
               final distortionRatio =
-                  1 - (itemOffset.abs() * 0.25).clamp(0.0, 1.0);
-              distortionValue = Curves.easeOut.transform(distortionRatio);
+                  1 - (itemOffset.abs() * widget.options.enlargeFactor!);
+
+              // Transform the distortion value for smooth enlargement
+              distortionValue =
+                  Curves.easeOut.transform(distortionRatio.clamp(0.0, 1.0));
             }
 
-            // Calculate [height]
-            final height = widget.options.height ??
+            // Calculate the dimension
+            final dimen = widget.options.height ??
                 MediaQuery.of(context).size.width *
-                    (1 / (widget.options.aspectRatio ?? 1 / 1));
+                    (1 / (widget.options.aspectRatio ?? 1.0));
 
-            // If [scrollDirection] option is [Axis.horizontal]
+            // Apply horizontal scrolling transformations
             if (widget.options.scrollDirection == Axis.horizontal) {
               return _getCenterWrapper(
                 _getEnlargeWrapper(
                   child,
-                  height: distortionValue * height,
+                  height: distortionValue * dimen,
+                  width: distortionValue * dimen,
                   scale: distortionValue,
                 ),
               );
@@ -460,7 +472,8 @@ class FlutterCarouselState extends State<FlutterCarousel>
               return _getCenterWrapper(
                 _getEnlargeWrapper(
                   child,
-                  width: distortionValue * MediaQuery.of(context).size.width,
+                  width: distortionValue * dimen,
+                  height: distortionValue * dimen,
                   scale: distortionValue,
                 ),
               );
@@ -468,9 +481,9 @@ class FlutterCarouselState extends State<FlutterCarousel>
           },
           child: (widget.items != null)
               ? (widget.items!.isNotEmpty
-                  ? widget.items![actualIndex]
+                  ? widget.items![index]
                   : const SizedBox())
-              : widget.itemBuilder!(context, actualIndex, idx),
+              : widget.itemBuilder!(context, index, idx),
         );
       },
     );
@@ -493,10 +506,11 @@ class FlutterCarouselState extends State<FlutterCarousel>
   /// the slide indicator. The slide indicator can be positioned as floating
   /// or below the carousel depending on the [floatingIndicator] option.
   Widget _buildWidget(BuildContext context) {
+    // If `showIndicator` option is true
     if (widget.options.showIndicator &&
         widget.options.slideIndicator != null &&
         widget.itemCount! > 1) {
-      // If [floatingIndicator] option is [true]
+      // If `floatingIndicator` option is true
       if (widget.options.floatingIndicator) {
         return _getGestureWrapper(
           child: Stack(
@@ -513,7 +527,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
         );
       }
 
-      /// If [floatingIndicator] option is [false]
+      // If `floatingIndicator` option is false
       return _getGestureWrapper(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -534,6 +548,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
       );
     }
 
+    // If `showIndicator` option is false
     return _getGestureWrapper(child: _buildCarouselWidget(context));
   }
 

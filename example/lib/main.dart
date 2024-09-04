@@ -215,11 +215,13 @@ class EnlargeStrategyDemo extends StatelessWidget {
         child: FlutterCarousel(
           options: CarouselOptions(
             autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 10),
+            enableInfiniteScroll: true,
+            autoPlayInterval: const Duration(seconds: 3),
             viewportFraction: 0.8,
             enlargeCenterPage: true,
             slideIndicator: CircularWaveSlideIndicator(),
             floatingIndicator: false,
+            scrollDirection: Axis.vertical,
           ),
           items: sliders,
         ),
@@ -619,6 +621,114 @@ class MultipleItemDemo extends StatelessWidget {
   }
 }
 
+final expandableItems = [
+  Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+    child: ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+      child: Container(
+        color: Colors.blue,
+        width: double.infinity,
+        height: 200,
+        child: const Center(
+          child: Text(
+            "Slide 1",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+  Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+    child: ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+      child: Container(
+        color: Colors.red,
+        width: double.infinity,
+        height: 300,
+        child: const Center(
+          child: Text(
+            "Slide 2",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+  Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+    child: ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+      child: Container(
+        color: Colors.yellow,
+        width: double.infinity,
+        height: 250,
+        child: const Center(
+          child: Text(
+            "Slide 3",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+  Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+    child: ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+      child: Container(
+        color: Colors.pink,
+        width: double.infinity,
+        height: 400,
+        child: const Center(
+          child: Text(
+            "Slide 4",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+  Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+    child: ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+      child: Container(
+        color: Colors.green,
+        width: double.infinity,
+        height: 350,
+        child: const Center(
+          child: Text(
+            "Slide 5",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    ),
+  )
+];
+
 class ExpandableCarouselDemo extends StatefulWidget {
   const ExpandableCarouselDemo({Key? key}) : super(key: key);
 
@@ -640,48 +750,23 @@ class _ExpandableCarouselDemoState extends State<ExpandableCarouselDemo> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            ExpandableCarousel(
+            ExpandableCarousel.builder(
               options: ExpandableCarouselOptions(
                 // viewportFraction: 1.0,
                 enableInfiniteScroll: true,
-                initialPage: 2,
+                enlargeCenterPage: true,
+                initialPage: 1,
                 autoPlay: true,
                 controller: _controller,
+                //showIndicator: false,
                 floatingIndicator: false,
                 restorationId: 'expandable_carousel',
               ),
-              items: sliders,
+              itemCount: expandableItems.length,
+              itemBuilder: (context, index, realIdx) {
+                return expandableItems[index];
+              },
             ),
-            const SizedBox(height: 16.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: ElevatedButton(
-                      onPressed: _controller.previousPage,
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.arrow_back),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: ElevatedButton(
-                      onPressed: _controller.nextPage,
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.arrow_forward),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),

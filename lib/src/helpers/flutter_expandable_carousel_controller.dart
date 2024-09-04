@@ -12,13 +12,13 @@ abstract class ExpandableCarouselController {
 
   Future<void> get onReady;
 
-  Future<void> nextPage({Duration? duration, Curve? curve});
+  void nextPage({Duration? duration, Curve? curve});
 
-  Future<void> previousPage({Duration? duration, Curve? curve});
+  void previousPage({Duration? duration, Curve? curve});
 
   void jumpToPage(int page);
 
-  Future<void> animateToPage(int page, {Duration? duration, Curve? curve});
+  void animateToPage(int page, {Duration? duration, Curve? curve});
 
   void startAutoPlay();
 
@@ -34,7 +34,7 @@ class ExpandableCarouselControllerImpl implements ExpandableCarouselController {
   /// The animation lasts for the given duration and follows the given curve.
   /// The returned [Future] resolves when the animation completes.
   @override
-  Future<void> animateToPage(int page,
+  void animateToPage(int page,
       {Duration? duration = const Duration(milliseconds: 300),
       Curve? curve = Curves.linear}) async {
     final isNeedResetTimer = _state!.options.pauseAutoPlayOnManualNavigate;
@@ -72,7 +72,7 @@ class ExpandableCarouselControllerImpl implements ExpandableCarouselController {
   /// The animation lasts for the given duration and follows the given curve.
   /// The returned [Future] resolves when the animation completes.
   @override
-  Future<void> nextPage(
+  void nextPage(
       {Duration? duration = const Duration(milliseconds: 300),
       Curve? curve = Curves.linear}) async {
     final isNeedResetTimer = _state!.options.pauseAutoPlayOnManualNavigate;
@@ -94,7 +94,7 @@ class ExpandableCarouselControllerImpl implements ExpandableCarouselController {
   /// The animation lasts for the given duration and follows the given curve.
   /// The returned [Future] resolves when the animation completes.
   @override
-  Future<void> previousPage(
+  void previousPage(
       {Duration? duration = const Duration(milliseconds: 300),
       Curve? curve = Curves.linear}) async {
     final isNeedResetTimer = _state!.options.pauseAutoPlayOnManualNavigate;

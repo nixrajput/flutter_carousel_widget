@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' hide CarouselController;
-import 'package:flutter_carousel_widget/src/helpers/slide_indicator_options_model.dart';
 import 'package:flutter_carousel_widget/src/indicators/slide_indicator.dart';
+import 'package:flutter_carousel_widget/src/indicators/slide_indicator_options.dart';
 
 class CircularSlideIndicator implements SlideIndicator {
   const CircularSlideIndicator(
@@ -13,6 +13,7 @@ class CircularSlideIndicator implements SlideIndicator {
     return Container(
       alignment: slideIndicatorOptions.alignment,
       padding: slideIndicatorOptions.padding,
+      color: Colors.transparent,
       child: Container(
         decoration: slideIndicatorOptions.enableHalo
             ? slideIndicatorOptions.haloDecoration

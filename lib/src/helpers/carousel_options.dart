@@ -1,13 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
-import 'package:flutter_carousel_widget/src/enums/center_page_enlarge_strategy.dart';
 import 'package:flutter_carousel_widget/src/helpers/flutter_expandable_carousel_controller.dart';
 import 'package:flutter_carousel_widget/src/indicators/circular_slide_indicator.dart';
 import 'package:flutter_carousel_widget/src/indicators/slide_indicator.dart';
 
-class ExpandableCarouselOptions {
-  ExpandableCarouselOptions({
+abstract class CarouselOptions {
+  CarouselOptions({
+    this.height,
     this.aspectRatio,
     this.viewportFraction = 0.8,
     this.initialPage = 0,
@@ -38,11 +38,6 @@ class ExpandableCarouselOptions {
     this.dragStartBehavior = DragStartBehavior.start,
     this.allowImplicitScrolling = false,
     this.restorationId,
-    this.enlargeCenterPage = false,
-    this.enlargeFactor = 0.25,
-    this.enlargeStrategy = CenterPageEnlargeStrategy.scale,
-    this.disableCenter = false,
-    this.estimatedPageSize = 0.0,
   }) : assert(showIndicator == true ? slideIndicator != null : true);
 
   /// Called whenever the page in the center of the viewport changes.
@@ -100,6 +95,9 @@ class ExpandableCarouselOptions {
 
   /// Whether or not to float `SlideIndicator` over `Carousel`.
   final bool floatingIndicator;
+
+  /// Set carousel height and overrides any existing [aspectRatio].
+  final double? height;
 
   /// Indicator margin
   final double? indicatorMargin;
@@ -196,105 +194,4 @@ class ExpandableCarouselOptions {
   ///
   /// Defaults to 0.8, which means each page fills 80% of the carousel.
   final double viewportFraction;
-
-  /// Whether or not to disable the `Center` widget for each slide.
-  final bool disableCenter;
-
-  /// Determines if current page should be larger then the side images,
-  /// creating a feeling of depth in the carousel.
-  ///
-  /// Defaults to false.
-  final bool? enlargeCenterPage;
-
-  /// Use `enlargeStrategy` to determine which method to enlarge the center page.
-  final CenterPageEnlargeStrategy enlargeStrategy;
-
-  /// The fraction of the center page to enlarge.
-  ///
-  /// Defaults to 0.25, which means center page will be 25% larger than other pages.
-  final double? enlargeFactor;
-
-  /// Setting it to a value much bigger than most pages' sizes might result in a
-  /// reversed - "expand and shrink" - effect.
-  final double estimatedPageSize;
-
-  /// Copy With Constructor
-  ExpandableCarouselOptions copyWith({
-    double? aspectRatio,
-    double? viewportFraction,
-    int? initialPage,
-    bool? enableInfiniteScroll,
-    bool? reverse,
-    bool? autoPlay,
-    Duration? autoPlayInterval,
-    Duration? autoPlayAnimationDuration,
-    Curve? autoPlayCurve,
-    Axis? scrollDirection,
-    ExpandableCarouselController? carouselController,
-    Function(int index, CarouselPageChangedReason reason)? onPageChanged,
-    ValueChanged<double?>? onScrolled,
-    ScrollPhysics? physics,
-    bool? pageSnapping,
-    bool? pauseAutoPlayOnTouch,
-    bool? pauseAutoPlayOnManualNavigate,
-    bool? pauseAutoPlayInFiniteScroll,
-    PageStorageKey<dynamic>? pageViewKey,
-    SlideIndicator? slideIndicator,
-    bool? showIndicator,
-    bool? floatingIndicator,
-    double? indicatorMargin,
-    bool? keepPage,
-    bool? padEnds,
-    Clip? clipBehavior,
-    DragStartBehavior? dragStartBehavior,
-    ScrollBehavior? scrollBehavior,
-    bool? allowImplicitScrolling,
-    String? restorationId,
-    bool? enlargeCenterPage,
-    double? enlargeFactor,
-    CenterPageEnlargeStrategy? enlargeStrategy,
-    bool? disableCenter,
-    double? estimatedPageSize,
-  }) {
-    return ExpandableCarouselOptions(
-      aspectRatio: aspectRatio ?? this.aspectRatio,
-      viewportFraction: viewportFraction ?? this.viewportFraction,
-      initialPage: initialPage ?? this.initialPage,
-      enableInfiniteScroll: enableInfiniteScroll ?? this.enableInfiniteScroll,
-      reverse: reverse ?? this.reverse,
-      autoPlay: autoPlay ?? this.autoPlay,
-      autoPlayInterval: autoPlayInterval ?? this.autoPlayInterval,
-      autoPlayAnimationDuration:
-          autoPlayAnimationDuration ?? this.autoPlayAnimationDuration,
-      autoPlayCurve: autoPlayCurve ?? this.autoPlayCurve,
-      onPageChanged: onPageChanged ?? this.onPageChanged,
-      onScrolled: onScrolled ?? this.onScrolled,
-      physics: physics ?? this.physics,
-      pageSnapping: pageSnapping ?? this.pageSnapping,
-      scrollDirection: scrollDirection ?? this.scrollDirection,
-      pauseAutoPlayOnTouch: pauseAutoPlayOnTouch ?? this.pauseAutoPlayOnTouch,
-      pauseAutoPlayOnManualNavigate:
-          pauseAutoPlayOnManualNavigate ?? this.pauseAutoPlayOnManualNavigate,
-      pauseAutoPlayInFiniteScroll:
-          pauseAutoPlayInFiniteScroll ?? this.pauseAutoPlayInFiniteScroll,
-      pageViewKey: pageViewKey ?? this.pageViewKey,
-      keepPage: keepPage ?? this.keepPage,
-      showIndicator: showIndicator ?? this.showIndicator,
-      floatingIndicator: floatingIndicator ?? this.floatingIndicator,
-      indicatorMargin: indicatorMargin ?? this.indicatorMargin,
-      slideIndicator: slideIndicator ?? this.slideIndicator,
-      padEnds: padEnds ?? this.padEnds,
-      clipBehavior: clipBehavior ?? this.clipBehavior,
-      dragStartBehavior: dragStartBehavior ?? this.dragStartBehavior,
-      scrollBehavior: scrollBehavior ?? this.scrollBehavior,
-      allowImplicitScrolling:
-          allowImplicitScrolling ?? this.allowImplicitScrolling,
-      restorationId: restorationId ?? this.restorationId,
-      enlargeCenterPage: enlargeCenterPage ?? this.enlargeCenterPage,
-      enlargeFactor: enlargeFactor ?? this.enlargeFactor,
-      enlargeStrategy: enlargeStrategy ?? this.enlargeStrategy,
-      disableCenter: disableCenter ?? this.disableCenter,
-      estimatedPageSize: estimatedPageSize ?? this.estimatedPageSize,
-    );
-  }
 }

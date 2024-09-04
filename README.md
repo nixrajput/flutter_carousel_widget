@@ -49,6 +49,7 @@ A customizable carousel slider widget for Flutter, offering features such as inf
 - **Pre-built Indicators:** Easily add indicators to show the current slide position.
 - **Expandable Carousel Widget:** Expand the carousel widget to fit the available space.
 - **Auto-sized Child Support:** Automatically adjust the size of the carousel items to fit their content.
+- **Enlarge Center Page:** The focused item can be enlarged.
 
 ## Demo
 

@@ -10,7 +10,7 @@ class CarouselOptions {
   CarouselOptions({
     this.height,
     this.aspectRatio,
-    this.viewportFraction = 0.9,
+    this.viewportFraction = 0.8,
     this.initialPage = 0,
     this.enableInfiniteScroll = false,
     this.reverse = false,
@@ -19,6 +19,7 @@ class CarouselOptions {
     this.autoPlayAnimationDuration = const Duration(milliseconds: 300),
     this.autoPlayCurve = Curves.easeInCubic,
     this.enlargeCenterPage = false,
+    this.enlargeFactor = 0.25,
     this.controller,
     this.onPageChanged,
     this.onScrolled,
@@ -87,9 +88,6 @@ class CarouselOptions {
   /// A [MapController], used to control the map.
   final CarouselController? controller;
 
-  /// Whether or not to disable the `Center` widget for each slide.
-  final bool disableCenter;
-
   /// Determines the way that drag start behavior is handled.
   ///
   /// Corresponds to Material's PageView's dragStartBehavior parameter: https://api.flutter.dev/flutter/widgets/PageView-class.html
@@ -108,6 +106,14 @@ class CarouselOptions {
 
   /// Use `enlargeStrategy` to determine which method to enlarge the center page.
   final CenterPageEnlargeStrategy enlargeStrategy;
+
+  /// Whether or not to disable the `Center` widget for each slide.
+  final bool disableCenter;
+
+  /// The fraction of the center page to enlarge.
+  ///
+  /// Defaults to 0.25, which means center page will be 25% larger than other pages.
+  final double? enlargeFactor;
 
   /// Whether or not to float `SlideIndicator` over `Carousel`.
   final bool floatingIndicator;
@@ -223,7 +229,6 @@ class CarouselOptions {
     Duration? autoPlayInterval,
     Duration? autoPlayAnimationDuration,
     Curve? autoPlayCurve,
-    bool? enlargeCenterPage,
     Axis? scrollDirection,
     CarouselController? carouselController,
     Function(int index, CarouselPageChangedReason reason)? onPageChanged,
@@ -234,6 +239,8 @@ class CarouselOptions {
     bool? pauseAutoPlayOnManualNavigate,
     bool? pauseAutoPlayInFiniteScroll,
     PageStorageKey<dynamic>? pageViewKey,
+    bool? enlargeCenterPage,
+    double? enlargeFactor,
     CenterPageEnlargeStrategy? enlargeStrategy,
     bool? disableCenter,
     SlideIndicator? slideIndicator,
@@ -260,7 +267,6 @@ class CarouselOptions {
       autoPlayAnimationDuration:
           autoPlayAnimationDuration ?? this.autoPlayAnimationDuration,
       autoPlayCurve: autoPlayCurve ?? this.autoPlayCurve,
-      enlargeCenterPage: enlargeCenterPage ?? this.enlargeCenterPage,
       onPageChanged: onPageChanged ?? this.onPageChanged,
       onScrolled: onScrolled ?? this.onScrolled,
       physics: physics ?? this.physics,
@@ -273,6 +279,8 @@ class CarouselOptions {
           pauseAutoPlayInFiniteScroll ?? this.pauseAutoPlayInFiniteScroll,
       pageViewKey: pageViewKey ?? this.pageViewKey,
       keepPage: keepPage ?? this.keepPage,
+      enlargeCenterPage: enlargeCenterPage ?? this.enlargeCenterPage,
+      enlargeFactor: enlargeFactor ?? this.enlargeFactor,
       enlargeStrategy: enlargeStrategy ?? this.enlargeStrategy,
       disableCenter: disableCenter ?? this.disableCenter,
       showIndicator: showIndicator ?? this.showIndicator,

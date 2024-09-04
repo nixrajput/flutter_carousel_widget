@@ -1,3 +1,5 @@
+
+
 /// Calculates the actual index within a collection of items, considering the current
 /// position in an infinitely scrolling carousel.
 ///

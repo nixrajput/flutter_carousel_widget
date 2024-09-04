@@ -1,0 +1,55 @@
+name: Publish to GitHub Pages
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  checkout:
+    name: Checkout Repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+  setup-flutter:
+    name: Setup Flutter
+    runs-on: ubuntu-latest
+    needs: checkout
+    steps:
+      - name: Install Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.24.x
+
+      - name: Check Flutter Version
+        run: flutter --version
+
+      - name: Get Flutter Dependencies
+        run: flutter pub get
+
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    needs: setup-flutter
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Run Flutter Analyzer (Lint)
+        run: flutter analyze
+
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to GitHub Pages
+        uses: bluefireteam/flutter-gh-pages@v8
+        with:
+          workingDir: example
+          baseHref: /flutter_carousel_widget/
