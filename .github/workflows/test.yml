@@ -28,11 +28,6 @@ jobs:
       - name: Run Flutter doctor
         run: flutter doctor -v
 
-  lint:
-    name: Lint Code
-    runs-on: ubuntu-latest
-    needs: setup-flutter
-    steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
@@ -40,9 +35,9 @@ jobs:
         run: flutter analyze
 
   test:
-    name: Test Code
+    name: Run Test Cases
     runs-on: ubuntu-latest
-    needs: lint
+    needs: setup-flutter
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3

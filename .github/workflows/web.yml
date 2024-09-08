@@ -26,16 +26,11 @@ jobs:
       - name: Check Flutter Version
         run: flutter --version
 
-      - name: Get Flutter Dependencies
-        run: flutter pub get
-
-  lint:
-    name: Lint Code
-    runs-on: ubuntu-latest
-    needs: setup-flutter
-    steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Get Flutter Dependencies
+        run: flutter pub get
 
       - name: Run Flutter Analyzer (Lint)
         run: flutter analyze
@@ -43,7 +38,7 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
-    needs: lint
+    needs: setup-flutter
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
