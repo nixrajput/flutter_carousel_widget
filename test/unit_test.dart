@@ -1,17 +1,13 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart' hide CarouselController;
-import 'package:flutter_carousel_widget/src/enums/center_page_enlarge_strategy.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_controller.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_options.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_state.dart';
-import 'package:flutter_carousel_widget/src/indicators/circular_slide_indicator.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_carousel_widget/src/utils/flutter_carousel_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('FlutterCarousel Unit Tests', () {
     test('Default values of CarouselOptions should be as expected', () {
-      final options = CarouselOptions();
+      final options = FlutterCarouselOptions();
 
       expect(options.height, null);
       expect(options.aspectRatio, null);
@@ -41,7 +37,7 @@ void main() {
       expect(options.showIndicator, true);
       expect(options.floatingIndicator, true);
       expect(options.indicatorMargin, 8.0);
-      expect(options.slideIndicator, isA<CircularSlideIndicator>());
+      expect(options.slideIndicator, isNull);
       expect(options.clipBehavior, Clip.antiAlias);
       expect(options.scrollBehavior, null);
       expect(options.pageSnapping, true);
@@ -52,7 +48,7 @@ void main() {
     });
 
     test('CarouselOptions should accept and return custom values', () {
-      final options = CarouselOptions(
+      final options = FlutterCarouselOptions(
         height: 300,
         aspectRatio: 2.0,
         viewportFraction: 0.9,
@@ -95,7 +91,7 @@ void main() {
     test(
         'CarouselOptions copyWith should return new instance with updated values',
         () {
-      final options = CarouselOptions();
+      final options = FlutterCarouselOptions();
 
       final newOptions = options.copyWith(
         height: 400,
@@ -115,8 +111,8 @@ void main() {
     });
 
     test('CarouselState initialization', () {
-      final options = CarouselOptions();
-      final carouselState = CarouselState(
+      final options = FlutterCarouselOptions();
+      final carouselState = FlutterCarouselState(
         options,
         () {}, // onResetTimer
         () {}, // onResumeTimer
@@ -131,8 +127,8 @@ void main() {
     });
 
     test('CarouselState item count', () {
-      final options = CarouselOptions();
-      final carouselState = CarouselState(
+      final options = FlutterCarouselOptions();
+      final carouselState = FlutterCarouselState(
         options,
         () {}, // onResetTimer
         () {}, // onResumeTimer
@@ -146,14 +142,14 @@ void main() {
     test('CarouselControllerImpl initialization, set state and ready completer',
         () async {
       // Create the controller
-      final controller = CarouselControllerImpl();
+      final controller = FlutterCarouselControllerImpl();
 
       // Verify initial state
       expect(controller.ready, false);
 
       // Create a mock CarouselState and assign it to the controller's state
-      final options = CarouselOptions();
-      final state = CarouselState(
+      final options = FlutterCarouselOptions();
+      final state = FlutterCarouselState(
         options,
         () {}, // onResetTimer
         () {}, // onResumeTimer
@@ -170,9 +166,9 @@ void main() {
     });
 
     test('CarouselControllerImpl jumpToPage', () {
-      final options = CarouselOptions();
-      final controller = CarouselControllerImpl();
-      final state = CarouselState(
+      final options = FlutterCarouselOptions();
+      final controller = FlutterCarouselControllerImpl();
+      final state = FlutterCarouselState(
         options,
         () {}, // onResetTimer
         () {}, // onResumeTimer

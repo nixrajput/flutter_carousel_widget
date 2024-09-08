@@ -1,13 +1,12 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart' hide CarouselController;
-import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
-import 'package:flutter_carousel_widget/src/enums/center_page_enlarge_strategy.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_expandable_carousel_controller.dart';
-import 'package:flutter_carousel_widget/src/indicators/circular_slide_indicator.dart';
-import 'package:flutter_carousel_widget/src/indicators/slide_indicator.dart';
+import 'package:flutter/widgets.dart';
 
-class ExpandableCarouselOptions {
-  ExpandableCarouselOptions({
+import '../enums/carousel_page_changed_reason.dart';
+import '../enums/center_page_enlarge_strategy.dart';
+import '../indicators/slide_indicator.dart';
+
+abstract class BaseCarouselOptions {
+  BaseCarouselOptions({
     this.aspectRatio,
     this.viewportFraction = 0.8,
     this.initialPage = 0,
@@ -17,7 +16,6 @@ class ExpandableCarouselOptions {
     this.autoPlayInterval = const Duration(seconds: 5),
     this.autoPlayAnimationDuration = const Duration(milliseconds: 300),
     this.autoPlayCurve = Curves.easeInCubic,
-    this.controller,
     this.onPageChanged,
     this.onScrolled,
     this.physics = const BouncingScrollPhysics(),
@@ -30,7 +28,7 @@ class ExpandableCarouselOptions {
     this.showIndicator = true,
     this.floatingIndicator = true,
     this.indicatorMargin = 8.0,
-    this.slideIndicator = const CircularSlideIndicator(),
+    this.slideIndicator,
     this.clipBehavior = Clip.antiAlias,
     this.scrollBehavior,
     this.pageSnapping = true,
@@ -42,59 +40,61 @@ class ExpandableCarouselOptions {
     this.enlargeFactor = 0.25,
     this.enlargeStrategy = CenterPageEnlargeStrategy.scale,
     this.disableCenter = false,
-    this.estimatedPageSize = 0.0,
-  }) : assert(showIndicator == true ? slideIndicator != null : true);
-
-  /// Called whenever the page in the center of the viewport changes.
-  final Function(int index, CarouselPageChangedReason reason)? onPageChanged;
-
-  /// Controls whether the widget's pages will respond to [RenderObject.showOnScreen], which will allow for implicit accessibility scrolling.
-  ///
-  /// Corresponds to Material's PageView's allowImplicitScrolling parameter: https://api.flutter.dev/flutter/widgets/PageView-class.html
-  final bool allowImplicitScrolling;
+  })  : assert(viewportFraction > 0 && viewportFraction <= 1.0,
+            'viewportFraction must be between 0.0 and 1.0'),
+        assert(initialPage >= 0, 'initialPage must be a non-negative integer'),
+        assert(autoPlayInterval > Duration.zero,
+            'autoPlayInterval must be greater than zero'),
+        assert(autoPlayAnimationDuration > Duration.zero,
+            'autoPlayAnimationDuration must be greater than zero'),
+        assert(indicatorMargin != null && indicatorMargin >= 0,
+            'indicatorMargin must be a non-negative value'),
+        assert(
+            enlargeCenterPage == false ||
+                (enlargeFactor != null && enlargeFactor > 0.0),
+            'enlargeFactor must be greater than 0 when enlargeCenterPage is true'),
+        assert(enlargeFactor != null && enlargeFactor > 0.0,
+            'enlargeFactor must be greater than 0.0'),
+        super();
 
   /// Aspect ratio is used if no height have been declared.
-  ///
   /// Defaults to 1:1 (square) aspect ratio.
   final double? aspectRatio;
 
+  /// The fraction of the viewport that each page should occupy.
+  /// Defaults to 0.8, which means each page fills 80% of the carousel.
+  final double viewportFraction;
+
   /// Enables auto play, sliding one page at a time.
-  ///
   /// Use [autoPlayInterval] to determent the frequency of slides.
   /// Defaults to false.
   final bool autoPlay;
 
   /// The animation duration between two transitioning pages while in auto playback.
-  ///
   /// Defaults to 500 ms.
   final Duration autoPlayAnimationDuration;
 
   /// Determines the animation curve physics.
-  ///
   /// Defaults to [Curves.easeInOut].
   final Curve autoPlayCurve;
 
   /// Sets Duration to determent the frequency of slides when
-  ///
   /// [autoPlay] is set to true.
   /// Defaults to 5 seconds.
   final Duration autoPlayInterval;
 
   /// The content will be clipped (or not) according to this option.
-  ///
   /// Corresponds to Material's PageView's clipBehavior parameter: https://api.flutter.dev/flutter/widgets/PageView-class.html
   final Clip clipBehavior;
 
-  /// A [MapController], used to control the map.
-  final ExpandableCarouselController? controller;
+  /// Called whenever the page in the center of the viewport changes.
+  final Function(int index, CarouselPageChangedReason reason)? onPageChanged;
 
   /// Determines the way that drag start behavior is handled.
-  ///
   /// Corresponds to Material's PageView's dragStartBehavior parameter: https://api.flutter.dev/flutter/widgets/PageView-class.html
   final DragStartBehavior dragStartBehavior;
 
   ///Determines if carousel should loop infinitely or be limited to item length.
-  ///
   ///Defaults to true, i.e. infinite loop.
   final bool enableInfiniteScroll;
 
@@ -105,7 +105,6 @@ class ExpandableCarouselOptions {
   final double? indicatorMargin;
 
   /// The initial page to show when first creating the [CarouselSlider].
-  ///
   /// Defaults to 0.
   final int initialPage;
 
@@ -125,7 +124,6 @@ class ExpandableCarouselOptions {
   final bool padEnds;
 
   /// Set to false to disable page snapping, useful for custom scroll behavior.
-  ///
   /// Default to `true`.
   final bool pageSnapping;
 
@@ -152,37 +150,32 @@ class ExpandableCarouselOptions {
   final bool pauseAutoPlayOnTouch;
 
   /// How the carousel should respond to user input.
-  ///
   /// For example, determines how the items continues to animate after the
   /// user stops dragging the page view.
-  ///
   /// The physics are modified to snap to page boundaries using
   /// [PageScrollPhysics] prior to being used.
-  ///
   /// Defaults to matching platform conventions.
   final ScrollPhysics? physics;
 
+  /// Controls whether the widget's pages will respond to [RenderObject.showOnScreen], which will allow for implicit accessibility scrolling.
+  /// Corresponds to Material's PageView's allowImplicitScrolling parameter: https://api.flutter.dev/flutter/widgets/PageView-class.html
+  final bool allowImplicitScrolling;
+
   /// Restoration ID to save and restore the scroll offset of the scrollable.
-  ///
   /// Corresponds to Material's PageView's restorationId parameter: https://api.flutter.dev/flutter/widgets/PageView-class.html
   final String? restorationId;
 
   /// Reverse the order of items if set to true.
-  ///
   /// Defaults to false.
   final bool reverse;
 
   ///A ScrollBehavior that will be applied to this widget individually.
-  ///
   /// Defaults to null, wherein the inherited ScrollBehavior is copied and modified to alter the viewport decoration, like Scrollbars.
-  ///
   /// ScrollBehaviors also provide ScrollPhysics. If an explicit ScrollPhysics is provided in physics, it will take precedence, followed by scrollBehavior, and then the inherited ancestor ScrollBehavior.
-  ///
   /// The ScrollBehavior of the inherited ScrollConfiguration will be modified by default to not apply a Scrollbar.
   final ScrollBehavior? scrollBehavior;
 
   /// The axis along which the page view scrolls.
-  ///
   /// Defaults to [Axis.horizontal].
   final Axis scrollDirection;
 
@@ -192,17 +185,11 @@ class ExpandableCarouselOptions {
   /// Use `slideIndicator` to determine which indicator you want to show for each slide.
   final SlideIndicator? slideIndicator;
 
-  /// The fraction of the viewport that each page should occupy.
-  ///
-  /// Defaults to 0.8, which means each page fills 80% of the carousel.
-  final double viewportFraction;
-
   /// Whether or not to disable the `Center` widget for each slide.
   final bool disableCenter;
 
   /// Determines if current page should be larger then the side images,
   /// creating a feeling of depth in the carousel.
-  ///
   /// Defaults to false.
   final bool? enlargeCenterPage;
 
@@ -210,91 +197,6 @@ class ExpandableCarouselOptions {
   final CenterPageEnlargeStrategy enlargeStrategy;
 
   /// The fraction of the center page to enlarge.
-  ///
   /// Defaults to 0.25, which means center page will be 25% larger than other pages.
   final double? enlargeFactor;
-
-  /// Setting it to a value much bigger than most pages' sizes might result in a
-  /// reversed - "expand and shrink" - effect.
-  final double estimatedPageSize;
-
-  /// Copy With Constructor
-  ExpandableCarouselOptions copyWith({
-    double? aspectRatio,
-    double? viewportFraction,
-    int? initialPage,
-    bool? enableInfiniteScroll,
-    bool? reverse,
-    bool? autoPlay,
-    Duration? autoPlayInterval,
-    Duration? autoPlayAnimationDuration,
-    Curve? autoPlayCurve,
-    Axis? scrollDirection,
-    ExpandableCarouselController? carouselController,
-    Function(int index, CarouselPageChangedReason reason)? onPageChanged,
-    ValueChanged<double?>? onScrolled,
-    ScrollPhysics? physics,
-    bool? pageSnapping,
-    bool? pauseAutoPlayOnTouch,
-    bool? pauseAutoPlayOnManualNavigate,
-    bool? pauseAutoPlayInFiniteScroll,
-    PageStorageKey<dynamic>? pageViewKey,
-    SlideIndicator? slideIndicator,
-    bool? showIndicator,
-    bool? floatingIndicator,
-    double? indicatorMargin,
-    bool? keepPage,
-    bool? padEnds,
-    Clip? clipBehavior,
-    DragStartBehavior? dragStartBehavior,
-    ScrollBehavior? scrollBehavior,
-    bool? allowImplicitScrolling,
-    String? restorationId,
-    bool? enlargeCenterPage,
-    double? enlargeFactor,
-    CenterPageEnlargeStrategy? enlargeStrategy,
-    bool? disableCenter,
-    double? estimatedPageSize,
-  }) {
-    return ExpandableCarouselOptions(
-      aspectRatio: aspectRatio ?? this.aspectRatio,
-      viewportFraction: viewportFraction ?? this.viewportFraction,
-      initialPage: initialPage ?? this.initialPage,
-      enableInfiniteScroll: enableInfiniteScroll ?? this.enableInfiniteScroll,
-      reverse: reverse ?? this.reverse,
-      autoPlay: autoPlay ?? this.autoPlay,
-      autoPlayInterval: autoPlayInterval ?? this.autoPlayInterval,
-      autoPlayAnimationDuration:
-          autoPlayAnimationDuration ?? this.autoPlayAnimationDuration,
-      autoPlayCurve: autoPlayCurve ?? this.autoPlayCurve,
-      onPageChanged: onPageChanged ?? this.onPageChanged,
-      onScrolled: onScrolled ?? this.onScrolled,
-      physics: physics ?? this.physics,
-      pageSnapping: pageSnapping ?? this.pageSnapping,
-      scrollDirection: scrollDirection ?? this.scrollDirection,
-      pauseAutoPlayOnTouch: pauseAutoPlayOnTouch ?? this.pauseAutoPlayOnTouch,
-      pauseAutoPlayOnManualNavigate:
-          pauseAutoPlayOnManualNavigate ?? this.pauseAutoPlayOnManualNavigate,
-      pauseAutoPlayInFiniteScroll:
-          pauseAutoPlayInFiniteScroll ?? this.pauseAutoPlayInFiniteScroll,
-      pageViewKey: pageViewKey ?? this.pageViewKey,
-      keepPage: keepPage ?? this.keepPage,
-      showIndicator: showIndicator ?? this.showIndicator,
-      floatingIndicator: floatingIndicator ?? this.floatingIndicator,
-      indicatorMargin: indicatorMargin ?? this.indicatorMargin,
-      slideIndicator: slideIndicator ?? this.slideIndicator,
-      padEnds: padEnds ?? this.padEnds,
-      clipBehavior: clipBehavior ?? this.clipBehavior,
-      dragStartBehavior: dragStartBehavior ?? this.dragStartBehavior,
-      scrollBehavior: scrollBehavior ?? this.scrollBehavior,
-      allowImplicitScrolling:
-          allowImplicitScrolling ?? this.allowImplicitScrolling,
-      restorationId: restorationId ?? this.restorationId,
-      enlargeCenterPage: enlargeCenterPage ?? this.enlargeCenterPage,
-      enlargeFactor: enlargeFactor ?? this.enlargeFactor,
-      enlargeStrategy: enlargeStrategy ?? this.enlargeStrategy,
-      disableCenter: disableCenter ?? this.disableCenter,
-      estimatedPageSize: estimatedPageSize ?? this.estimatedPageSize,
-    );
-  }
 }

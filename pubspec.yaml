@@ -20,3 +20,15 @@ dev_dependencies:
     sdk: flutter
 
   lints: ^4.0.0
+
+topics:
+  - carousel
+  - flutter-carousel
+  - flutter-carousel-widget
+  - carousel-slider
+  - carousel-widget
+
+funding:
+  - https://ko-fi.com/nixrajput
+  - https://www.buymeacoffee.com/nixrajput
+  - https://github.com/sponsors/nixrajput

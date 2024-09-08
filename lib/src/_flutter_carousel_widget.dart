@@ -3,14 +3,16 @@ library flutter_carousel_widget;
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart' hide CarouselController;
-import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
-import 'package:flutter_carousel_widget/src/enums/center_page_enlarge_strategy.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_controller.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_options.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_carousel_state.dart';
-import 'package:flutter_carousel_widget/src/typedefs/widget_builder.dart';
-import 'package:flutter_carousel_widget/src/utils/flutter_carousel_utils.dart';
+import 'package:flutter/material.dart';
+
+import 'carousel_controller/flutter_carousel_controller.dart';
+import 'carousel_options/flutter_carousel_options.dart';
+import 'carousel_state/flutter_carousel_state.dart';
+import 'enums/carousel_page_changed_reason.dart';
+import 'enums/center_page_enlarge_strategy.dart';
+import 'indicators/circular_slide_indicator.dart';
+import 'typedefs/widget_builder.dart';
+import 'utils/flutter_carousel_utils.dart';
 
 /// Main carousel widget
 /// There are two constructors - one for direct list of items and another for builder pattern (itemBuilder).
@@ -53,22 +55,22 @@ class FlutterCarousel extends StatefulWidget {
   final List<Widget>? items;
 
   /// Configuration options for the carousel
-  final CarouselOptions options;
+  final FlutterCarouselOptions options;
 
   @override
-  FlutterCarouselState createState() => FlutterCarouselState();
+  _FlutterCarouselState createState() => _FlutterCarouselState();
 }
 
 /// State class for the carousel widget
 /// This class handles the internal state of the carousel, including page transitions, autoplay, gestures, and more.
-class FlutterCarouselState extends State<FlutterCarousel>
+class _FlutterCarouselState extends State<FlutterCarousel>
     with TickerProviderStateMixin {
   /// Enum to represent why the page is changing (e.g., user input, auto-play, etc.)
   CarouselPageChangedReason changeReasonMode =
       CarouselPageChangedReason.controller;
 
   /// Carousel state to manage internal state like page controller, item count, etc.
-  CarouselState? _carouselState;
+  FlutterCarouselState? _carouselState;
 
   /// Page controller to manage page views and transitions
   PageController? _pageController;
@@ -82,14 +84,17 @@ class FlutterCarouselState extends State<FlutterCarousel>
   /// Timer to manage auto-play functionality
   Timer? _timer;
 
+  /// Default Slide Indicator Key
+  final _defaultIndicatorKey = const ValueKey('default_indicator');
+
   /// Retrieve the carousel controller, or create a new one if not provided
-  CarouselControllerImpl get carouselController =>
+  FlutterCarouselControllerImpl get carouselController =>
       widget.options.controller != null
-          ? widget.options.controller as CarouselControllerImpl
-          : CarouselController() as CarouselControllerImpl;
+          ? widget.options.controller as FlutterCarouselControllerImpl
+          : FlutterCarouselController() as FlutterCarouselControllerImpl;
 
   /// Retrieve options for the carousel
-  CarouselOptions get options => widget.options;
+  FlutterCarouselOptions get options => widget.options;
 
   /// Update the current page index and delta for smooth animations
   void _changeIndexPageDelta() {
@@ -164,7 +169,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
   /// Initialize the carousel state
   void _initCarouselState() {
     // Initialize carousel state with options and callbacks for timer handling
-    _carouselState = CarouselState(
+    _carouselState = FlutterCarouselState(
       options,
       _clearTimer,
       _resumeTimer,
@@ -218,7 +223,9 @@ class FlutterCarouselState extends State<FlutterCarousel>
       _changeMode(CarouselPageChangedReason.timed);
 
       // Calculate the next page index for auto-play
-      var nextPage = _carouselState!.pageController!.page!.round() + 1;
+      var nextPage = widget.options.reverse
+          ? _carouselState!.pageController!.page!.round() - 1
+          : _carouselState!.pageController!.page!.round() + 1;
       var itemCount = widget.itemCount ?? widget.items?.length ?? 0;
 
       // Reset to the first page if at the end of the carousel and infinite scroll is disabled
@@ -494,7 +501,15 @@ class FlutterCarouselState extends State<FlutterCarousel>
   /// to show the current position within the carousel. It uses the [_currentPage] and
   /// [_pageDelta] values to determine the indicator's position and animation state.
   Widget _buildSlideIndicator() {
-    return widget.options.slideIndicator!.build(
+    if (widget.options.slideIndicator != null) {
+      return widget.options.slideIndicator!.build(
+        _currentPage,
+        _pageDelta,
+        widget.itemCount!,
+      );
+    }
+
+    return CircularSlideIndicator(key: _defaultIndicatorKey).build(
       _currentPage,
       _pageDelta,
       widget.itemCount!,
@@ -507,9 +522,7 @@ class FlutterCarouselState extends State<FlutterCarousel>
   /// or below the carousel depending on the [floatingIndicator] option.
   Widget _buildWidget(BuildContext context) {
     // If `showIndicator` option is true
-    if (widget.options.showIndicator &&
-        widget.options.slideIndicator != null &&
-        widget.itemCount! > 1) {
+    if (widget.options.showIndicator && widget.itemCount! > 1) {
       // If `floatingIndicator` option is true
       if (widget.options.floatingIndicator) {
         return _getGestureWrapper(

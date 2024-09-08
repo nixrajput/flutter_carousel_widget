@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide CarouselController;
+import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -6,12 +6,12 @@ void main() {
   group('FlutterCarousel Integration Tests', () {
     testWidgets('Carousel should update based on CarouselController',
         (WidgetTester tester) async {
-      final controller = CarouselController();
+      final controller = FlutterCarouselController();
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: FlutterCarousel(
-              options: CarouselOptions(
+              options: FlutterCarouselOptions(
                 controller: controller,
                 height: 300,
                 autoPlay: true,
@@ -34,7 +34,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: FlutterCarousel(
-              options: CarouselOptions(
+              options: FlutterCarouselOptions(
                 height: 300,
                 autoPlay: true,
                 autoPlayInterval: const Duration(seconds: 1),
@@ -58,7 +58,7 @@ void main() {
             builder: (context, constraints) {
               return FlutterCarousel(
                 items: List<Widget>.generate(5, (index) => Text('Item $index')),
-                options: CarouselOptions(
+                options: FlutterCarouselOptions(
                   viewportFraction: constraints.maxWidth < 600 ? 0.8 : 0.5,
                 ),
               );
@@ -86,7 +86,7 @@ void main() {
         MaterialApp(
           home: FlutterCarousel(
             items: List<Widget>.generate(5, (index) => Text('Item $index')),
-            options: CarouselOptions(viewportFraction: 0.8),
+            options: FlutterCarouselOptions(viewportFraction: 0.8),
           ),
         ),
       );
@@ -107,7 +107,7 @@ void main() {
         MaterialApp(
           home: FlutterCarousel(
             items: List<Widget>.generate(5, (index) => Text('Item $index')),
-            options: CarouselOptions(
+            options: FlutterCarouselOptions(
               onPageChanged: (index, reason) {
                 currentPage = index;
               },
@@ -124,9 +124,9 @@ void main() {
     });
 
     test('CarouselState and PageController integration', () {
-      final options = CarouselOptions();
+      final options = FlutterCarouselOptions();
       final pageController = PageController();
-      final carouselState = CarouselState(
+      final carouselState = FlutterCarouselState(
         options,
         () {}, // onResetTimer
         () {}, // onResumeTimer
@@ -140,8 +140,8 @@ void main() {
 
     test('CarouselState mode change integration', () {
       CarouselPageChangedReason? modeChangedReason;
-      final carouselState = CarouselState(
-        CarouselOptions(),
+      final carouselState = FlutterCarouselState(
+        FlutterCarouselOptions(),
         () {}, // onResetTimer
         () {}, // onResumeTimer
         (reason) {
@@ -155,9 +155,9 @@ void main() {
 
     testWidgets('CarouselController and CarouselOptions integration',
         (WidgetTester tester) async {
-      final options = CarouselOptions(autoPlay: true);
-      final controller = CarouselControllerImpl();
-      final state = CarouselState(
+      final options = FlutterCarouselOptions(autoPlay: true);
+      final controller = FlutterCarouselControllerImpl();
+      final state = FlutterCarouselState(
         options,
         () {}, // onResetTimer
         () {}, // onResumeTimer
@@ -196,9 +196,9 @@ void main() {
 
     testWidgets('CarouselController auto play functionality',
         (WidgetTester tester) async {
-      final options = CarouselOptions(autoPlay: true);
-      final controller = CarouselControllerImpl();
-      final state = CarouselState(
+      final options = FlutterCarouselOptions(autoPlay: true);
+      final controller = FlutterCarouselControllerImpl();
+      final state = FlutterCarouselState(
         options,
         () {}, // onResetTimer
         () {}, // onResumeTimer
@@ -246,6 +246,82 @@ void main() {
 
       // Expect the timer to stop
       expect(isAutoPlayStopped, true);
+    });
+  });
+
+  group("CarouselOptions Assertion Tests", () {
+    testWidgets('viewportFraction should be between 0.0 and 1.0',
+        (WidgetTester tester) async {
+      expect(
+        () => FlutterCarouselOptions(viewportFraction: 1.2),
+        throwsAssertionError,
+      );
+
+      expect(
+        () => FlutterCarouselOptions(viewportFraction: -0.1),
+        throwsAssertionError,
+      );
+    });
+
+    testWidgets('initialPage should be a non-negative integer',
+        (WidgetTester tester) async {
+      expect(
+        () => FlutterCarouselOptions(initialPage: -1),
+        throwsAssertionError,
+      );
+    });
+
+    testWidgets('autoPlayInterval should be greater than zero',
+        (WidgetTester tester) async {
+      expect(
+        () => FlutterCarouselOptions(autoPlayInterval: Duration.zero),
+        throwsAssertionError,
+      );
+    });
+
+    testWidgets('autoPlayAnimationDuration should be greater than zero',
+        (WidgetTester tester) async {
+      expect(
+        () => FlutterCarouselOptions(autoPlayAnimationDuration: Duration.zero),
+        throwsAssertionError,
+      );
+    });
+
+    testWidgets('indicatorMargin should be a non-negative value',
+        (WidgetTester tester) async {
+      expect(
+        () => FlutterCarouselOptions(indicatorMargin: -1.0),
+        throwsAssertionError,
+      );
+    });
+
+    testWidgets(
+        'enlargeFactor should be greater than 0 when enlargeCenterPage is true',
+        (WidgetTester tester) async {
+      expect(
+        () =>
+            FlutterCarouselOptions(enlargeCenterPage: true, enlargeFactor: 0.0),
+        throwsAssertionError,
+      );
+
+      expect(
+        () => FlutterCarouselOptions(
+            enlargeCenterPage: true, enlargeFactor: null),
+        throwsAssertionError,
+      );
+    });
+
+    testWidgets('enlargeFactor should be greater than 0.0',
+        (WidgetTester tester) async {
+      expect(
+        () => FlutterCarouselOptions(enlargeFactor: 0.0),
+        throwsAssertionError,
+      );
+
+      expect(
+        () => FlutterCarouselOptions(enlargeFactor: -0.1),
+        throwsAssertionError,
+      );
     });
   });
 }

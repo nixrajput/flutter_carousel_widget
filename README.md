@@ -12,13 +12,16 @@ A customizable carousel slider widget for Flutter, offering features such as inf
 [![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/flutter_carousel_widget?label=Last+Commit&style=flat)][repo]
 [![GitHub issues](https://img.shields.io/github/issues/nixrajput/flutter_carousel_widget?label=Issues&style=flat)][issues]
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/flutter_carousel_widget?label=Pull+Requests&style=flat)][pulls]
-[![GitHub Licence](https://img.shields.io/github/license/nixrajput/flutter_carousel_widget?label=Licence&style=flat)][license]
+[![GitHub License](https://img.shields.io/github/license/nixrajput/flutter_carousel_widget?label=Licence&style=flat)][license]
 
 ## Table of Contents
 
 - [flutter\_carousel\_widget](#flutter_carousel_widget)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
+  - [Breaking Changes for v3.0.0](#breaking-changes-for-v300)
+    - [Separation of Carousel Options, Controller, and State](#separation-of-carousel-options-controller-and-state)
+    - [Impact](#impact)
   - [Demo](#demo)
     - [Click here to experience the demo in a Web App](#click-here-to-experience-the-demo-in-a-web-app)
   - [Installation](#installation)
@@ -28,11 +31,13 @@ A customizable carousel slider widget for Flutter, offering features such as inf
     - [Carousel Options Customization](#carousel-options-customization)
     - [Build item widgets on demand](#build-item-widgets-on-demand)
   - [Carousel Controller](#carousel-controller)
-    - [`CarouselController` methods](#carouselcontroller-methods)
+    - [`FlutterCarouselController` methods](#fluttercarouselcontroller-methods)
       - [`.nextPage({Duration duration, Curve curve})`](#nextpageduration-duration-curve-curve)
       - [`.previousPage({Duration duration, Curve curve})`](#previouspageduration-duration-curve-curve)
       - [`.jumpToPage(int page)`](#jumptopageint-page)
       - [`.animateToPage(int page, {Duration duration, Curve curve})`](#animatetopageint-page-duration-duration-curve-curve)
+  - [Predefined Slide Indicators](#predefined-slide-indicators)
+    - [Slide Indicator Options Customization](#slide-indicator-options-customization)
   - [Custom Slide Indicators](#custom-slide-indicators)
   - [Contributing](#contributing)
   - [License](#license)
@@ -50,6 +55,35 @@ A customizable carousel slider widget for Flutter, offering features such as inf
 - **Expandable Carousel Widget:** Expand the carousel widget to fit the available space.
 - **Auto-sized Child Support:** Automatically adjust the size of the carousel items to fit their content.
 - **Enlarge Center Page:** The focused item can be enlarged.
+
+## Breaking Changes for v3.0.0
+
+In version 3.0.0 of the package, the following breaking changes have been introduced:
+
+### Separation of Carousel Options, Controller, and State
+
+- `FlutterCarousel` **Changes**:
+  - Previously used classes:
+    - CarouselOptions
+    - CarouselController
+    - CarouselState
+  - From v3.0.0, these classes have been replaced by:
+    - FlutterCarouselOptions
+    - FlutterCarouselController
+    - FlutterCarouselState
+- `ExpandableCarousel` **Changes**:
+  - Previously used classes:
+    - CarouselOptions
+    - CarouselController
+    - CarouselState
+  - From v3.0.0, these classes have been replaced by:
+    - ExpandableCarouselOptions
+    - ExpandableCarouselController
+    - ExpandableCarouselState
+
+### Impact
+
+If you have been using CarouselOptions, CarouselController, and CarouselState for both FlutterCarousel and ExpandableCarousel, you will need to update your code to use the newly introduced classes specific to each carousel type.
 
 ## Demo
 
@@ -76,8 +110,8 @@ Flutter Carousel is a carousel widget which supports infinite scrolling, auto sc
 
 ```dart
 FlutterCarousel(
-  options: CarouselOptions(
-    height: 400.0, 
+  options: FlutterCarouselOptions(
+    height: 400.0,
     showIndicator: true,
     slideIndicator: CircularSlideIndicator(),
   ),
@@ -104,7 +138,7 @@ Expandable Carousel is a carousel widget which automatically expands to the size
 
 ```dart
 ExpandableCarousel(
-  options: CarouselOptions(
+  options: ExpandableCarouselOptions(
     autoPlay: true,
     autoPlayInterval: const Duration(seconds: 2),
   ),
@@ -130,7 +164,7 @@ ExpandableCarousel(
 ```dart
 FlutterCarousel(
   items: items,
-  options: CarouselOptions(
+  options: FlutterCarouselOptions(
     height: 400.0,
     // Sets the height of the carousel widget.
 
@@ -229,18 +263,18 @@ ExpandableCarousel.builder(
 
 ## Carousel Controller
 
-In order to manually control the pageview's position, you can create your own `CarouselController`, and pass it to `CarouselSlider`. Then you can use the `CarouselController` instance to manipulate the position.
+In order to manually control the PageView's position, you can create your own `FlutterCarouselController`, and pass it to `FlutterCarouselOptions`. Then you can use the `FlutterCarouselController` instance to manipulate the position.
 
 ```dart
 class CarouselDemo extends StatelessWidget {
-  CarouselController buttonCarouselController = CarouselController();
+  FlutterCarouselController buttonCarouselController = FlutterCarouselController();
 
  @override
   Widget build(BuildContext context) => Column(
     children: [
       FlutterCarousel(
         items: child,
-        options: CarouselOptions(
+        options: FlutterCarouselOptions(
           autoPlay: false,
           controller: buttonCarouselController,
           enlargeCenterPage: true,
@@ -259,7 +293,7 @@ class CarouselDemo extends StatelessWidget {
 }
 ```
 
-### `CarouselController` methods
+### `FlutterCarouselController` methods
 
 #### `.nextPage({Duration duration, Curve curve})`
 
@@ -277,62 +311,61 @@ Jump to the given page.
 
 Animate to the given page.
 
-
 ## Predefined Slide Indicators
 
 The `flutter_carousel_widget` package comes with a few [predefined slide indicators](https://github.com/nixrajput/flutter_carousel_widget/tree/master/lib/src/indicators) each with its own distinct behavior. To customize the slide indicators, you can pass an instance of `SlideIndicatorOptions` to the indicator you're using.
 
 ### Slide Indicator Options Customization
 
-``` dart
+```dart
   FlutterCarousel(
-                  ...
-                  options: CarouselOptions(
-                    ...
-                   slideIndicator: CircularSlideIndicator(
-                      slideIndicatorOptions: SlideIndicatorOptions(
-                          /// The alignment of the indicator.
-                          alignment: Alignment.bottomCenter,
+    ...
+    options: FlutterCarouselOptions(
+      ...
+      slideIndicator: CircularSlideIndicator(
+        slideIndicatorOptions: SlideIndicatorOptions(
+          /// The alignment of the indicator.
+          alignment: Alignment.bottomCenter,
 
-                          /// The color of the currently active item indicator.
-                          currentIndicatorColor: Colors.white,
+          /// The color of the currently active item indicator.
+          currentIndicatorColor: Colors.white,
 
-                          /// The background color of all inactive item indicators.
-                          indicatorBackgroundColor: Colors.white.withOpacity(0.5),
+          /// The background color of all inactive item indicators.
+          indicatorBackgroundColor: Colors.white.withOpacity(0.5),
 
-                          /// The border color of all item indicators.
-                          indicatorBorderColor: Colors.white,
+          /// The border color of all item indicators.
+          indicatorBorderColor: Colors.white,
 
-                          /// The border width of all item indicators.
-                          indicatorBorderWidth: 1,
+          /// The border width of all item indicators.
+          indicatorBorderWidth: 1,
 
-                          /// The radius of all item indicators.
-                          indicatorRadius: 6,
+          /// The radius of all item indicators.
+          indicatorRadius: 6,
 
-                          /// The spacing between each item indicator.
-                          itemSpacing: 20,
+          /// The spacing between each item indicator.
+          itemSpacing: 20,
 
-                          /// The padding of the indicator.
-                          padding: const EdgeInsets.all(8.0),
+          /// The padding of the indicator.
+          padding: const EdgeInsets.all(8.0),
 
-                          /// The decoration of the indicator halo.
-                          haloDecoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(Radius.circular(15.0)),
-                              color: Colors.black.withOpacity(0.5)),
+          /// The decoration of the indicator halo.
+          haloDecoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+              color: Colors.black.withOpacity(0.5)),
 
-                          /// The padding of the indicator halo.
-                          haloPadding: const EdgeInsets.all(8.0),
+          /// The padding of the indicator halo.
+          haloPadding: const EdgeInsets.all(8.0),
 
-                          /// Whether to enable the indicator halo.
-                          enableHalo: true,
+          /// Whether to enable the indicator halo.
+          enableHalo: true,
 
-                          /// Whether to enable the animation. Only used in [CircularStaticIndicator] and [SequentialFillIndicator].
-                          enableAnimation: true),
-                    ),
-                  
-                ),
-            );
-``` 
+          /// Whether to enable the animation. Only used in [CircularStaticIndicator] and [SequentialFillIndicator].
+          enableAnimation: true,
+        ),
+      ),
+    ),
+  );
+```
 
 ## Custom Slide Indicators
 

@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart' hide CarouselController;
-import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_expandable_carousel_state.dart';
-import 'package:flutter_carousel_widget/src/utils/flutter_carousel_utils.dart';
+import 'package:flutter/animation.dart';
+
+import '../carousel_state/expandable_carousel_state.dart';
+import '../enums/carousel_page_changed_reason.dart';
+import '../utils/flutter_carousel_utils.dart';
 
 abstract class ExpandableCarouselController {
   factory ExpandableCarouselController() => ExpandableCarouselControllerImpl();
@@ -29,8 +30,7 @@ class ExpandableCarouselControllerImpl implements ExpandableCarouselController {
   final Completer<void> _readyCompleter = Completer<void>();
   ExpandableCarouselState? _state;
 
-  /// Animates the controlled [FlutterCarouselWidget] from the current page to the given page.
-  ///
+  /// Animates the controlled [ExpandableCarousel] from the current page to the given page.
   /// The animation lasts for the given duration and follows the given curve.
   /// The returned [Future] resolves when the animation completes.
   @override
@@ -38,37 +38,40 @@ class ExpandableCarouselControllerImpl implements ExpandableCarouselController {
       {Duration? duration = const Duration(milliseconds: 300),
       Curve? curve = Curves.linear}) async {
     final isNeedResetTimer = _state!.options.pauseAutoPlayOnManualNavigate;
+
     if (isNeedResetTimer) {
       _state!.onResetTimer();
     }
-    final index = getRealIndex(_state!.pageController!.page!.toInt(),
+
+    final index = getRealIndex(_state!.pageController?.page!.toInt() ?? 0,
         _state!.realPage - _state!.initialPage, _state!.itemCount);
     _setModeController();
+
     await _state!.pageController!.animateToPage(
-        _state!.pageController!.page!.toInt() + page - index,
+        (_state!.pageController?.page!.toInt() ?? 0) + page - index,
         duration: duration!,
         curve: curve!);
+
     if (isNeedResetTimer) {
       _state!.onResumeTimer();
     }
   }
 
-  /// Changes which page is displayed in the controlled [FlutterCarouselWidget].
-  ///
+  /// Changes which page is displayed in the controlled [ExpandableCarousel].
   /// Jumps the page position from its current value to the given value,
   /// without animation, and without checking if the new value is in range.
   @override
   void jumpToPage(int page) {
-    final index = getRealIndex(_state!.pageController!.page!.toInt(),
+    final index = getRealIndex(_state!.pageController?.page!.toInt() ?? 0,
         _state!.realPage - _state!.initialPage, _state!.itemCount);
 
     _setModeController();
-    final pageToJump = _state!.pageController!.page!.toInt() + page - index;
-    return _state!.pageController!.jumpToPage(pageToJump);
+
+    return _state!.pageController?.jumpToPage(
+        (_state!.pageController?.page!.toInt() ?? 0) + page - index);
   }
 
-  /// Animates the controlled [FlutterCarouselWidget] to the next page.
-  ///
+  /// Animates the controlled [ExpandableCarousel] to the next page.
   /// The animation lasts for the given duration and follows the given curve.
   /// The returned [Future] resolves when the animation completes.
   @override
@@ -76,11 +79,15 @@ class ExpandableCarouselControllerImpl implements ExpandableCarouselController {
       {Duration? duration = const Duration(milliseconds: 300),
       Curve? curve = Curves.linear}) async {
     final isNeedResetTimer = _state!.options.pauseAutoPlayOnManualNavigate;
+
     if (isNeedResetTimer) {
       _state!.onResetTimer();
     }
+
     _setModeController();
-    await _state!.pageController!.nextPage(duration: duration!, curve: curve!);
+
+    await _state!.pageController?.nextPage(duration: duration!, curve: curve!);
+
     if (isNeedResetTimer) {
       _state!.onResumeTimer();
     }
@@ -89,8 +96,7 @@ class ExpandableCarouselControllerImpl implements ExpandableCarouselController {
   @override
   Future<void> get onReady => _readyCompleter.future;
 
-  /// Animates the controlled [FlutterCarouselWidget] to the previous page.
-  ///
+  /// Animates the controlled [ExpandableCarousel] to the previous page.
   /// The animation lasts for the given duration and follows the given curve.
   /// The returned [Future] resolves when the animation completes.
   @override
@@ -98,12 +104,16 @@ class ExpandableCarouselControllerImpl implements ExpandableCarouselController {
       {Duration? duration = const Duration(milliseconds: 300),
       Curve? curve = Curves.linear}) async {
     final isNeedResetTimer = _state!.options.pauseAutoPlayOnManualNavigate;
+
     if (isNeedResetTimer) {
       _state!.onResetTimer();
     }
+
     _setModeController();
-    await _state!.pageController!
-        .previousPage(duration: duration!, curve: curve!);
+
+    await _state!.pageController
+        ?.previousPage(duration: duration!, curve: curve!);
+
     if (isNeedResetTimer) {
       _state!.onResumeTimer();
     }
@@ -112,19 +122,17 @@ class ExpandableCarouselControllerImpl implements ExpandableCarouselController {
   @override
   bool get ready => _state != null;
 
-  /// Starts the controlled [FlutterCarouselWidget] autoplay.
-  ///
+  /// Starts the controlled [ExpandableCarousel] autoplay.
   /// The carousel will only autoPlay if the [autoPlay] parameter
-  /// in [CarouselOptions] is true.
+  /// in [ExpandableCarouselOptions] is true.
   @override
   void startAutoPlay() {
     _state!.onResumeTimer();
   }
 
-  /// Stops the controlled [FlutterCarouselWidget] from autoplaying.
-  ///
+  /// Stops the controlled [ExpandableCarousel] from autoplaying.
   /// This is a more on-demand way of doing this. Use the [autoPlay]
-  /// parameter in [CarouselOptions] to specify the autoPlay behaviour of the carousel.
+  /// parameter in [ExpandableCarouselOptions] to specify the autoPlay behaviour of the carousel.
   @override
   void stopAutoPlay() {
     _state!.onResetTimer();

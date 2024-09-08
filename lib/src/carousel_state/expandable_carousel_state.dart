@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart' hide CarouselController;
-import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_expandable_carousel_options.dart';
+import 'package:flutter/widgets.dart';
+
+import '../carousel_options/expandable_carousel_options.dart';
+import '../enums/carousel_page_changed_reason.dart';
 
 class ExpandableCarouselState {
   ExpandableCarouselState(
@@ -11,7 +12,6 @@ class ExpandableCarouselState {
   );
 
   /// The initial index of the [PageView] on [FlutterCarouselWidget] init.
-  ///
   int initialPage = 0;
 
   /// The widgets count that should be shown at carousel
@@ -35,7 +35,6 @@ class ExpandableCarouselState {
   PageController? pageController;
 
   /// The actual index of the [PageView].
-  ///
   /// This value can be ignored unless you know the carousel will be scrolled
   /// backwards more then 10000 pages.
   /// Defaults to 10000 to simulate infinite backwards scrolling.

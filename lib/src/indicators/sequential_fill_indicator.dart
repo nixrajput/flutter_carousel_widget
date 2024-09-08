@@ -5,13 +5,16 @@ import 'package:flutter_carousel_widget/src/indicators/slide_indicator_options.d
 class SequentialFillIndicator extends SlideIndicator {
   SequentialFillIndicator({
     this.slideIndicatorOptions = const SlideIndicatorOptions(),
+    this.key,
   });
 
   final SlideIndicatorOptions slideIndicatorOptions;
+  final Key? key;
 
   @override
   Widget build(int currentPage, double pageDelta, int itemCount) {
     return Container(
+      key: key,
       alignment: slideIndicatorOptions.alignment,
       padding: slideIndicatorOptions.padding,
       color: Colors.transparent,

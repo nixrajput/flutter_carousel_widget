@@ -2,15 +2,19 @@ import 'package:flutter/material.dart' hide CarouselController;
 import 'package:flutter_carousel_widget/src/indicators/slide_indicator.dart';
 import 'package:flutter_carousel_widget/src/indicators/slide_indicator_options.dart';
 
-class CircularSlideIndicator implements SlideIndicator {
-  const CircularSlideIndicator(
-      {this.slideIndicatorOptions = const SlideIndicatorOptions()});
+class CircularSlideIndicator extends SlideIndicator {
+  CircularSlideIndicator({
+    this.slideIndicatorOptions = const SlideIndicatorOptions(),
+    this.key,
+  });
 
   final SlideIndicatorOptions slideIndicatorOptions;
+  final Key? key;
 
   @override
   Widget build(int currentPage, double pageDelta, int itemCount) {
     return Container(
+      key: key,
       alignment: slideIndicatorOptions.alignment,
       padding: slideIndicatorOptions.padding,
       color: Colors.transparent,

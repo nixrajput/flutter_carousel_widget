@@ -3,15 +3,17 @@ library flutter_carousel_widget;
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart' hide CarouselController;
-import 'package:flutter_carousel_widget/src/components/overflow_page.dart';
-import 'package:flutter_carousel_widget/src/enums/carousel_page_changed_reason.dart';
-import 'package:flutter_carousel_widget/src/enums/center_page_enlarge_strategy.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_expandable_carousel_controller.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_expandable_carousel_options.dart';
-import 'package:flutter_carousel_widget/src/helpers/flutter_expandable_carousel_state.dart';
-import 'package:flutter_carousel_widget/src/typedefs/widget_builder.dart';
-import 'package:flutter_carousel_widget/src/utils/flutter_carousel_utils.dart';
+import 'package:flutter/material.dart';
+
+import 'carousel_controller/expandable_carousel_controller.dart';
+import 'carousel_options/expandable_carousel_options.dart';
+import 'carousel_state/expandable_carousel_state.dart';
+import 'components/overflow_page.dart';
+import 'enums/carousel_page_changed_reason.dart';
+import 'enums/center_page_enlarge_strategy.dart';
+import 'indicators/circular_slide_indicator.dart';
+import 'typedefs/widget_builder.dart';
+import 'utils/flutter_carousel_utils.dart';
 
 /// Main carousel widget
 /// There are two constructors - one for direct list of items and another for builder pattern (itemBuilder).
@@ -59,11 +61,11 @@ class ExpandableCarousel extends StatefulWidget {
   final ExpandableCarouselOptions options;
 
   @override
-  ExpandableCarouselWidgetState createState() =>
-      ExpandableCarouselWidgetState();
+  _ExpandableCarouselWidgetState createState() =>
+      _ExpandableCarouselWidgetState();
 }
 
-class ExpandableCarouselWidgetState extends State<ExpandableCarousel>
+class _ExpandableCarouselWidgetState extends State<ExpandableCarousel>
     with TickerProviderStateMixin {
   /// mode is related to why the page is being changed
   CarouselPageChangedReason changeReasonMode =
@@ -95,6 +97,9 @@ class ExpandableCarouselWidgetState extends State<ExpandableCarousel>
 
   /// Timer to manage auto-play functionality
   Timer? _timer;
+
+  /// Default Slide Indicator Key
+  final _defaultIndicatorKey = const ValueKey('default_indicator');
 
   /// Retrieve options for the carousel
   ExpandableCarouselOptions get options => widget.options;
@@ -250,13 +255,18 @@ class ExpandableCarouselWidgetState extends State<ExpandableCarousel>
     return Timer.periodic(widget.options.autoPlayInterval, (_) {
       final route = ModalRoute.of(context);
       if (route?.isCurrent == false) {
-        return;
+        return; // Pause auto-play if the route is not active
       }
 
+      // Temporarily store the previous change reason
       var previousReason = changeReasonMode;
+      // Set change reason to timed
       _changeMode(CarouselPageChangedReason.timed);
 
-      var nextPage = _carouselState!.pageController!.page!.round() + 1;
+      // Calculate the next page index for auto-play
+      var nextPage = widget.options.reverse
+          ? _carouselState!.pageController!.page!.round() - 1
+          : _carouselState!.pageController!.page!.round() + 1;
       var itemCount = widget.itemCount ?? widget.items?.length ?? 0;
 
       // Reset to the first page if at the end of the carousel and infinite scroll is disabled
@@ -308,8 +318,11 @@ class ExpandableCarouselWidgetState extends State<ExpandableCarousel>
   /// Prepare the sizes for items in the carousel
   List<double> _prepareSizes() {
     return isBuilder
-        ? List.filled(widget.itemCount!, widget.options.estimatedPageSize)
-        : widget.items!.map((_) => widget.options.estimatedPageSize).toList();
+        ? List.filled(
+            widget.itemCount!, widget.options.estimatedPageSize ?? 0.0)
+        : widget.items!
+            .map((_) => widget.options.estimatedPageSize ?? 0.0)
+            .toList();
   }
 
   /// Check if sizes need to be reinitialized when the widget is updated
@@ -563,7 +576,15 @@ class ExpandableCarouselWidgetState extends State<ExpandableCarousel>
   /// to show the current position within the carousel. It uses the [_currentPage] and
   /// [_pageDelta] values to determine the indicator's position and animation state.
   Widget _buildSlideIndicator() {
-    return widget.options.slideIndicator!.build(
+    if (widget.options.slideIndicator != null) {
+      return widget.options.slideIndicator!.build(
+        _currentPage,
+        _pageDelta,
+        widget.itemCount!,
+      );
+    }
+
+    return CircularSlideIndicator(key: _defaultIndicatorKey).build(
       _currentPage,
       _pageDelta,
       widget.itemCount!,
@@ -576,9 +597,7 @@ class ExpandableCarouselWidgetState extends State<ExpandableCarousel>
   /// or below the carousel depending on the [floatingIndicator] option.
   Widget _buildWidget(BuildContext context) {
     // If `showIndicator` option is true
-    if (widget.options.showIndicator &&
-        widget.options.slideIndicator != null &&
-        widget.itemCount! > 1) {
+    if (widget.options.showIndicator && widget.itemCount! > 1) {
       // If `floatingIndicator` option is true
       if (widget.options.floatingIndicator) {
         return _getGestureWrapper(
