@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart' hide CarouselController;
-import 'package:flutter_carousel_widget/src/indicators/slide_indicator.dart';
-import 'package:flutter_carousel_widget/src/indicators/slide_indicator_options.dart';
+import 'package:flutter/material.dart';
 
+import 'slide_indicator.dart';
+import 'slide_indicator_options.dart';
+
+/// The [CircularStaticIndicator] class extends [SlideIndicator] to build slide indicators.
 class CircularStaticIndicator extends SlideIndicator {
   CircularStaticIndicator({
     this.slideIndicatorOptions = const SlideIndicatorOptions(),

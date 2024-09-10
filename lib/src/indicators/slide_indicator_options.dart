@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' hide CarouselController;
 
-/// A class that holds the options for the slide indicators.
+/// The [SlideIndicatorOptions] class that holds the options for the slide indicators.
 class SlideIndicatorOptions {
   const SlideIndicatorOptions({
     this.alignment = Alignment.bottomCenter,

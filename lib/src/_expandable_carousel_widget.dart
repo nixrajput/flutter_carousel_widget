@@ -1,5 +1,3 @@
-library flutter_carousel_widget;
-
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';

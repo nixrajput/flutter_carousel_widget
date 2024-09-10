@@ -19,7 +19,7 @@ A customizable carousel widget for Flutter, offering features such as infinite s
 - [flutter\_carousel\_widget](#flutter_carousel_widget)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
-  - [Breaking Changes for v3.0.0](#breaking-changes-for-v300)
+  - [Breaking Changes for the version ^3.0.0](#breaking-changes-for-the-version-300)
     - [Separation of Carousel Options, Controller, and State](#separation-of-carousel-options-controller-and-state)
     - [Impact](#impact)
   - [Demo](#demo)
