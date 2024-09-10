@@ -2,7 +2,7 @@
 
 ## 3.0.1
 
-- **Improvement**: Added comments to the classes, controllers, states, options, and enums.
+- **Improvement**: Added comments to the classes, controllers, states, options, enums, and indicators.
 - **Improvement**: Formatted the code to pass static analysis.
 - **Documentation**: Removed demo `gif` to reduce package size.
 
