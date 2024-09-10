@@ -2,9 +2,9 @@ name: Run Test Cases
 
 on:
   push:
-    branches: [master]
+    branches: [ master ]
   pull_request:
-    branches: [master]
+    branches: [ master ]
 
 jobs:
   check_up_to_date:
@@ -35,7 +35,7 @@ jobs:
     needs: check_up_to_date
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Flutter SDK
         uses: subosito/flutter-action@v2
