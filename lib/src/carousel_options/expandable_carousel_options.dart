@@ -7,6 +7,8 @@ import '../enums/center_page_enlarge_strategy.dart';
 import '../indicators/slide_indicator.dart';
 import 'base_carousel_options.dart';
 
+/// The [ExpandableCarouselOptions] class extends [BaseCarouselOptions] and
+/// adds more configuration options specific to the [ExpandableCarousel] widget.
 class ExpandableCarouselOptions extends BaseCarouselOptions {
   ExpandableCarouselOptions({
     this.controller,
@@ -91,6 +93,8 @@ class ExpandableCarouselOptions extends BaseCarouselOptions {
 
   /// Copy With Constructor
   ExpandableCarouselOptions copyWith({
+    ExpandableCarouselController? controller,
+    double? estimatedPageSize,
     double? aspectRatio,
     double? viewportFraction,
     int? initialPage,
@@ -101,7 +105,6 @@ class ExpandableCarouselOptions extends BaseCarouselOptions {
     Duration? autoPlayAnimationDuration,
     Curve? autoPlayCurve,
     Axis? scrollDirection,
-    ExpandableCarouselController? carouselController,
     Function(int index, CarouselPageChangedReason reason)? onPageChanged,
     ValueChanged<double?>? onScrolled,
     ScrollPhysics? physics,
@@ -125,9 +128,9 @@ class ExpandableCarouselOptions extends BaseCarouselOptions {
     double? enlargeFactor,
     CenterPageEnlargeStrategy? enlargeStrategy,
     bool? disableCenter,
-    double? estimatedPageSize,
   }) {
     return ExpandableCarouselOptions(
+      controller: controller ?? this.controller,
       aspectRatio: aspectRatio ?? this.aspectRatio,
       viewportFraction: viewportFraction ?? this.viewportFraction,
       initialPage: initialPage ?? this.initialPage,

@@ -1,3 +1,11 @@
+library flutter_carousel_widget;
+
+/// Export statements to expose internal files and classes
+/// from the [flutter_carousel_widget] package.
+///
+/// These exports allow other files or packages to access and
+/// use the classes, controllers, states, options, enums, and indicators.
+
 export 'package:flutter_carousel_widget/src/_expandable_carousel_widget.dart';
 export 'package:flutter_carousel_widget/src/_flutter_carousel_widget.dart';
 export 'package:flutter_carousel_widget/src/carousel_controller/expandable_carousel_controller.dart';

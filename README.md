@@ -1,6 +1,6 @@
 # flutter_carousel_widget
 
-A customizable carousel slider widget for Flutter, offering features such as infinite scrolling, auto-scrolling, custom child widgets, custom animations, pre-built indicators, expandable carousel widgets, and auto-sized child support.
+A customizable carousel widget for Flutter, offering features such as infinite scrolling, auto-scrolling, custom child widgets, pre-built indicators, expandable child widgets, auto-sized child support, and enlarged center page.
 
 [![pub package](https://img.shields.io/pub/v/flutter_carousel_widget.svg?label=Version&style=flat)][pub]
 [![Stars](https://img.shields.io/github/stars/nixrajput/flutter_carousel_widget?label=Stars&style=flat)][repo]
@@ -56,7 +56,7 @@ A customizable carousel slider widget for Flutter, offering features such as inf
 - **Auto-sized Child Support:** Automatically adjust the size of the carousel items to fit their content.
 - **Enlarge Center Page:** The focused item can be enlarged.
 
-## Breaking Changes for v3.0.0
+## Breaking Changes for the version ^3.0.0
 
 In version 3.0.0 of the package, the following breaking changes have been introduced:
 
@@ -86,8 +86,6 @@ In version 3.0.0 of the package, the following breaking changes have been introd
 If you have been using CarouselOptions, CarouselController, and CarouselState for both FlutterCarousel and ExpandableCarousel, you will need to update your code to use the newly introduced classes specific to each carousel type.
 
 ## Demo
-
-![Demo](https://raw.githubusercontent.com/nixrajput/flutter_carousel_widget/master/screenshots/flutter_carousel_widget_demo.gif)
 
 ### [Click here to experience the demo in a Web App](https://nixrajput.github.io/flutter_carousel_widget)
 

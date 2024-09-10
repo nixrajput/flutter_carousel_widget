@@ -7,6 +7,8 @@ import '../enums/center_page_enlarge_strategy.dart';
 import '../indicators/slide_indicator.dart';
 import 'base_carousel_options.dart';
 
+/// The [FlutterCarouselOptions] class extends [BaseCarouselOptions] and
+/// adds more configuration options specific to the [FlutterCarousel] widget.
 class FlutterCarouselOptions extends BaseCarouselOptions {
   FlutterCarouselOptions({
     this.controller,
@@ -90,6 +92,7 @@ class FlutterCarouselOptions extends BaseCarouselOptions {
 
   /// Copy With Constructor
   FlutterCarouselOptions copyWith({
+    FlutterCarouselController? controller,
     double? height,
     double? aspectRatio,
     double? viewportFraction,
@@ -101,7 +104,6 @@ class FlutterCarouselOptions extends BaseCarouselOptions {
     Duration? autoPlayAnimationDuration,
     Curve? autoPlayCurve,
     Axis? scrollDirection,
-    FlutterCarouselController? carouselController,
     Function(int index, CarouselPageChangedReason reason)? onPageChanged,
     ValueChanged<double?>? onScrolled,
     ScrollPhysics? physics,
@@ -127,6 +129,7 @@ class FlutterCarouselOptions extends BaseCarouselOptions {
     String? restorationId,
   }) {
     return FlutterCarouselOptions(
+      controller: controller ?? this.controller,
       height: height ?? this.height,
       aspectRatio: aspectRatio ?? this.aspectRatio,
       viewportFraction: viewportFraction ?? this.viewportFraction,

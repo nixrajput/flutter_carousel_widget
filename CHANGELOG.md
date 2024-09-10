@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.1
+
+- **Improvement**: Added comments to the classes, controllers, states, options, and enums.
+- **Improvement**: Formatted the code to pass static analysis.
+- **Documentation**: Removed demo `gif` to reduce package size.
+
 ## 3.0.0
 
 - **Breaking Change**: New `FlutterCarouselOptions` introduced for `FlutterCarousel`.

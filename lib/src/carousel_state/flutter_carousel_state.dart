@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../carousel_options/flutter_carousel_options.dart';
 import '../enums/carousel_page_changed_reason.dart';
 
+/// State class for the [FlutterCarousel] widget, holding its configuration and state management.
 class FlutterCarouselState {
   FlutterCarouselState(
     this.options,
@@ -40,6 +41,6 @@ class FlutterCarouselState {
   /// Defaults to 10000 to simulate infinite backwards scrolling.
   int realPage = 10000;
 
-  /// The callback to set the Reason Carousel changed
+  /// Callback to set the reason why the carousel page changed.
   Function(CarouselPageChangedReason) changeMode;
 }

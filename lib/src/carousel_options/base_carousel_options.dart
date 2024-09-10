@@ -5,6 +5,8 @@ import '../enums/carousel_page_changed_reason.dart';
 import '../enums/center_page_enlarge_strategy.dart';
 import '../indicators/slide_indicator.dart';
 
+/// Abstract class for carousel options, defining base configuration parameters.
+/// This class can be extended to create more specific carousel options for different carousel types.
 abstract class BaseCarouselOptions {
   BaseCarouselOptions({
     this.aspectRatio,
