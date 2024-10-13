@@ -1,25 +1,31 @@
+## Pull Request Checklist
+
 ## What does this PR do?
 
 <!-- **Please provide a clear and concise description of the changes in this PR.** Example: -->
+
+<!--
 
 - Adds/improves functionality for the carousel widget
 - Fixes bugs or issues
 - Adds new features like autoplay, infinite scrolling, etc.
 - Optimizes performance or enhances accessibility
 
-### **Checklist**
+-->
 
-#### Code Changes
-- [ ] I have added new features to the carousel widget (e.g., autoplay, indicator customization, etc.)
+## **Checklist**
+
+### Code Changes
+- [ ] I have added new features to the package (e.g., autoplay, indicator customization, etc.)
 - [ ] I have fixed existing issues (e.g., performance, edge cases)
 - [ ] I have improved the overall structure or optimized the codebase
 
-#### Documentation
+### Documentation
 - [ ] I have updated the README file or relevant documentation with the changes
 - [ ] I have added code usage examples or updated existing examples to reflect changes
 - [ ] I have updated the package version in the `pubspec.yaml` file
 
-#### Testing
+### Testing
 
 **General Tests**
 - [ ] The carousel widget works correctly with default settings
@@ -53,7 +59,7 @@
 - [ ] The carousel handles empty/null items gracefully
 - [ ] The carousel handles large data sets without crashes or performance drops
 
-#### Performance
+### Performance
 - [ ] I ran performance tests to ensure no regressions
 - [ ] The carousel renders efficiently, even with a large number of items
 
@@ -61,7 +67,11 @@
 
 <!-- **Please explain how you tested the code changes.** Example: -->
 
+<!--
+
 - I have written unit tests covering the new features
 - I ran manual tests to check various carousel configurations (autoplay, infinite loop, custom widgets)
 - I verified the carousel on different devices and screen sizes
 - All tests pass locally (`flutter test`)
+
+-->

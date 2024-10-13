@@ -7,7 +7,8 @@ The following versions of the `flutter_carousel_widget` package are currently be
 | Version | Supported          |
 |---------|--------------------|
 | 3.x.x   | :white_check_mark: |
-| 2.x.x   | :white_check_mark: |
+| 2.3.x   | :white_check_mark: |
+| 2.2.x   | :white_check_mark: |
 | 1.x.x   | :x:                |
 
 If you are using an older, unsupported version, we recommend upgrading to the latest version to benefit from security fixes.
