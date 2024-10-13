@@ -428,7 +428,7 @@ class _ExpandableCarouselWidgetState extends State<ExpandableCarousel>
         ),
       },
       // Wrap the child widget with the gesture detector
-      child: NotificationListener<ScrollEndNotification>(
+      child: NotificationListener(
         onNotification: (dynamic notification) {
           if (widget.options.onScrolled != null &&
               notification is ScrollUpdateNotification) {

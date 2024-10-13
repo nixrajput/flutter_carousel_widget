@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.1.0
+
+- **Security**: Added `SECURITY.md` for vulnerability reporting and security best practices.
+- **Enhancement**: Added a `Pull Request template` to ensure thorough checks for new contributions.
+- **Fix**: [`issue #56`](https://github.com/nixrajput/flutter_carousel_widget/issues/56) fixed.
+- **Fix**: [`issue #55`](https://github.com/nixrajput/flutter_carousel_widget/issues/55) fixed.
+
 ## 3.0.1
 
 - **Improvement**: Added comments to the classes, controllers, states, options, enums, and indicators.

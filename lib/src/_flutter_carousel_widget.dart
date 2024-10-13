@@ -324,7 +324,7 @@ class _FlutterCarouselState extends State<FlutterCarousel>
         ),
       },
       // Wrap the child widget with the gesture detector
-      child: NotificationListener<ScrollEndNotification>(
+      child: NotificationListener(
         onNotification: (dynamic notification) {
           if (widget.options.onScrolled != null &&
               notification is ScrollUpdateNotification) {
@@ -469,7 +469,6 @@ class _FlutterCarouselState extends State<FlutterCarousel>
                 _getEnlargeWrapper(
                   child,
                   height: distortionValue * dimen,
-                  width: distortionValue * dimen,
                   scale: distortionValue,
                 ),
               );
@@ -477,7 +476,6 @@ class _FlutterCarouselState extends State<FlutterCarousel>
               return _getCenterWrapper(
                 _getEnlargeWrapper(
                   child,
-                  width: distortionValue * dimen,
                   height: distortionValue * dimen,
                   scale: distortionValue,
                 ),

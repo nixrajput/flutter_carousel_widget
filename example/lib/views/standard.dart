@@ -7,19 +7,17 @@ class StandardCarouselDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(title: const Text('Standard Carousel Demo')),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            constraints: BoxConstraints(maxHeight: deviceSize.width),
             child: FlutterCarousel(
               options: FlutterCarouselOptions(
                 autoPlay: true,
                 autoPlayInterval: const Duration(seconds: 3),
-                height: deviceSize.height,
+                height: 200,
                 viewportFraction: 1.0,
                 indicatorMargin: 12.0,
                 enableInfiniteScroll: true,
