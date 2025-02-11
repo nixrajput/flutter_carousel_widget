@@ -220,7 +220,7 @@ class _ExpandableCarouselWidgetState extends State<ExpandableCarousel>
 
       // Calculate the actual index in case of infinite scrolling
       var actualIndex = getRealIndex(
-        pageIndex.floor() + _carouselState!.initialPage, // Floor the page index
+        pageIndex.round() + _carouselState!.initialPage, // Round the page index
         _carouselState!.realPage, // Initial real page
         widget.itemCount!, // Total number of items
       );
@@ -232,7 +232,7 @@ class _ExpandableCarouselWidgetState extends State<ExpandableCarousel>
             _firstPageLoaded = true; // Set first page loaded flag
             _previousPage = _currentPage; // Update previous page
             _currentPage = actualIndex; // Update current page
-            _pageDelta = pageIndex - pageIndex.floor(); // Calculate delta
+            _pageDelta = pageIndex - pageIndex.round(); // Calculate delta
           });
         }
       });
