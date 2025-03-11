@@ -8,7 +8,13 @@ A customizable carousel widget for Flutter, offering features such as infinite s
 [![Watchers](https://img.shields.io/github/watchers/nixrajput/flutter_carousel_widget?label=Watchers&style=flat)][repo]
 [![Contributors](https://img.shields.io/github/contributors/nixrajput/flutter_carousel_widget?label=Contributors&style=flat)][repo]
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/nixrajput/flutter_carousel_widget?label=Latest&style=flat)][releases]
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/nixrajput/flutter_carousel_widget?label=Code+Size&style=flat)][repo]
+[![GitHub repo size](https://img.shields.io/github/repo-size/nixrajput/flutter_carousel_widget?label=Repo+Size&style=flat)][repo]
+[![GitHub language count](https://img.shields.io/github/languages/count/nixrajput/flutter_carousel_widget?label=Languages&style=flat)][repo]
+[![GitHub top language](https://img.shields.io/github/languages/top/nixrajput/flutter_carousel_widget?label=Top+Language&style=flat)][repo]
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/nixrajput?label=Sponsors&style=flat)][repo]
+
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/nixrajput/flutter_carousel_widget?label=Latest+Release&style=flat)][releases]
 [![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/flutter_carousel_widget?label=Last+Commit&style=flat)][repo]
 [![GitHub issues](https://img.shields.io/github/issues/nixrajput/flutter_carousel_widget?label=Issues&style=flat)][issues]
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/flutter_carousel_widget?label=Pull+Requests&style=flat)][pulls]
@@ -23,7 +29,6 @@ A customizable carousel widget for Flutter, offering features such as infinite s
     - [Separation of Carousel Options, Controller, and State](#separation-of-carousel-options-controller-and-state)
     - [Impact](#impact)
   - [Demo](#demo)
-    - [Click here to experience the demo in a Web App](#click-here-to-experience-the-demo-in-a-web-app)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Using `FlutterCarousel` Widget](#using-fluttercarousel-widget)
@@ -41,7 +46,8 @@ A customizable carousel widget for Flutter, offering features such as infinite s
   - [Custom Slide Indicators](#custom-slide-indicators)
   - [Contributing](#contributing)
   - [License](#license)
-  - [Sponsor Me](#sponsor-me)
+  - [Contributors](#contributors)
+  - [Support My Work](#support-my-work)
   - [Connect With Me](#connect-with-me)
   - [Activities](#activities)
 
@@ -87,7 +93,11 @@ If you have been using CarouselOptions, CarouselController, and CarouselState fo
 
 ## Demo
 
-### [Click here to experience the demo in a Web App](https://nixrajput.github.io/flutter_carousel_widget)
+<h3>
+<a href="https://nixrajput.github.io/flutter_carousel_widget" target="_blank">
+  Click here to experience the demo in a Web App
+</a>
+</h3>
 
 ## Installation
 
@@ -411,15 +421,17 @@ If you would like to contribute to this project, feel free to fork the repositor
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Sponsor Me
+## Contributors
 
-By sponsoring my efforts, you're not merely contributing to the development of my projects; you're investing in its growth and sustainability.
+<a href="https://github.com/nixrajput/flutter_carousel_widget/graphs/contributors" target="_blank">
+  <img src="https://contrib.rocks/image?repo=nixrajput/flutter_carousel_widget" />
+</a>
 
-Your support empowers me to dedicate more time and resources to improving the project's features, addressing issues, and ensuring its continued relevance in the rapidly evolving landscape of technology.
+Made with [contrib.rocks](https://contrib.rocks).
 
-Your sponsorship directly fuels innovation, fosters a vibrant community, and helps maintain the project's high standards of quality. Together, we can shape the future of the projects and make a lasting impact in the open-source community.
+## Support My Work
 
-Thank you for considering sponsoring my work!
+Your support helps me dedicate more time to developing high-quality, impactful projects in the open-source community. Sponsor me, and together, let’s bring even more innovation to life!
 
 [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/nixrajput)
 
@@ -430,11 +442,11 @@ Thank you for considering sponsoring my work!
 ## Connect With Me
 
 [![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=GitHub&logoColor=333&link=https://www.github.com/nixrajput)][github]
-[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=LinkedIn&logoColor=blue&link=https://www.linkedin.com/in/nixrajput)][linkedin]
-[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=Instagram&link=https://www.instagram.com/nixrajput)][instagram]
+[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=LinkedIn&logoColor=333&link=https://www.linkedin.com/in/nixrajput)][linkedin]
+[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=Instagram&logoColor=333&link=https://www.instagram.com/nixrajput)][instagram]
 [![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-EFF7F6?logo=X&logoColor=333&link=https://x.com/nixrajput07)][twitter]
-[![Telegram: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=Telegram&link=https://telegram.me/nixrajput)][telegram]
-[![Gmail: nkr.nikhi.nkr@gmail.com](https://img.shields.io/badge/nkr.nikhil.nkr@gmail.com-EFF7F6?logo=Gmail&link=mailto:nkr.nikhil.nkr@gmail.com)][gmail]
+[![Telegram: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=Telegram&logoColor=333&link=https://telegram.me/nixrajput)][telegram]
+[![Gmail: nkr.nikhi.nkr@gmail.com](https://img.shields.io/badge/nkr.nikhil.nkr@gmail.com-EFF7F6?logo=Gmail&logoColor=333&link=mailto:nkr.nikhil.nkr@gmail.com)][gmail]
 
 ## Activities
 
