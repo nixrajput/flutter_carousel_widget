@@ -103,7 +103,7 @@ class _FlutterCarouselState extends State<FlutterCarousel>
 
       // Calculate the actual index in case of infinite scrolling
       var actualIndex = getRealIndex(
-        pageIndex.round() + _carouselState!.initialPage, // Round the page index
+        pageIndex.floor() + _carouselState!.initialPage, // Floor the page index
         _carouselState!.realPage, // Initial real page
         widget.itemCount!, // Total number of items
       );
@@ -113,7 +113,7 @@ class _FlutterCarouselState extends State<FlutterCarousel>
         if (mounted) {
           setState(() {
             _currentPage = actualIndex; // Update current page
-            _pageDelta = pageIndex - pageIndex.round(); // Calculate delta
+            _pageDelta = pageIndex - pageIndex.floor(); // Calculate delta
           });
         }
       });
