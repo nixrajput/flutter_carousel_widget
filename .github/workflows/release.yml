@@ -1,0 +1,71 @@
+name: Release
+
+# On push to the default branch (a merged PR): if the pubspec version isn't yet
+# tagged, publish to pub.dev (keyless via OIDC), then tag + create a GitHub
+# Release. Replaces the old tag-triggered publish.yml — one coherent
+# merge -> release -> publish flow, no PAT needed.
+#
+# pub.dev publishing requires the package's automated-publishing to be enabled
+# and this repo + tag pattern authorized (pub.dev admin -> Automated publishing).
+on:
+  push:
+    branches: ["master"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Publish and release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # tag + GitHub Release
+      id-token: write # pub.dev keyless (OIDC) auth
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Read version
+        id: v
+        run: |
+          version=$(grep -E '^version:' pubspec.yaml | head -1 | awk '{print $2}' | tr -d '\r')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+      - name: Skip if already released
+        id: guard
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.v.outputs.tag }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1 \
+            || git ls-remote --tags origin "refs/tags/$TAG" | grep -q .; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Tag $TAG already exists — skipping."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.guard.outputs.skip == 'false'
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      # Use Flutter for Flutter packages; dart-only packages can drop this step.
+      - if: steps.guard.outputs.skip == 'false'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - if: steps.guard.outputs.skip == 'false'
+        name: Install dependencies
+        run: flutter pub get || dart pub get
+      - if: steps.guard.outputs.skip == 'false'
+        name: Publish to pub.dev
+        run: dart pub publish --force
+      - if: steps.guard.outputs.skip == 'false'
+        name: Tag and GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.v.outputs.tag }}
+        run: |
+          gh release create "$TAG" --target "${{ github.sha }}" --title "$TAG" --generate-notes
+          echo "Released + published $TAG ✓"
