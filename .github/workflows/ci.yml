@@ -35,7 +35,13 @@ jobs:
       - name: Test
         run: |
           if [ -d test ] && grep -rqlE 'test\(|testWidgets\(' test; then
-            dart test
+            # Use `flutter test` when the package depends on the Flutter SDK
+            # (flutter_test); fall back to `dart test` for pure-Dart packages.
+            if grep -q 'sdk: flutter' pubspec.yaml; then
+              flutter test
+            else
+              dart test
+            fi
           else
             echo "no test cases found — skipping"
           fi
