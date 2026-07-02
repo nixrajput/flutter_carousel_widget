@@ -1,0 +1,25 @@
+name: Publish to pub.dev
+
+# Publishes to pub.dev when a version tag is pushed. Runs in a TAG ref context —
+# the only refType pub.dev's automated publishing authorizes (branch pushes are
+# rejected). release.yml creates the tag on merge (via RELEASE_PAT) to trigger
+# this.
+#
+# Uses the Dart team's official reusable publish workflow, which performs the
+# pub.dev OIDC token exchange and runs `dart pub publish` WITH validation
+# (no --force). It is the recommended, maintained path — more robust and secure
+# than a hand-rolled publish step.
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+*"
+
+# Least privilege at the top level; the reusable workflow's job requests the
+# id-token it needs. No write scopes are granted here.
+permissions: {}
+
+jobs:
+  publish:
+    permissions:
+      id-token: write # OIDC token for keyless pub.dev auth
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1

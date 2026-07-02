@@ -31,6 +31,8 @@ jobs:
     name: Setup Flutter and Deploy to GitHub Pages
     runs-on: ubuntu-latest
     needs: check_up_to_date
+    permissions:
+      contents: write # flutter-gh-pages pushes the built demo to the gh-pages branch
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -47,8 +49,10 @@ jobs:
       - name: Get Flutter Dependencies
         run: flutter pub get
 
+      # Don't block the demo deploy on info/style lints — the CI workflow lints
+      # separately. Only real errors should stop the Pages publish.
       - name: Run Flutter Analyzer (Lint)
-        run: flutter analyze
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
       - name: Deploy to GitHub Pages
         uses: bluefireteam/flutter-gh-pages@v8

@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.1
+
+- **Chore**: Added automated pub.dev release pipeline (version check, tag, publish) via GitHub Actions.
+
 ## 3.1.0
 
 - **Security**: Added `SECURITY.md` for vulnerability reporting and security best practices.
