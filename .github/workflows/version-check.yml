@@ -1,7 +1,12 @@
 name: Version Check
 
-# Every PR must bump the pubspec.yaml version. Release tags it on merge; the
-# existing publish workflow then publishes to pub.dev on that tag.
+# Every PR must set pubspec.yaml to a version STRICTLY GREATER than everything
+# actually RELEASED — the latest version on pub.dev and the highest git tag.
+# The base-branch pubspec is deliberately NOT a floor: master's version may be
+# ahead of what's been published/tagged (e.g. a bump whose publish failed), and
+# a version that was never released must remain releasable. This prevents a
+# non-incremental publish (which pub.dev rejects) while still allowing the
+# current master version to ship if it hasn't been released yet.
 on:
   pull_request:
     branches: ["master"]
@@ -17,31 +22,67 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 0 # need the base branch to diff the version
+          fetch-depth: 0 # need base branch + tags to compare
           persist-credentials: false
-      - name: Read versions
+
+      - name: Determine highest released version
         id: v
         run: |
-          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+          # Semver core only (drop any +build suffix): pub.dev/tags use x.y.z.
+          core() { echo "${1%%+*}"; }
           read_ver() { grep -E '^version:' "$1" | head -1 | awk '{print $2}' | tr -d '\r'; }
-          pr=$(read_ver pubspec.yaml)
-          git show "origin/${{ github.base_ref }}:pubspec.yaml" > /tmp/base_pubspec.yaml
-          base=$(read_ver /tmp/base_pubspec.yaml)
+
+          pr=$(core "$(read_ver pubspec.yaml)")
+
+          # 1) latest published version on pub.dev (404 for a new package -> 0.0.0)
+          name=$(grep -E '^name:' pubspec.yaml | head -1 | awk '{print $2}' | tr -d '\r')
+          pubdev=$(curl -fsSL "https://pub.dev/api/packages/$name" 2>/dev/null \
+            | python3 -c "import sys,json;print(json.load(sys.stdin).get('latest',{}).get('version','0.0.0'))" 2>/dev/null || echo "0.0.0")
+          pubdev=$(core "${pubdev:-0.0.0}")
+
+          # 2) highest git tag (the last actually-released tag)
+          tag=$(git ls-remote --tags origin 2>/dev/null | sed -E 's#.*refs/tags/##' \
+            | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+' | sed 's/^v//' | sort -V | tail -n1)
+          tag=${tag:-0.0.0}
+
+          # highest ACTUALLY-RELEASED version (pub.dev + tags only, NOT base pubspec)
+          highest=$(printf '%s\n%s\n' "$pubdev" "$tag" | sort -V | tail -n1)
+
           echo "pr=$pr" >> "$GITHUB_OUTPUT"
-          echo "base=$base" >> "$GITHUB_OUTPUT"
-      - name: Compare
+          echo "highest=$highest" >> "$GITHUB_OUTPUT"
+          echo "pubdev=$pubdev  tag=$tag  -> highest released=$highest ; PR=$pr"
+
+      - name: Require PR version to exceed the highest released
         env:
           PR: ${{ steps.v.outputs.pr }}
-          BASE: ${{ steps.v.outputs.base }}
+          HIGHEST: ${{ steps.v.outputs.highest }}
         run: |
-          echo "base=$BASE  pr=$PR"
-          if [ "$PR" = "$BASE" ]; then
-            echo "::error::pubspec.yaml version not bumped (still $BASE)."
+          if [ "$PR" = "$HIGHEST" ]; then
+            echo "::error::pubspec version $PR already exists (published/tagged). Bump above $HIGHEST."
             exit 1
           fi
-          greater=$(printf '%s\n%s\n' "$BASE" "$PR" | sort -V | tail -n1)
-          if [ "$greater" != "$PR" ]; then
-            echo "::error::pubspec.yaml version $PR is lower than base $BASE."
+          top=$(printf '%s\n%s\n' "$HIGHEST" "$PR" | sort -V | tail -n1)
+          if [ "$top" != "$PR" ]; then
+            echo "::error::pubspec version $PR is not greater than the highest released version $HIGHEST."
             exit 1
           fi
-          echo "Version bumped $BASE -> $PR ✓"
+          echo "Version $PR is ahead of the highest released ($HIGHEST) ✓"
+
+      - name: Require CHANGELOG entry for this version
+        env:
+          PR: ${{ steps.v.outputs.pr }}
+        run: |
+          # pub.dev rejects a publish whose CHANGELOG doesn't mention the version,
+          # so enforce it here (at the PR gate) instead of failing at publish time.
+          if [ ! -f CHANGELOG.md ]; then
+            echo "::error::CHANGELOG.md is missing — add it with an entry for $PR."
+            exit 1
+          fi
+          # Match the version as a whole token (e.g. "## [2.4.0]", "## 2.4.0"),
+          # not as a substring of a longer version.
+          if grep -qE "(^|[^0-9.])${PR//./\\.}([^0-9.]|$)" CHANGELOG.md; then
+            echo "CHANGELOG.md mentions $PR ✓"
+          else
+            echo "::error::CHANGELOG.md has no entry for $PR. Add a '## $PR' section describing the release."
+            exit 1
+          fi
