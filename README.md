@@ -1,466 +1,351 @@
-# flutter_carousel_widget
+<p align="center">
+  <img src="https://raw.githubusercontent.com/nixrajput/flutter_carousel_widget/master/assets/logo.svg" width="96" alt="flutter_carousel_widget" />
+</p>
 
-A customizable carousel widget for Flutter, offering features such as infinite scrolling, auto-scrolling, custom child widgets, pre-built indicators, expandable child widgets, auto-sized child support, and enlarged center page.
+<h1 align="center">flutter_carousel_widget</h1>
 
-[![pub package](https://img.shields.io/pub/v/flutter_carousel_widget.svg?label=Version&style=flat)][pub]
-[![Stars](https://img.shields.io/github/stars/nixrajput/flutter_carousel_widget?label=Stars&style=flat)][repo]
-[![Forks](https://img.shields.io/github/forks/nixrajput/flutter_carousel_widget?label=Forks&style=flat)][repo]
-[![Watchers](https://img.shields.io/github/watchers/nixrajput/flutter_carousel_widget?label=Watchers&style=flat)][repo]
-[![Contributors](https://img.shields.io/github/contributors/nixrajput/flutter_carousel_widget?label=Contributors&style=flat)][repo]
+<p align="center">Carousels that move the way you mean them to. Ten effects, lifecycle-aware autoplay, content-sized pages, and keyboard and screen-reader support, with no third-party dependencies.</p>
 
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/nixrajput/flutter_carousel_widget?label=Code+Size&style=flat)][repo]
-[![GitHub repo size](https://img.shields.io/github/repo-size/nixrajput/flutter_carousel_widget?label=Repo+Size&style=flat)][repo]
-[![GitHub language count](https://img.shields.io/github/languages/count/nixrajput/flutter_carousel_widget?label=Languages&style=flat)][repo]
-[![GitHub top language](https://img.shields.io/github/languages/top/nixrajput/flutter_carousel_widget?label=Top+Language&style=flat)][repo]
-[![GitHub Sponsors](https://img.shields.io/github/sponsors/nixrajput?label=Sponsors&style=flat)][repo]
+<p align="center">
+  <a href="https://pub.dev/packages/flutter_carousel_widget"><img src="https://img.shields.io/pub/v/flutter_carousel_widget.svg?label=Version" alt="pub package" /></a>
+  <a href="https://github.com/nixrajput/flutter_carousel_widget/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/nixrajput/flutter_carousel_widget/ci.yml?branch=master&label=CI" alt="CI" /></a>
+  <a href="https://pub.dev/packages/flutter_carousel_widget/score"><img src="https://img.shields.io/pub/likes/flutter_carousel_widget?label=Likes" alt="pub likes" /></a>
+  <a href="https://pub.dev/packages/flutter_carousel_widget/score"><img src="https://img.shields.io/pub/points/flutter_carousel_widget?label=Points" alt="pub points" /></a>
+  <a href="https://github.com/nixrajput/flutter_carousel_widget/blob/master/LICENSE"><img src="https://img.shields.io/github/license/nixrajput/flutter_carousel_widget?label=Licence" alt="licence" /></a>
+</p>
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/nixrajput/flutter_carousel_widget?label=Latest+Release&style=flat)][releases]
-[![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/flutter_carousel_widget?label=Last+Commit&style=flat)][repo]
-[![GitHub issues](https://img.shields.io/github/issues/nixrajput/flutter_carousel_widget?label=Issues&style=flat)][issues]
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/flutter_carousel_widget?label=Pull+Requests&style=flat)][pulls]
-[![GitHub License](https://img.shields.io/github/license/nixrajput/flutter_carousel_widget?label=Licence&style=flat)][license]
+<p align="center">
+  <b>10 effects</b> &nbsp;·&nbsp; <b>202 tests</b> &nbsp;·&nbsp; <b>6 platforms</b> &nbsp;·&nbsp; <b>0 third-party dependencies</b> &nbsp;·&nbsp; <b>keyboard and screen-reader ready</b>
+</p>
 
-## Table of Contents
+<p align="center">
+  <sub>There is no benchmark: a carousel's speed is Flutter's <code>PageView</code>. The effects, tests and dependencies are checked by <code>test/readme_test.dart</code>, and the platforms by pub.dev's analysis.</sub>
+</p>
 
-- [flutter\_carousel\_widget](#flutter_carousel_widget)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-  - [Breaking Changes for the version ^3.0.0](#breaking-changes-for-the-version-300)
-    - [Separation of Carousel Options, Controller, and State](#separation-of-carousel-options-controller-and-state)
-    - [Impact](#impact)
-  - [Demo](#demo)
-  - [Installation](#installation)
-  - [Usage](#usage)
-    - [Using `FlutterCarousel` Widget](#using-fluttercarousel-widget)
-    - [Using `ExpandableCarousel` Widget](#using-expandablecarousel-widget)
-    - [Carousel Options Customization](#carousel-options-customization)
-    - [Build item widgets on demand](#build-item-widgets-on-demand)
-  - [Carousel Controller](#carousel-controller)
-    - [`FlutterCarouselController` methods](#fluttercarouselcontroller-methods)
-      - [`.nextPage({Duration duration, Curve curve})`](#nextpageduration-duration-curve-curve)
-      - [`.previousPage({Duration duration, Curve curve})`](#previouspageduration-duration-curve-curve)
-      - [`.jumpToPage(int page)`](#jumptopageint-page)
-      - [`.animateToPage(int page, {Duration duration, Curve curve})`](#animatetopageint-page-duration-duration-curve-curve)
-  - [Predefined Slide Indicators](#predefined-slide-indicators)
-    - [Slide Indicator Options Customization](#slide-indicator-options-customization)
-  - [Custom Slide Indicators](#custom-slide-indicators)
-  - [Contributing](#contributing)
-  - [License](#license)
-  - [Contributors](#contributors)
-  - [Support My Work](#support-my-work)
-  - [Connect With Me](#connect-with-me)
-  - [Activities](#activities)
+<p align="center">
+  <a href="https://nixrajput.github.io/flutter_carousel_widget">Live demo</a> &nbsp;·&nbsp;
+  <a href="#quick-start">Quick start</a> &nbsp;·&nbsp;
+  <a href="#effects">Effects</a> &nbsp;·&nbsp;
+  <a href="#autoplay">Autoplay</a> &nbsp;·&nbsp;
+  <a href="#keyboard-and-accessibility">Accessibility</a> &nbsp;·&nbsp;
+  <a href="MIGRATION.md">Migrating from 3.x</a> &nbsp;·&nbsp;
+  <a href="https://pub.dev/documentation/flutter_carousel_widget/latest/">API reference</a>
+</p>
 
-## Features
+## Table of contents
 
-- **Infinite Scrolling:** Seamlessly scroll through items in a loop.
-- **Auto Scrolling:** Automatically advance slides at a configurable interval.
-- **Custom Child Widgets:** Use any Flutter widget as a carousel item.
-- **Custom Animations:** Apply custom animations to the carousel transitions.
-- **Pre-built Indicators:** Easily add indicators to show the current slide position.
-- **Expandable Carousel Widget:** Expand the carousel widget to fit the available space.
-- **Auto-sized Child Support:** Automatically adjust the size of the carousel items to fit their content.
-- **Enlarge Center Page:** The focused item can be enlarged.
+- [Table of contents](#table-of-contents)
+- [Overview](#overview)
+- [Demo](#demo)
+- [Quick start](#quick-start)
+  - [Prerequisites](#prerequisites)
+  - [Install](#install)
+  - [Your first carousel](#your-first-carousel)
+- [Sizing](#sizing)
+- [Controller](#controller)
+- [Autoplay](#autoplay)
+- [Effects](#effects)
+- [Indicators](#indicators)
+- [Keyboard and accessibility](#keyboard-and-accessibility)
+- [Edges and infinite scrolling](#edges-and-infinite-scrolling)
+- [Before and after](#before-and-after)
+- [Is this for you](#is-this-for-you)
+- [Compared to](#compared-to)
+- [FAQ](#faq)
+- [Migrating from 3.x](#migrating-from-3x)
+- [Contributing](#contributing)
+- [License](#license)
+- [Support the project](#support-the-project)
+- [Connect](#connect)
 
-## Breaking Changes for the version ^3.0.0
+## Overview
 
-In version 3.0.0 of the package, the following breaking changes have been introduced:
-
-### Separation of Carousel Options, Controller, and State
-
-- `FlutterCarousel` **Changes**:
-  - Previously used classes:
-    - CarouselOptions
-    - CarouselController
-    - CarouselState
-  - From v3.0.0, these classes have been replaced by:
-    - FlutterCarouselOptions
-    - FlutterCarouselController
-    - FlutterCarouselState
-- `ExpandableCarousel` **Changes**:
-  - Previously used classes:
-    - CarouselOptions
-    - CarouselController
-    - CarouselState
-  - From v3.0.0, these classes have been replaced by:
-    - ExpandableCarouselOptions
-    - ExpandableCarouselController
-    - ExpandableCarouselState
-
-### Impact
-
-If you have been using CarouselOptions, CarouselController, and CarouselState for both FlutterCarousel and ExpandableCarousel, you will need to update your code to use the newly introduced classes specific to each carousel type.
+flutter_carousel_widget shows a row (or column) of items one page at a time, and moves between them by drag, key, screen-reader gesture, controller call or autoplay. `FlutterCarousel` is for items that share one size; `ExpandableCarousel` sizes itself to each item and follows the drag between their heights. Both run on one engine, take their options as constructor parameters, share one `FlutterCarouselController`, and report exactly what moved them: 4.0 is a rewrite, and [MIGRATION.md](MIGRATION.md) maps every 3.x symbol.
 
 ## Demo
 
-<h3>
-<a href="https://nixrajput.github.io/flutter_carousel_widget" target="_blank">
-  Click here to experience the demo in a Web App
-</a>
-</h3>
+Try every option in the [live web demo](https://nixrajput.github.io/flutter_carousel_widget): the effects and their strength, autoplay, the four indicators, keyboard navigation, right-to-left and the vertical axis, beside a pinned preview. It is the [example app](example/README.md) built for the web; the same app runs on Android, iOS, macOS, Windows and Linux.
 
-## Installation
+## Quick start
 
-Add `flutter_carousel_widget` as a dependency in your `pubspec.yaml` file:
+### Prerequisites
 
-```yaml
-dependencies:
-  flutter_carousel_widget: ^latest_version
+- Flutter 3.47 or newer (Dart `^3.13.0`).
+- No other dependency. The package imports `widgets.dart` only, so it works in a Material app, a Cupertino app or neither.
+
+### Install
+
+```sh
+flutter pub add flutter_carousel_widget
 ```
 
-Then run `flutter pub get` to fetch the package.
-
-## Usage
-
-### Using `FlutterCarousel` Widget
-
-Flutter Carousel is a carousel widget which supports infinite scrolling, auto scrolling, custom child widget, custom animations and pre-built indicators.
+### Your first carousel
 
 ```dart
 FlutterCarousel(
-  options: FlutterCarouselOptions(
-    height: 400.0,
-    showIndicator: true,
-    slideIndicator: CircularSlideIndicator(),
-  ),
-  items: [1,2,3,4,5].map((i) {
-    return Builder(
-      builder: (BuildContext context) {
-        return Container(
-          width: MediaQuery.of(context).size.width,
-          margin: EdgeInsets.symmetric(horizontal: 5.0),
-          decoration: BoxDecoration(
-            color: Colors.amber
-          ),
-          child: Text('text $i', style: TextStyle(fontSize: 16.0),)
-        );
-      },
-    );
-  }).toList(),
-)
+  height: 200,
+  itemAlignment: null,
+  items: [for (final url in urls) Image.network(url, fit: BoxFit.cover)],
+);
 ```
 
-### Using `ExpandableCarousel` Widget
+`itemAlignment: null` hands each image its page's full size, so `BoxFit.cover` fills the page; the default centres smaller items instead (see [Sizing](#sizing)). Items are built lazily. Use `FlutterCarousel.builder` with `itemCount` and `itemBuilder` for long or generated lists; the builder's third argument is the underlying page, unique for each copy of an item in an infinite carousel, which is what a `Hero` tag needs.
 
-Expandable Carousel is a carousel widget which automatically expands to the size of its child widget. It is useful when you want to show a carousel with different sized child widgets.
+## Sizing
+
+`FlutterCarousel` takes a `height`, or an `aspectRatio` of the available width (1.0 by default) when there is none. `ExpandableCarousel` has neither: each item sizes itself, and the carousel's height moves between neighbouring items' heights as it scrolls.
 
 ```dart
 ExpandableCarousel(
-  options: ExpandableCarouselOptions(
-    autoPlay: true,
-    autoPlayInterval: const Duration(seconds: 2),
-  ),
-  items: [1,2,3,4,5].map((i) {
-    return Builder(
-      builder: (BuildContext context) {
-        return Container(
-          width: MediaQuery.of(context).size.width,
-          margin: EdgeInsets.symmetric(horizontal: 5.0),
-          decoration: BoxDecoration(
-            color: Colors.amber
-          ),
-          child: Text('text $i', style: TextStyle(fontSize: 16.0),)
-        );
-      },
-    );
-  }).toList(),
-)
+  items: [for (final review in reviews) ReviewCard(review)],
+);
 ```
 
-### Carousel Options Customization
+An item the carousel has not measured yet counts as `estimatedPageSize` tall, or as tall as the current item when that is `null`. Items report their size from layout, so there is no measuring pass on builds where nothing changed. A vertical `ExpandableCarousel` follows its items' widths instead.
+
+In an `ExpandableCarousel` every page keeps the carousel's full width, so a small image scales up to fill it. A `FlutterCarousel` centres each item with `itemAlignment`, which gives it loose constraints; pass `itemAlignment: null` to hand the page's tight constraints through, or give the image a `fit` and a size.
+
+## Controller
+
+```dart
+final controller = FlutterCarouselController();
+
+// In build:
+FlutterCarousel(controller: controller, items: items);
+
+// Any time after the first frame:
+await controller.nextPage();
+final showing = controller.index;
+```
+
+The controller attaches when its carousel is first built and detaches when it is disposed; `isAttached` says which. Reading `index` or calling a method while detached throws a `StateError` that says so, rather than failing somewhere inside the carousel.
+
+`index` is the current item, rounded the way `PageView` rounds, and `position` is the fractional item position: `2.5` is halfway between the third and fourth items. The controller is a `ChangeNotifier` that notifies when the item changes, when a carousel attaches or detaches, and when autoplay starts or stops.
+
+`nextPage`, `previousPage` and `animateToPage` take an optional `duration` and `curve` and return a future that completes when the move ends. `animateToPage` takes the short way round an infinite carousel, and `jumpToPage` moves without animating. Both throw a `RangeError` for an index outside the items.
+
+## Autoplay
 
 ```dart
 FlutterCarousel(
   items: items,
-  options: FlutterCarouselOptions(
-    height: 400.0,
-    // Sets the height of the carousel widget.
-
-    aspectRatio: 16 / 9,
-    // Defines the aspect ratio of the carousel widget.
-
-    viewportFraction: 1.0,
-    // Fraction of the viewport that each page should occupy.
-
-    initialPage: 0,
-    // The initial page to display when the carousel is first shown.
-
-    enableInfiniteScroll: true,
-    // Enables infinite looping of the carousel items.
-
-    reverse: false,
-    // Reverses the order of the carousel items.
-
-    autoPlay: false,
-    // Enables automatic scrolling through the carousel items.
-
-    autoPlayInterval: const Duration(seconds: 2),
-    // Duration between automatic scrolls when autoPlay is enabled.
-
-    autoPlayAnimationDuration: const Duration(milliseconds: 800),
-    // Duration of the animation when automatically scrolling between items.
-
-    autoPlayCurve: Curves.fastOutSlowIn,
-    // Curve for the auto-play animation to control the animation's speed.
-
-    enlargeCenterPage: false,
-    // Enlarges the center page of the carousel to make it more prominent.
-
-    controller: CarouselController(),
-    // Controls the carousel programmatically.
-
-    onPageChanged: callbackFunction,
-    // Callback function that is triggered when the page is changed.
-
-    pageSnapping: true,
-    // Enables snapping of the carousel pages to ensure they stop at each item.
-
-    scrollDirection: Axis.horizontal,
-    // Direction of the carousel scroll (horizontal or vertical).
-
-    pauseAutoPlayOnTouch: true,
-    // Pauses auto-play when the user touches the carousel.
-
-    pauseAutoPlayOnManualNavigate: true,
-    // Pauses auto-play when the user manually navigates through the carousel.
-
-    pauseAutoPlayInFiniteScroll: false,
-    // Pauses auto-play in infinite scroll mode.
-
-    enlargeStrategy: CenterPageEnlargeStrategy.scale,
-    // Strategy to enlarge the center page, such as scaling or zooming.
-
-    disableCenter: false,
-    // Disables centering of the carousel items.
-
-    showIndicator: true,
-    // Shows an indicator to display the current slide position.
-
-    floatingIndicator: true,
-    // Shows a floating indicator above the carousel.
-
-    slideIndicator: CircularSlideIndicator(),
-    // Sets a custom indicator widget for the carousel slides.
-  )
-)
-```
-
-### Build item widgets on demand
-
-This method will save memory by building items once it becomes necessary. This way they won't be built if they're not currently meant to be visible on screen. It can be used to build different child item widgets related to content or by item index.
-
-```dart
-FlutterCarousel.builder(
-  itemCount: 15,
-  itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-  Container(
-    child: Text(itemIndex.toString()),
+  autoPlay: CarouselAutoPlay(
+    interval: const Duration(seconds: 4),
+    intervalFor: (index) => index == 0
+        ? const Duration(seconds: 8)
+        : const Duration(seconds: 4),
   ),
-)
+);
 ```
 
+`interval` is how long each item stays (5 seconds by default), and `intervalFor` gives an item its own. A move takes 500 ms on `Curves.easeInOutCubicEmphasized` unless `duration` and `curve` say otherwise. The interval starts again whenever the carousel settles, so a parent rebuild never restarts it.
+
+Autoplay holds while a finger or pressed pointer is on the carousel, while a mouse hovers over it, and while keyboard focus is inside it; `pauseOnTouch`, `pauseOnHover` and `pauseOnFocus` turn those off. It always holds while another route covers the carousel, while the app is not in the foreground (on the web and desktop, that includes its window losing focus), while the carousel sits in an inactive tab (`TickerMode` off) and while the platform asks for reduced motion.
+
+`controller.stopAutoPlay()` stops it until `startAutoPlay()`, through touches and rebuilds, which is the pause control [WCAG 2.2.2](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html) asks moving content to have. A finite carousel rewinds from its last item to its first, or stops there with `stopAtEnd: true`; with `reverse: true` it runs backwards.
+
+## Effects
+
+| Preset                     | What it does                                                                                                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `CarouselEffect.enlarge`   | Keeps the centre item full size and shrinks its neighbours, by scale, height or towards the centre (`CarouselEnlargeStrategy`). |
+| `CarouselEffect.fade`      | Fades items as they leave the centre, down to `minOpacity`.                                                                     |
+| `CarouselEffect.parallax`  | Moves each item's content slower than its page, so the picture seems to sit behind it.                                          |
+| `CarouselEffect.depth`     | The next item waits small and faded, and grows in as the current one slides away.                                               |
+| `CarouselEffect.zoomOut`   | Neighbours shrink and dim.                                                                                                      |
+| `CarouselEffect.stack`     | The incoming item slides over the current one, which waits behind, set back.                                                    |
+| `CarouselEffect.coverflow` | Neighbours turn to face the centre, in perspective.                                                                             |
+| `CarouselEffect.cube`      | Items are the faces of a turning cube.                                                                                          |
+| `CarouselEffect.flip`      | Items flip over in place, like a card.                                                                                          |
+| `CarouselEffect.rotate`    | Neighbours tilt about an origin, like cards on a wheel.                                                                         |
+
+Effects compose with `then`, which applies the second around the first:
+
 ```dart
-ExpandableCarousel.builder(
-  itemCount: 15,
-  itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-  Container(
-    child: Text(itemIndex.toString()),
-  ),
-)
+FlutterCarousel(
+  items: items,
+  effect: const CarouselEffect.coverflow().then(const CarouselEffect.fade()),
+);
 ```
 
-## Carousel Controller
-
-In order to manually control the PageView's position, you can create your own `FlutterCarouselController`, and pass it to `FlutterCarouselOptions`. Then you can use the `FlutterCarouselController` instance to manipulate the position.
+`CarouselEffect.builder` takes any function of the item's position:
 
 ```dart
-class CarouselDemo extends StatelessWidget {
-  FlutterCarouselController buttonCarouselController = FlutterCarouselController();
-
- @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      FlutterCarousel(
-        items: child,
-        options: FlutterCarouselOptions(
-          autoPlay: false,
-          controller: buttonCarouselController,
-          enlargeCenterPage: true,
-          viewportFraction: 0.9,
-          aspectRatio: 2.0,
-          initialPage: 2,
-        ),
-      ),
-      RaisedButton(
-        onPressed: () => buttonCarouselController.nextPage(
-            duration: Duration(milliseconds: 300), curve: Curves.linear),
-        child: Text('→'),
-      )
-    ]
-  );
-}
-```
-
-### `FlutterCarouselController` methods
-
-#### `.nextPage({Duration duration, Curve curve})`
-
-Animate to the next page
-
-#### `.previousPage({Duration duration, Curve curve})`
-
-Animate to the previous page
-
-#### `.jumpToPage(int page)`
-
-Jump to the given page.
-
-#### `.animateToPage(int page, {Duration duration, Curve curve})`
-
-Animate to the given page.
-
-## Predefined Slide Indicators
-
-The `flutter_carousel_widget` package comes with a few [predefined slide indicators](https://github.com/nixrajput/flutter_carousel_widget/tree/master/lib/src/indicators) each with its own distinct behavior. To customize the slide indicators, you can pass an instance of `SlideIndicatorOptions` to the indicator you're using.
-
-### Slide Indicator Options Customization
-
-```dart
-  FlutterCarousel(
-    ...
-    options: FlutterCarouselOptions(
-      ...
-      slideIndicator: CircularSlideIndicator(
-        slideIndicatorOptions: SlideIndicatorOptions(
-          /// The alignment of the indicator.
-          alignment: Alignment.bottomCenter,
-
-          /// The color of the currently active item indicator.
-          currentIndicatorColor: Colors.white,
-
-          /// The background color of all inactive item indicators.
-          indicatorBackgroundColor: Colors.white.withOpacity(0.5),
-
-          /// The border color of all item indicators.
-          indicatorBorderColor: Colors.white,
-
-          /// The border width of all item indicators.
-          indicatorBorderWidth: 1,
-
-          /// The radius of all item indicators.
-          indicatorRadius: 6,
-
-          /// The spacing between each item indicator.
-          itemSpacing: 20,
-
-          /// The padding of the indicator.
-          padding: const EdgeInsets.all(8.0),
-
-          /// The decoration of the indicator halo.
-          haloDecoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(15.0)),
-              color: Colors.black.withOpacity(0.5)),
-
-          /// The padding of the indicator halo.
-          haloPadding: const EdgeInsets.all(8.0),
-
-          /// Whether to enable the indicator halo.
-          enableHalo: true,
-
-          /// Whether to enable the animation. Only used in [CircularStaticIndicator] and [SequentialFillIndicator].
-          enableAnimation: true,
-        ),
-      ),
+FlutterCarousel(
+  items: items,
+  effect: CarouselEffect.builder(
+    (context, position, child) => Opacity(
+      opacity: 1 - position.offset.abs().clamp(0.0, 1.0) * 0.5,
+      child: child,
     ),
-  );
+  ),
+);
 ```
 
-## Custom Slide Indicators
+`position.offset` is the item's distance from its settled slot in reading order: `0` when settled, `1` one item after. `position.visualOffset` is the same distance on screen, positive to the right or downwards whatever the text direction or `reverse` say, which is what a transform needs to mirror correctly.
 
-There might be cases where you want to control the look or behavior of the slide indicator or implement a totally new one. You can do that by implementing the `SlideIndicator` contract.
+Effects never replace your widget, so an item's state survives it crossing the centre, and only the effect's wrapper rebuilds while the carousel moves. With no effect, items do not rebuild at all during a drag. Page snapping uses the platform's physics with a tunable spring: pass `physics: CarouselSnapPhysics(snapSpring: ...)`.
 
-The following example implements an indicator which tells the percentage of the slide the user is on:
+## Indicators
+
+Four painters draw the dots: `CircularSlideIndicator` (the default) slides the active dot with the drag, `CircularStaticIndicator` fills the current one, `CircularWaveIndicator` shrinks it midway, and `SequentialFillIndicator` fills from the first dot up to the position like a progress bar. `SlideIndicatorStyle` sets their colours, radius, spacing (centre to centre), a ring, a halo behind them, and whether the static and fill painters animate.
 
 ```dart
-class SlidePercentageIndicator implements SlideIndicator {
-  SlidePercentageIndicator({
-    this.decimalPlaces = 0,
-    this.style,
-  });
-
-  /// The number of decimal places to show in the output
-  final int decimalPlaces;
-
-  /// The text style to be used by the percentage text
-  final TextStyle? style;
-
-  @override
-  Widget build(int currentPage, double pageDelta, int itemCount) {
-    if (itemCount < 2) return const SizedBox.shrink();
-    final step = 100 / (itemCount - 1);
-    final percentage = step * (pageDelta + currentPage);
-    return Center(
-      child: Text(
-        '${percentage.toStringAsFixed(decimalPlaces)}%',
-        style: style ??
-            const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-            ),
-      ),
-    );
-  }
-}
+FlutterCarousel(
+  items: items,
+  indicator: const CarouselIndicator(
+    painter: CircularWaveIndicator(
+      style: SlideIndicatorStyle(activeColor: Color(0xFF9B8CFF)),
+    ),
+    placement: CarouselIndicatorPlacement.below,
+  ),
+);
 ```
+
+`overlay` places the dots over the items by `alignment`, which defaults to the bottom centre, or the middle of the trailing edge for a vertical carousel, where the dots run down the side. `below` puts them outside the items: under a horizontal carousel, outside its height, and beside a vertical one at its trailing edge. The dots repaint from the scroll position without rebuilding any widget, follow the drag with no frame of lag, and mirror under right-to-left text and `reverse`. Tapping a dot moves to its item unless `tapToNavigate` is off, and each dot is a labelled button for screen readers. Pass `indicator: null` to hide them; they never show for fewer than two items. Extend `SlideIndicator` for a look of your own.
+
+## Keyboard and accessibility
+
+A focused carousel moves with the arrow keys, and with Home and End to the first and last items. The arrow pointing at the next item moves to it, so the keys mirror under right-to-left text, `reverse` and the vertical axis. The keys act only while the carousel itself has focus, so keys typed into a field inside a slide stay with the field. `keyboardNavigation`, `focusNode` and `autofocus` control it; the carousel draws no focus ring, so the app can draw one that matches its design.
+
+Screen readers read the carousel as "Carousel" with the value "Slide 2 of 5", and move it with their increase and decrease gestures. When the platform reports accessible navigation, a move by the user or the app is announced once, on the item it settles on; autoplay is never announced, because that would be noise. Under reduced motion, moves jump instead of animating and autoplay does not run.
+
+The labels are yours to translate:
+
+```dart
+FlutterCarousel(
+  items: items,
+  semanticLabel: 'Featured products',
+  semanticSlideLabel: (index, count) => 'Product ${index + 1} of $count',
+);
+```
+
+## Edges and infinite scrolling
+
+`infinite: true` loops past the last item to the first, in both directions. A finite carousel with `padEnds: true`, the default, lets the first and last items settle in the middle; `padEnds: false` pulls them to the edges but shifts every item off centre.
+
+`edgeAlignment: CarouselEdgeAlignment.flush` settles the first item against the leading edge and the last against the trailing edge, while the items between stay centred:
+
+```dart
+FlutterCarousel(
+  items: items,
+  viewportFraction: 0.8,
+  edgeAlignment: CarouselEdgeAlignment.flush,
+);
+```
+
+The index and position follow the clamped settle offsets, so they stay right for any `viewportFraction` above one third. Narrower pages settle centred, because several items would share the leading edge's offset. It is ignored when `infinite` is on.
+
+## Before and after
+
+In 3.x, options lived in a separate object and the enlarged centre page was a flag:
+
+```dart
+// 3.x
+FlutterCarousel(
+  items: items,
+  options: FlutterCarouselOptions(
+    height: 240,
+    enlargeCenterPage: true,
+    autoPlay: true,
+    autoPlayInterval: const Duration(seconds: 4),
+    slideIndicator: CircularWaveSlideIndicator(),
+    onPageChanged: (index, reason) => setState(() => current = index),
+  ),
+);
+```
+
+In 4.0, the options are constructor parameters, and the enlarged centre is one effect among ten:
+
+```dart
+FlutterCarousel(
+  items: items,
+  height: 240,
+  effect: const CarouselEffect.enlarge(),
+  autoPlay: const CarouselAutoPlay(interval: Duration(seconds: 4)),
+  indicator: const CarouselIndicator(painter: CircularWaveIndicator()),
+  onPageChanged: (index, reason) => setState(() => current = index),
+);
+```
+
+## Is this for you
+
+Use it for image galleries, product and onboarding carousels, card decks and featured-content rows, in any Flutter app on any platform. It fits particularly well when the carousel has to be usable with a keyboard or a screen reader, when items have different heights, or when autoplay must behave around routes, tabs and the app's lifecycle.
+
+**Skip it if** your items need different widths in one view; Material's [`CarouselView.weighted`](https://api.flutter.dev/flutter/material/CarouselView/CarouselView.weighted.html) lays those out. Skip it too if you need the carousel as a sliver inside a `CustomScrollView`, which this package does not offer.
+
+## Compared to
+
+**[`carousel_slider`](https://pub.dev/packages/carousel_slider)** is the most used carousel on pub.dev. It has an enlarged centre page and autoplay but no effects hook, keyboard navigation or screen-reader semantics, and its maintainers have asked for help ([#289](https://github.com/serenader2014/flutter_carousel_slider/issues/289)).
+
+**[`carousel_slider_x`](https://pub.dev/packages/carousel_slider_x)** is a maintained fork on `widgets.dart` alone. It removed the page-change reason and the pause options on purpose, where this package makes both exact.
+
+**[`card_swiper`](https://pub.dev/packages/card_swiper)** offers a page transformer hook and stack and tinder layouts. Its last release was in 2023.
+
+**Material's [`CarouselView`](https://api.flutter.dev/flutter/material/CarouselView-class.html)** lays out weighted, variable-width items and ships with Flutter. It has no autoplay, indicators, keyboard shortcuts or carousel semantics of its own, and its controller is named `CarouselController`.
+
+**This package** is the carousel with the accessibility built in: keyboard navigation, screen-reader semantics and announcements, and an autoplay that pauses for touch, hover, focus, routes, tabs, the app's lifecycle and reduced motion, with ten composable effects and content sizing on top.
+
+## FAQ
+
+**Why not Material's `CarouselView`?**
+Use it if you want weighted layouts in a Material app. This package works without Material, and adds autoplay, indicators, effects, content sizing and keyboard and screen-reader support.
+
+**What happened to `CarouselController`?**
+Flutter's Material library added a `CarouselController` of its own, so 2.3 renamed this package's ([#46](https://github.com/nixrajput/flutter_carousel_widget/issues/46)). 4.0 has one controller for both widgets, `FlutterCarouselController`, and imports no Material, so the two never meet inside this package.
+
+**How do I keep an item's state, such as a `TextField` or a playing video?**
+Give each item a key: keyed items keep their state when the list changes around them. `keepAlive: true` keeps a page's state while it is scrolled out of view.
+
+**Why is `ExpandableCarousel` slower than `FlutterCarousel`?**
+It lays out each item at its own size and resizes the viewport on every scroll frame; `FlutterCarousel` gives every page one fixed size. Prefer `FlutterCarousel` when the items share a size.
+
+**What do the numbers in the header mean?**
+They are the things this package controls and can check: how many effects it ships, how many tests pin its behaviour down, how many platforms pub.dev confirms it supports, and that it depends on nothing but Flutter. A carousel's speed is `PageView`'s, so there is no benchmark.
+
+## Migrating from 3.x
+
+4.0 replaces the options objects with constructor parameters, merges the two controllers into `FlutterCarouselController`, turns `enlargeCenterPage` into `CarouselEffect.enlarge`, and requires Flutter 3.47. [MIGRATION.md](MIGRATION.md) maps every 3.x symbol and lists every behaviour that changed.
 
 ## Contributing
 
-If you would like to contribute to this project, feel free to fork the repository, make your changes, and submit a pull request. Please follow the guidelines in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+Fork the repository, make your changes and open a pull request. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first, and note that every PR must bump the version in `pubspec.yaml` and add a matching `CHANGELOG.md` entry.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT. See [LICENSE](LICENSE).
 
-## Contributors
+## Support the project
 
-<a href="https://github.com/nixrajput/flutter_carousel_widget/graphs/contributors" target="_blank">
-  <img src="https://contrib.rocks/image?repo=nixrajput/flutter_carousel_widget" />
+<div align="center">
+
+flutter_carousel_widget is MIT licensed and free to use, always. If it saves you building a carousel from scratch, sponsorship is welcome.
+
+<br />
+
+<a href="https://github.com/sponsors/nixrajput">
+  <img src="https://img.shields.io/badge/Sponsor_on_GitHub-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" />
+</a>
+<a href="https://ko-fi.com/nixrajput">
+  <img src="https://img.shields.io/badge/Ko--fi-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white" alt="Ko-fi" />
+</a>
+<a href="https://www.buymeacoffee.com/nixrajput">
+  <img src="https://img.shields.io/badge/Buy_Me_a_Coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee" />
 </a>
 
-Made with [contrib.rocks](https://contrib.rocks).
+</div>
 
-## Support My Work
+## Connect
 
-Your support helps me dedicate more time to developing high-quality, impactful projects in the open-source community. Sponsor me, and together, let’s bring even more innovation to life!
+<div align="center">
 
-[![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/nixrajput)
+**Nikhil Rajput**
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/nixrajput)
+<a href="https://github.com/nixrajput"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
+<a href="https://linkedin.com/in/nixrajput"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
+<a href="https://x.com/nixrajput"><img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" alt="X" /></a>
+<a href="https://instagram.com/nixrajput"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram" /></a>
+<a href="https://telegram.me/nixrajput"><img src="https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram" /></a>
+<a href="mailto:nkr.nikhil.nkr@gmail.com"><img src="https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/nixrajput)
-
-## Connect With Me
-
-[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=GitHub&logoColor=333&link=https://www.github.com/nixrajput)][github]
-[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=LinkedIn&logoColor=333&link=https://www.linkedin.com/in/nixrajput)][linkedin]
-[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=Instagram&logoColor=333&link=https://www.instagram.com/nixrajput)][instagram]
-[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-EFF7F6?logo=X&logoColor=333&link=https://x.com/nixrajput07)][twitter]
-[![Telegram: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=Telegram&logoColor=333&link=https://telegram.me/nixrajput)][telegram]
-[![Gmail: nkr.nikhi.nkr@gmail.com](https://img.shields.io/badge/nkr.nikhil.nkr@gmail.com-EFF7F6?logo=Gmail&logoColor=333&link=mailto:nkr.nikhil.nkr@gmail.com)][gmail]
-
-## Activities
-
-![Alt](https://repobeats.axiom.co/api/embed/841225761cb31adc7197f30708fd62f1bc210c6c.svg "Repobeats analytics image")
-
-[pub]: https://pub.dev/packages/flutter_carousel_widget
-[github]: https://github.com/nixrajput
-[telegram]: https://telegram.me/nixrajput
-[twitter]: https://twitter.com/nixrajput07
-[instagram]: https://instagram.com/nixrajput
-[linkedin]: https://linkedin.com/in/nixrajput
-[gmail]: mailto:nkr.nikhil.nkr@gmail.com
-[releases]: https://github.com/nixrajput/flutter_carousel_widget/releases
-[repo]: https://github.com/nixrajput/flutter_carousel_widget
-[issues]: https://github.com/nixrajput/flutter_carousel_widget/issues
-[license]: https://github.com/nixrajput/flutter_carousel_widget/blob/master/LICENSE
-[pulls]: https://github.com/nixrajput/flutter_carousel_widget/pulls
+</div>

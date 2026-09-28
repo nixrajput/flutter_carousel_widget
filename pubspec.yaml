@@ -1,32 +1,30 @@
 name: flutter_carousel_widget
-description: A customizable Flutter carousel widget with infinite scrolling, auto-scrolling, pre-built indicators, expandable widgets, auto-sized child support, and enlarged center page.
-
-version: 3.1.1
-
-homepage: https://pub.dev/packages/flutter_carousel_widget
+description: A carousel for Flutter with ten composable effects, autoplay, indicators, content-sized pages, keyboard navigation and screen-reader support, on widgets.dart alone.
+version: 4.0.0
+homepage: https://github.com/nixrajput/flutter_carousel_widget
 repository: https://github.com/nixrajput/flutter_carousel_widget
 issue_tracker: https://github.com/nixrajput/flutter_carousel_widget/issues
 
 environment:
-  sdk: ">=2.18.0 <4.0.0"
-  flutter: ">=2.0.0"
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
 dev_dependencies:
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
-
-  lints: ^5.0.0
+  leak_tracker_flutter_testing: ^3.0.10
 
 topics:
   - carousel
-  - flutter-carousel
-  - flutter-carousel-widget
-  - carousel-slider
-  - carousel-widget
+  - slider
+  - page-view
+  - animation
+  - accessibility
 
 funding:
   - https://ko-fi.com/nixrajput
