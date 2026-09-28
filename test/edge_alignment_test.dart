@@ -179,4 +179,24 @@ void main() {
     await tester.pumpAndSettle();
     expect(c.index, 3);
   });
+
+  testWidgets('switching from flush back to centre re-centres the item', (
+    tester,
+  ) async {
+    Widget carousel(CarouselEdgeAlignment edges) => host(
+      FlutterCarousel(
+        items: boxes(5, keyed: true),
+        height: 100,
+        viewportFraction: 0.8,
+        edgeAlignment: edges,
+        indicator: null,
+      ),
+    );
+    await tester.pumpWidget(carousel(CarouselEdgeAlignment.flush));
+    await tester.pumpAndSettle();
+    expect(item(tester, 0).left, 0);
+    await tester.pumpWidget(carousel(CarouselEdgeAlignment.center));
+    await tester.pumpAndSettle();
+    expect(item(tester, 0).left, closeTo(40, 1e-9));
+  });
 }
