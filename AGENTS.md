@@ -42,12 +42,12 @@ test/
 
 ### The checks
 
-`dart format --output=none --set-exit-if-changed .`, `flutter analyze`, `flutter test`, `(cd example && flutter test)`, `flutter pub publish --dry-run`. CI's `build` job runs the first four plus a 90% coverage gate (`flutter test --coverage`, then `scripts/coverage.sh 90`); the `floor` job analyzes and tests on Flutter 3.47.0. `.githooks/pre-push` runs them too (`git config core.hooksPath .githooks`). `example.yml` builds the example app for Android, iOS, macOS, Windows, Linux and web (JS and Wasm) on every PR; the example's native icons come from `example/assets/icon` via `dart run flutter_launcher_icons`.
+`dart format --output=none --set-exit-if-changed .`, `flutter analyze`, `flutter test`, `(cd example && flutter test)`, `flutter pub publish --dry-run`. CI's `build` job runs the first four plus a 90% coverage gate (`flutter test --coverage`, then `scripts/coverage.sh 90`); the `floor` job analyzes and tests on Flutter 3.47.0. `.githooks/pre-push` runs them too (`git config core.hooksPath .githooks`). `example.yml` builds the example app for Android, iOS, macOS, Windows, Linux and web (JS and Wasm) on every PR to `master`; the example's native icons come from `example/assets/icon` via `dart run flutter_launcher_icons`.
 
 ### Conventions
 
 - Conventional Commits, imperative subject `<=` 50 chars, no trailing period, no `Co-Authored-By` or `Generated with` trailers.
-- Every PR that changes anything users receive bumps `pubspec.yaml` and adds a matching `CHANGELOG.md` entry. CI gate `version bumped` enforces both, and pub.dev rejects a publish with no changelog entry.
+- Every PR that changes anything users receive bumps `pubspec.yaml` and adds a matching `CHANGELOG.md` entry. CI gate `version bumped` enforces both, and without the entry `dart pub publish --dry-run` fails, which stops the release workflow before it publishes.
 - The PR title becomes the squash commit message.
 - `master` is protected: PR required, squash-only merges.
 - The README documents **shipped features only** - no roadmap, no plans. Every Dart block in it must also be in `test/readme_snippets.dart`, verbatim, or `readme_test.dart` fails.
