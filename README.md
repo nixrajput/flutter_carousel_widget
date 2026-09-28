@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <b>10 effects</b> &nbsp;·&nbsp; <b>202 tests</b> &nbsp;·&nbsp; <b>6 platforms</b> &nbsp;·&nbsp; <b>0 third-party dependencies</b> &nbsp;·&nbsp; <b>keyboard and screen-reader ready</b>
+  <b>10 effects</b> &nbsp;·&nbsp; <b>204 tests</b> &nbsp;·&nbsp; <b>6 platforms</b> &nbsp;·&nbsp; <b>0 third-party dependencies</b> &nbsp;·&nbsp; <b>keyboard and screen-reader ready</b>
 </p>
 
 <p align="center">
