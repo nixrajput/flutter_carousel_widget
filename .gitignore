@@ -30,3 +30,7 @@ build/
 
 coverage/
 .playwright-mcp/
+
+# Local agent state
+.superpowers/
+.claude/settings.local.json

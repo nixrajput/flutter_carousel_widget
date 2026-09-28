@@ -50,6 +50,12 @@
       "Edit(./**/*.p12)",
       "Edit(./**/*.pfx)",
       "Edit(./**/*.cert)",
+      "Read(/**/*.p12)",
+      "Read(/**/*.pfx)",
+      "Read(/**/*.cert)",
+      "Edit(/**/*.p12)",
+      "Edit(/**/*.pfx)",
+      "Edit(/**/*.cert)",
       "Read(./secrets/**)",
       "Edit(./secrets/**)"
     ],
