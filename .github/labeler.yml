@@ -1,4 +1,4 @@
-# .github/labeler.yml — path-based PR auto-labels (actions/labeler@v5 format).
+# .github/labeler.yml - path-based PR auto-labels (actions/labeler@v5 format).
 documentation:
   - changed-files:
       - any-glob-to-any-file: ["**/*.md", "docs/**"]

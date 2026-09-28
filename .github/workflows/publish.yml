@@ -1,13 +1,13 @@
 name: Publish to pub.dev
 
-# Publishes to pub.dev when a version tag is pushed. Runs in a TAG ref context —
+# Publishes to pub.dev when a version tag is pushed. Runs in a TAG ref context -
 # the only refType pub.dev's automated publishing authorizes (branch pushes are
 # rejected). release.yml creates the tag on merge (via RELEASE_PAT) to trigger
 # this.
 #
 # Uses the Dart team's official reusable publish workflow, which performs the
 # pub.dev OIDC token exchange and runs `dart pub publish` WITH validation
-# (no --force). It is the recommended, maintained path — more robust and secure
+# (no --force). It is the recommended, maintained path - more robust and secure
 # than a hand-rolled publish step.
 on:
   push:
