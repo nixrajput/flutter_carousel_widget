@@ -28,7 +28,7 @@ fi
 percent=$(awk -v h="$hit" -v f="$found" 'BEGIN { printf "%.2f", (h / f) * 100 }')
 echo "Line coverage: $percent% ($hit/$found), threshold ${THRESHOLD}%"
 
-if awk -v p="$percent" -v t="$THRESHOLD" 'BEGIN { exit (p >= t) ? 0 : 1 }'; then
+if awk -v h="$hit" -v f="$found" -v t="$THRESHOLD" 'BEGIN { exit (h * 100 >= t * f) ? 0 : 1 }'; then
   exit 0
 fi
 
