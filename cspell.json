@@ -1,0 +1,31 @@
+{
+  "version": "0.2",
+  "language": "en,en-GB",
+  "ignorePaths": [
+    ".dart_tool/**",
+    "build/**",
+    "pubspec.lock",
+    "example/ios/**",
+    "example/macos/**",
+    "example/android/**",
+    "example/windows/**",
+    "example/linux/**",
+    "example/web/**",
+    "CHANGELOG.md"
+  ],
+  "words": [
+    "nixrajput",
+    "dartdoc",
+    "pubspec",
+    "pana",
+    "coverflow",
+    "autoplay",
+    "keepAlive",
+    "lcov",
+    "Tristate",
+    "WCAG",
+    "trackpads",
+    "carousel_slider",
+    "card_swiper"
+  ]
+}

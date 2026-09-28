@@ -1,77 +1,38 @@
-# Pull Request Checklist
+## Summary
 
-## What does this PR do?
+<!-- What does this PR do? One paragraph is enough. -->
 
-<!-- **Please provide a clear and concise description of the changes in this PR.** Example: -->
+## Type of change
 
-<!--
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Refactor / code cleanup
+- [ ] Documentation
+- [ ] CI / tooling
+- [ ] Dependency update
 
-- Adds/improves functionality for the carousel widget
-- Fixes bugs or issues
-- Adds new features like autoplay, infinite scrolling, etc.
-- Optimizes performance or enhances accessibility
+## Related issues
 
--->
+Closes #<!-- issue number -->
 
-## **Checklist**
+## How to test
 
-### Code Changes
-- [ ] I have added new features to the package (e.g., autoplay, indicator customization, etc.)
-- [ ] I have fixed existing issues (e.g., performance, edge cases)
-- [ ] I have improved the overall structure or optimized the codebase
+<!-- Steps for a reviewer to verify the change manually. -->
 
-### Documentation
-- [ ] I have updated the README file or relevant documentation with the changes
-- [ ] I have added code usage examples or updated existing examples to reflect changes
-- [ ] I have updated the package version in the `pubspec.yaml` file
+1.
+2.
 
-### Testing
+## Verification checklist
 
-**General Tests**
-- [ ] The carousel widget works correctly with default settings
-- [ ] The carousel can handle a dynamic number of children (images, texts, etc.)
-- [ ] The carousel supports custom widgets for carousel items
-
-**Autoplay Feature**
-- [ ] Autoplay starts when enabled and stops when disabled
-- [ ] Autoplay pauses when the user interacts (swipes/taps) with the carousel
-- [ ] Autoplay resumes after interaction
-
-**Indicators and Customization**
-- [ ] The carousel displays indicators correctly and updates when navigating through slides
-- [ ] Custom indicators (colors, shapes, positions) are rendered correctly
-- [ ] Custom animations or transitions between slides work as expected
-
-**Looping and Scrolling**
-- [ ] Infinite loop mode works smoothly without any jumps or glitches
-- [ ] The carousel scrolls smoothly horizontally and/or vertically
-- [ ] Pagination and snapping behavior works as expected
-
-**Accessibility**
-- [ ] The carousel widget supports screen readers (e.g., `Semantics` labels added)
-- [ ] Users can navigate between items using a keyboard (if necessary)
-
-**Responsiveness**
-- [ ] The carousel adapts to different screen sizes (mobile, tablet, desktop)
-- [ ] The carousel responds correctly to device orientation changes
-
-**Error Handling**
-- [ ] The carousel handles empty/null items gracefully
-- [ ] The carousel handles large data sets without crashes or performance drops
-
-### Performance
-- [ ] I ran performance tests to ensure no regressions
-- [ ] The carousel renders efficiently, even with a large number of items
-
-### How did you verify your code works?
-
-<!-- **Please explain how you tested the code changes.** Example: -->
-
-<!--
-
-- I have written unit tests covering the new features
-- I ran manual tests to check various carousel configurations (autoplay, infinite loop, custom widgets)
-- I verified the carousel on different devices and screen sizes
-- All tests pass locally (`flutter test`)
-
--->
+- [ ] `dart format --output=none --set-exit-if-changed .` - clean
+- [ ] `flutter analyze` - 0 issues
+- [ ] `flutter test` - all tests pass
+- [ ] `(cd example && flutter test)` - layout tests pass
+- [ ] `flutter pub publish --dry-run` - no warnings
+- [ ] `pubspec.yaml` version bumped (required to merge)
+- [ ] `CHANGELOG.md` has an entry for that version (`flutter pub publish --dry-run` fails without one, so the release workflow stops)
+- [ ] Docs updated where applicable (README, dartdoc comments)
+- [ ] Checked under RTL, `reverse`, the vertical axis and a screen reader where the change can reach them
+- [ ] No per-frame rebuild added: effects and indicators read the scroll listenable
+- [ ] `SECURITY.md` supported-versions table still correct
+- [ ] No unrelated changes included in this PR

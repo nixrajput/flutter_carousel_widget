@@ -9,7 +9,6 @@ analyzer:
     unused_import: error
     unused_local_variable: error
   exclude:
-    - example/**
     - build/**
 
 linter:

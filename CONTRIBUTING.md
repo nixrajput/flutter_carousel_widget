@@ -26,7 +26,7 @@ Here are the steps to contribute to this project:
 
 4. Make Changes: Implement your changes and improvements in your local repository. Follow the coding style and best practices of the project.
 
-5. Test Your Changes: Ensure that your changes do not introduce any errors or regressions. Test the website locally to verify that it functions as expected.
+5. Test Your Changes: Ensure that your changes do not introduce any errors or regressions. Run the checks in [Checks](#checks) before you push.
 
 6. Commit Changes: Commit your changes with a clear and descriptive commit message.
 
@@ -45,6 +45,25 @@ Here are the steps to contribute to this project:
 9. Review and Collaboration: Contributors and maintainers will review your Pull Request. Be prepared to address any feedback or make additional changes as necessary.
 
 10. Merge: Once your Pull Request is approved and passes all checks, a maintainer will merge it into the main branch. Congratulations, your contribution is now part of the project!
+
+## Checks
+
+You need Flutter 3.47 or newer. Run these from the repository root; CI runs the same ones:
+
+```bash
+dart format --output=none --set-exit-if-changed .
+flutter analyze
+flutter test
+(cd example && flutter test)
+```
+
+`git config core.hooksPath .githooks` runs them, plus `flutter pub publish --dry-run`, before every push.
+
+Three rules keep the carousel correct and fast:
+
+- An effect never changes its widget structure with the offset; it changes values. A different structure remounts the item and loses its state.
+- Nothing rebuilds the carousel per scroll frame. Effects and indicators listen to the scroll position themselves.
+- `lib/` never imports Material or Cupertino. `test/architecture_test.dart` fails if it does.
 
 ## Development Guidelines
 

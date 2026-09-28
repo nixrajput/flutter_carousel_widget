@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Runs the checks CI runs, before anything leaves this machine.
+# Enable with: git config core.hooksPath .githooks
+set -euo pipefail
+
+echo "==> dart format"
+dart format --output=none --set-exit-if-changed .
+
+echo "==> flutter analyze"
+flutter analyze
+
+echo "==> flutter test"
+flutter test
+
+echo "==> example tests"
+(cd example && flutter test)
+
+echo "==> flutter pub publish --dry-run"
+flutter pub publish --dry-run
+
+echo "All pre-push checks passed."
