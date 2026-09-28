@@ -74,11 +74,16 @@ class IndicatorView extends StatelessWidget {
 
 class _DotsPainter extends CustomPainter {
   _DotsPainter(this.indicator, this.view, {required this.tappable})
-    : super(repaint: view.scroll);
+    : _layout = (view.axis, view.infinite, view.geometry.flipped),
+      super(repaint: view.scroll);
 
   final SlideIndicator indicator;
   final CarouselView view;
   final bool tappable;
+
+  // The view is the same engine object across rebuilds, so a flip, a change
+  // of axis or of looping is only visible in what it reported at creation.
+  final (Axis, bool, bool) _layout;
 
   @override
   void paint(Canvas canvas, Size size) =>
@@ -86,7 +91,7 @@ class _DotsPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_DotsPainter old) =>
-      old.indicator != indicator || old.view != view;
+      old.indicator != indicator || old.view != view || old._layout != _layout;
 
   @override
   SemanticsBuilderCallback get semanticsBuilder => (size) {
