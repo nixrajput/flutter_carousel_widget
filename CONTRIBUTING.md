@@ -28,10 +28,10 @@ Here are the steps to contribute to this project:
 
 5. Test Your Changes: Ensure that your changes do not introduce any errors or regressions. Run the checks in [Checks](#checks) before you push.
 
-6. Commit Changes: Commit your changes with a clear and descriptive commit message.
+6. Commit Changes: Commit your changes with a [Conventional Commits](https://www.conventionalcommits.org) message (`feat:`, `fix:`, `docs:` and so on).
 
    ```bash
-   git commit -m "Add feature/fix: Describe your changes here"
+   git commit -m "feat: describe your change"
    ```
 
 7. Push Changes: Push your changes to your forked repository on GitHub.
