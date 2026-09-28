@@ -21,7 +21,7 @@ git config core.hooksPath .githooks   # optional: runs the checks below before e
 
 ## The checks
 
-Every one of these must pass before a PR can merge - CI runs the same set:
+Every one of these must pass before a PR can merge. CI runs all of them but the publish dry run, which the release workflow runs before every publish:
 
 ```bash
 dart format --output=none --set-exit-if-changed .
