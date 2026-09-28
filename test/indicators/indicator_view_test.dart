@@ -21,6 +21,23 @@ class Spy extends SlideIndicator {
       seen.add(geometry);
 }
 
+/// A painter that equals every other instance, like a const default one.
+class _EqualSpy extends SlideIndicator {
+  const _EqualSpy();
+
+  static final seen = <SlideIndicatorGeometry>[];
+
+  @override
+  void paint(Canvas canvas, Size size, SlideIndicatorGeometry geometry) =>
+      seen.add(geometry);
+
+  @override
+  bool operator ==(Object other) => other is _EqualSpy;
+
+  @override
+  int get hashCode => 0;
+}
+
 void main() {
   testWidgets('#62: the indicator follows the drag, no frame late', (
     tester,
@@ -244,5 +261,33 @@ void main() {
     final dots = tester.getRect(find.byType(IndicatorView));
     expect(dots.left, greaterThanOrEqualTo(pages.right));
     expect(dots.center.dy, closeTo(pages.center.dy, 0.5));
+  });
+
+  testWidgets('the dots repaint when reverse flips them, without a scroll', (
+    tester,
+  ) async {
+    Widget carousel({required bool reverse}) => host(
+      FlutterCarousel(
+        items: boxes(3),
+        height: 100,
+        reverse: reverse,
+        indicator: const CarouselIndicator(painter: _EqualSpy()),
+      ),
+    );
+    CustomPainter dots() => tester
+        .widget<CustomPaint>(
+          find.descendant(
+            of: find.byType(IndicatorView),
+            matching: find.byType(CustomPaint),
+          ),
+        )
+        .painter!;
+    await tester.pumpWidget(carousel(reverse: false));
+    final before = dots();
+    expect(_EqualSpy.seen.last.flipped, isFalse);
+    await tester.pumpWidget(carousel(reverse: true));
+    expect(_EqualSpy.seen.last.flipped, isTrue);
+    // Repainting must not rely on the pages repainting in the same layer.
+    expect(dots().shouldRepaint(before), isTrue);
   });
 }
