@@ -1,7 +1,7 @@
 name: Version Check
 
 # Every PR must set pubspec.yaml to a version STRICTLY GREATER than everything
-# actually RELEASED — the latest version on pub.dev and the highest git tag.
+# actually RELEASED - the latest version on pub.dev and the highest git tag.
 # The base-branch pubspec is deliberately NOT a floor: master's version may be
 # ahead of what's been published/tagged (e.g. a bump whose publish failed), and
 # a version that was never released must remain releasable. This prevents a
@@ -75,7 +75,7 @@ jobs:
           # pub.dev rejects a publish whose CHANGELOG doesn't mention the version,
           # so enforce it here (at the PR gate) instead of failing at publish time.
           if [ ! -f CHANGELOG.md ]; then
-            echo "::error::CHANGELOG.md is missing — add it with an entry for $PR."
+            echo "::error::CHANGELOG.md is missing - add it with an entry for $PR."
             exit 1
           fi
           # Match the version as a whole token (e.g. "## [2.4.0]", "## 2.4.0"),

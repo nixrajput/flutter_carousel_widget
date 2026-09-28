@@ -48,7 +48,7 @@ jobs:
       - name: Get Flutter Dependencies
         run: flutter pub get
 
-      # Don't block the demo deploy on info/style lints — the CI workflow lints
+      # Don't block the demo deploy on info/style lints - the CI workflow lints
       # separately. Only real errors should stop the Pages publish.
       - name: Run Flutter Analyzer (Lint)
         run: flutter analyze --no-fatal-infos --no-fatal-warnings

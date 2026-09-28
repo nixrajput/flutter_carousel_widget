@@ -6,12 +6,12 @@ name: Release
 # automated publishing only allows the 'tag' refType, not 'branch').
 #
 # The tag is PUSHED VIA GIT using PUB_RELEASE_TOKEN, because a tag pushed with
-# the default GITHUB_TOKEN does NOT trigger other workflows — the PAT-attributed
+# the default GITHUB_TOKEN does NOT trigger other workflows - the PAT-attributed
 # push is what makes publish.yml fire. The GitHub Release itself is created with
 # the default GITHUB_TOKEN (reliable release perms in-workflow), so the PAT only
 # needs `contents: write` for the git push, not access to the releases API.
 # If PUB_RELEASE_TOKEN is unset, the tag is pushed with the default token (still
-# tagged + released, but publish.yml won't auto-fire — push the tag manually).
+# tagged + released, but publish.yml won't auto-fire - push the tag manually).
 on:
   push:
     branches: ["master"]
@@ -44,7 +44,7 @@ jobs:
           TAG: ${{ steps.v.outputs.tag }}
         run: |
           if git ls-remote --tags origin "refs/tags/$TAG" | grep -q .; then
-            echo "Tag $TAG already exists — skipping."
+            echo "Tag $TAG already exists - skipping."
             echo "created=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi

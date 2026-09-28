@@ -1,7 +1,8 @@
 name: Dependency Review
 
-# Flags vulnerable or disallowed-license dependencies introduced by a PR before
-# they merge. Replaces Dependabot's alerting with a hard PR gate.
+# Fails a PR that introduces a dependency with a known vulnerability or a
+# disallowed licence. With CodeQL and Dependabot deliberately absent fleet-wide,
+# this and Scorecard are the supply-chain gate.
 on:
   pull_request:
     branches: ["master"]
@@ -11,7 +12,7 @@ permissions:
 
 jobs:
   dependency-review:
-    name: Dependency review
+    name: dependency review
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -19,5 +20,5 @@ jobs:
           persist-credentials: false
       - uses: actions/dependency-review-action@v4
         with:
-          fail-on-severity: high
+          fail-on-severity: moderate
           comment-summary-in-pr: on-failure
