@@ -122,6 +122,8 @@ class _CarouselEngineState extends State<CarouselEngine>
   @override
   final sizes = PageSizes();
   final _pagesKey = GlobalKey();
+  // Marks the painted dots, so the tap band around the carousel finds them.
+  final _dotsKey = GlobalKey();
   late final _current = ValueNotifier<int>(_index);
 
   @override
@@ -840,8 +842,9 @@ class _CarouselEngineState extends State<CarouselEngine>
       indicator: indicator,
       view: this,
       alignment: alignment,
+      dotsKey: _dotsKey,
     );
-    return switch (indicator.placement) {
+    final placed = switch (indicator.placement) {
       CarouselIndicatorPlacement.overlay => Stack(
         children: [
           body,
@@ -865,6 +868,13 @@ class _CarouselEngineState extends State<CarouselEngine>
         ],
       ),
     };
+    return IndicatorTapBand(
+      indicator: indicator,
+      view: this,
+      alignment: alignment,
+      dotsKey: _dotsKey,
+      child: placed,
+    );
   }
 }
 
