@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/nixrajput/flutter_carousel_widget/discussions
     about: For questions and general discussion, please use Discussions.
   - name: Security report
-    url: https://github.com/nixrajput/flutter_carousel_widget/security/policy
-    about: Report a vulnerability privately, never as a public issue.
+    url: https://github.com/nixrajput/flutter_carousel_widget/security/advisories/new
+    about: Report a vulnerability privately (see SECURITY.md).

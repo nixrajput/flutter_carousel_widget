@@ -11,11 +11,12 @@
   <a href="https://github.com/nixrajput/flutter_carousel_widget/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/nixrajput/flutter_carousel_widget/ci.yml?branch=master&label=CI" alt="CI" /></a>
   <a href="https://pub.dev/packages/flutter_carousel_widget/score"><img src="https://img.shields.io/pub/likes/flutter_carousel_widget?label=Likes" alt="pub likes" /></a>
   <a href="https://pub.dev/packages/flutter_carousel_widget/score"><img src="https://img.shields.io/pub/points/flutter_carousel_widget?label=Points" alt="pub points" /></a>
+  <a href="https://github.com/nixrajput/flutter_carousel_widget/graphs/contributors"><img src="https://img.shields.io/github/contributors/nixrajput/flutter_carousel_widget?label=Contributors" alt="contributors" /></a>
   <a href="https://github.com/nixrajput/flutter_carousel_widget/blob/master/LICENSE"><img src="https://img.shields.io/github/license/nixrajput/flutter_carousel_widget?label=Licence" alt="licence" /></a>
 </p>
 
 <p align="center">
-  <b>10 effects</b> &nbsp;·&nbsp; <b>204 tests</b> &nbsp;·&nbsp; <b>6 platforms</b> &nbsp;·&nbsp; <b>0 third-party dependencies</b> &nbsp;·&nbsp; <b>keyboard and screen-reader ready</b>
+  <b>10 effects</b> &nbsp;·&nbsp; <b>220 tests</b> &nbsp;·&nbsp; <b>6 platforms</b> &nbsp;·&nbsp; <b>0 third-party dependencies</b> &nbsp;·&nbsp; <b>keyboard and screen-reader ready</b>
 </p>
 
 <p align="center">
@@ -28,7 +29,7 @@
   <a href="#effects">Effects</a> &nbsp;·&nbsp;
   <a href="#autoplay">Autoplay</a> &nbsp;·&nbsp;
   <a href="#keyboard-and-accessibility">Accessibility</a> &nbsp;·&nbsp;
-  <a href="MIGRATION.md">Migrating from 3.x</a> &nbsp;·&nbsp;
+  <a href="https://github.com/nixrajput/flutter_carousel_widget/blob/master/MIGRATION.md">Migrating from 3.x</a> &nbsp;·&nbsp;
   <a href="https://pub.dev/documentation/flutter_carousel_widget/latest/">API reference</a>
 </p>
 
@@ -54,17 +55,18 @@
 - [FAQ](#faq)
 - [Migrating from 3.x](#migrating-from-3x)
 - [Contributing](#contributing)
+- [Contributors](#contributors)
 - [License](#license)
 - [Support the project](#support-the-project)
 - [Connect](#connect)
 
 ## Overview
 
-flutter_carousel_widget shows a row (or column) of items one page at a time, and moves between them by drag, key, screen-reader gesture, controller call or autoplay. `FlutterCarousel` is for items that share one size; `ExpandableCarousel` sizes itself to each item and follows the drag between their heights. Both run on one engine, take their options as constructor parameters, share one `FlutterCarouselController`, and report exactly what moved them: 4.0 is a rewrite, and [MIGRATION.md](MIGRATION.md) maps every 3.x symbol.
+flutter_carousel_widget shows a row (or column) of items one page at a time, and moves between them by drag, key, screen-reader gesture, controller call or autoplay. `FlutterCarousel` is for items that share one size; `ExpandableCarousel` sizes itself to each item and follows the drag between their heights. Both run on one engine, take their options as constructor parameters, share one `FlutterCarouselController`, and report exactly what moved them: 4.0 is a rewrite, and [MIGRATION.md](https://github.com/nixrajput/flutter_carousel_widget/blob/master/MIGRATION.md) maps every 3.x symbol.
 
 ## Demo
 
-Try every option in the [live web demo](https://nixrajput.github.io/flutter_carousel_widget): the effects and their strength, autoplay, the four indicators, keyboard navigation, right-to-left and the vertical axis, beside a pinned preview. It is the [example app](example/README.md) built for the web; the same app runs on Android, iOS, macOS, Windows and Linux.
+Try every option in the [live web demo](https://nixrajput.github.io/flutter_carousel_widget): the effects and their strength, autoplay, the four indicators, keyboard navigation, right-to-left and the vertical axis, beside a pinned preview. It is the [example app](https://github.com/nixrajput/flutter_carousel_widget/blob/master/example/README.md) built for the web; the same app runs on Android, iOS, macOS, Windows and Linux.
 
 ## Quick start
 
@@ -202,7 +204,7 @@ FlutterCarousel(
 );
 ```
 
-`overlay` places the dots over the items by `alignment`, which defaults to the bottom centre, or the middle of the trailing edge for a vertical carousel, where the dots run down the side. `below` puts them outside the items: under a horizontal carousel, outside its height, and beside a vertical one at its trailing edge. The dots repaint from the scroll position without rebuilding any widget, follow the drag with no frame of lag, and mirror under right-to-left text and `reverse`. Tapping a dot moves to its item unless `tapToNavigate` is off, and each dot is a labelled button for screen readers. Pass `indicator: null` to hide them; they never show for fewer than two items. Extend `SlideIndicator` for a look of your own.
+`overlay` places the dots over the items by `alignment`, which defaults to the bottom centre, or the middle of the trailing edge for a vertical carousel, where the dots run down the side. `below` puts them outside the items: under a horizontal carousel, outside its height, and beside a vertical one at its trailing edge. The dots repaint from the scroll position without rebuilding any widget, follow the drag with no frame of lag, and mirror under right-to-left text and `reverse`. Tapping a dot moves to its item unless `tapToNavigate` is off, and each dot is a labelled button for screen readers. However small a dot is drawn, its target is one `spacing` wide (24 pixels by default, the smallest WCAG 2.2 allows) and 48 pixels tall, growing towards the items so none of it falls off the carousel's edge. Pass `indicator: null` to hide them; they never show for fewer than two items. Extend `SlideIndicator` for a look of your own.
 
 ## Keyboard and accessibility
 
@@ -305,15 +307,23 @@ They are the things this package controls and can check: how many effects it shi
 
 ## Migrating from 3.x
 
-4.0 replaces the options objects with constructor parameters, merges the two controllers into `FlutterCarouselController`, turns `enlargeCenterPage` into `CarouselEffect.enlarge`, and requires Flutter 3.47. [MIGRATION.md](MIGRATION.md) maps every 3.x symbol and lists every behaviour that changed.
+4.0 replaces the options objects with constructor parameters, merges the two controllers into `FlutterCarouselController`, turns `enlargeCenterPage` into `CarouselEffect.enlarge`, and requires Flutter 3.47. [MIGRATION.md](https://github.com/nixrajput/flutter_carousel_widget/blob/master/MIGRATION.md) maps every 3.x symbol and lists every behaviour that changed.
 
 ## Contributing
 
-Fork the repository, make your changes and open a pull request. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first, and note that every PR must bump the version in `pubspec.yaml` and add a matching `CHANGELOG.md` entry.
+Contributions are welcome. Fork, branch and open a pull request - see [CONTRIBUTING.md](https://github.com/nixrajput/flutter_carousel_widget/blob/master/CONTRIBUTING.md) for the checks a PR has to pass, and note that every PR must bump the version in `pubspec.yaml` and add a matching `CHANGELOG.md` entry. Bugs and ideas go to [Issues](https://github.com/nixrajput/flutter_carousel_widget/issues), questions to [Discussions](https://github.com/nixrajput/flutter_carousel_widget/discussions), and vulnerabilities follow [SECURITY.md](https://github.com/nixrajput/flutter_carousel_widget/blob/master/SECURITY.md).
+
+## Contributors
+
+Thanks to everyone who has contributed to flutter_carousel_widget.
+
+<a href="https://github.com/nixrajput/flutter_carousel_widget/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=nixrajput/flutter_carousel_widget" alt="Contributors" />
+</a>
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](https://github.com/nixrajput/flutter_carousel_widget/blob/master/LICENSE).
 
 ## Support the project
 

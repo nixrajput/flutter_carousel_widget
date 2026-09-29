@@ -349,4 +349,44 @@ void main() {
     await tick(tester);
     expect(c.index, 2);
   });
+
+  testWidgets(
+    'a carousel built while the app is inactive holds until it resumes',
+    (tester) async {
+      // Inactive, not paused: a paused app draws no frames, so builds nothing.
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      final c = FlutterCarouselController();
+      addTearDown(c.dispose);
+      await tester.pumpWidget(host(carousel(controller: c)));
+      await tick(tester, const Duration(seconds: 3));
+      expect(c.index, 0);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tick(tester);
+      expect(c.index, 1);
+    },
+  );
+
+  testWidgets('in reverse, stopAtEnd stops at the first item, or never moves '
+      'from it', (tester) async {
+    const stop = CarouselAutoPlay(interval: second, stopAtEnd: true);
+    for (final start in [1, 0]) {
+      final c = FlutterCarouselController();
+      await tester.pumpWidget(
+        host(
+          KeyedSubtree(
+            key: ValueKey(start),
+            child: carousel(
+              controller: c,
+              reverse: true,
+              initialPage: start,
+              autoPlay: stop,
+            ),
+          ),
+        ),
+      );
+      await tick(tester, const Duration(seconds: 3));
+      expect((c.index, c.isAutoPlaying), (0, false), reason: 'from $start');
+      c.dispose();
+    }
+  });
 }

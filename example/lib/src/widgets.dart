@@ -62,6 +62,11 @@ class Section extends StatelessWidget {
   }
 }
 
+/// A segment's label, which shrinks rather than breaking a word over lines
+/// when a narrow panel leaves the segment too little room.
+Widget segmentLabel(String text) =>
+    FittedBox(fit: BoxFit.scaleDown, child: Text(text, maxLines: 1));
+
 /// Device, light or dark, as three icon segments.
 class ThemeModeSwitch extends StatelessWidget {
   const ThemeModeSwitch({
@@ -76,7 +81,6 @@ class ThemeModeSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SegmentedButton<ThemeMode>(
     showSelectedIcon: false,
-    style: const ButtonStyle(visualDensity: VisualDensity.compact),
     segments: const [
       ButtonSegment(
         value: ThemeMode.system,

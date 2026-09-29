@@ -658,4 +658,41 @@ void main() {
     await tester.pump();
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('turning looping on or off keeps the current item', (
+    tester,
+  ) async {
+    for (final from in [false, true]) {
+      for (final item in [0, 2, 4]) {
+        final c = FlutterCarouselController();
+        final changes = <int>[];
+        Widget build({required bool infinite}) => host(
+          FlutterCarousel(
+            key: ValueKey((from, item)),
+            items: boxes(5),
+            height: 100,
+            controller: c,
+            infinite: infinite,
+            indicator: null,
+            onPageChanged: (i, _) => changes.add(i),
+          ),
+        );
+        final reason = 'infinite $from -> ${!from}, item $item';
+        await tester.pumpWidget(build(infinite: from));
+        c.jumpToPage(item);
+        await tester.pumpAndSettle();
+        changes.clear();
+        await tester.pumpWidget(build(infinite: !from));
+        await tester.pumpAndSettle();
+        expect(c.index, item, reason: reason);
+        expect(changes, isEmpty, reason: '$reason: nothing moved');
+        expect(tester.getCenter(find.text('$item')).dx, 200, reason: reason);
+        unawaited(c.nextPage());
+        await tester.pumpAndSettle();
+        final next = !from || item < 4 ? (item + 1) % 5 : 4;
+        expect(c.index, next, reason: '$reason, then next');
+        c.dispose();
+      }
+    }
+  });
 }

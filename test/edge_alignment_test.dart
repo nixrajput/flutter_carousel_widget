@@ -199,4 +199,69 @@ void main() {
     await tester.pumpAndSettle();
     expect(item(tester, 0).left, closeTo(40, 1e-9));
   });
+
+  testWidgets('jumpToPage lands an end item flush', (tester) async {
+    final c = await flush(tester);
+    c.jumpToPage(4);
+    await tester.pumpAndSettle();
+    expect(c.index, 4);
+    expect(item(tester, 4).right, 400);
+  });
+
+  testWidgets('dropping items past a flush end settles the new last flush', (
+    tester,
+  ) async {
+    final c = await flush(tester);
+    c.jumpToPage(4);
+    await tester.pumpAndSettle();
+    await tester.pumpWidget(
+      host(
+        FlutterCarousel(
+          items: boxes(3, keyed: true),
+          height: 100,
+          controller: c,
+          edgeAlignment: CarouselEdgeAlignment.flush,
+          indicator: null,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(c.index, 2);
+    expect(item(tester, 2).right, 400);
+  });
+
+  testWidgets('a drag past a flush edge holds the edge item in place', (
+    tester,
+  ) async {
+    final c = await flush(tester);
+    final start = await tester.startGesture(tester.getCenter(find.text('0')));
+    await start.moveBy(const Offset(120, 0));
+    await tester.pump();
+    expect(
+      item(tester, 0).left,
+      moreOrLessEquals(0),
+      reason: 'no overscroll at the start',
+    );
+    await start.up();
+    await tester.pumpAndSettle();
+    c.jumpToPage(4);
+    await tester.pumpAndSettle();
+    final end = await tester.startGesture(tester.getCenter(find.text('4')));
+    await end.moveBy(const Offset(-120, 0));
+    await tester.pump();
+    expect(
+      item(tester, 4).right,
+      moreOrLessEquals(400),
+      reason: 'no overscroll at the end',
+    );
+    await end.up();
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('a fling from a flush edge moves one item', (tester) async {
+    final c = await flush(tester);
+    await tester.fling(find.text('0'), const Offset(-150, 0), 1500);
+    await tester.pumpAndSettle();
+    expect(c.index, 1);
+  });
 }

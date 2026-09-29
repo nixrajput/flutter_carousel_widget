@@ -42,7 +42,7 @@ test/
 
 ### The checks
 
-`dart format --output=none --set-exit-if-changed .`, `flutter analyze`, `flutter test`, `(cd example && flutter test)`, `flutter pub publish --dry-run`. CI's `build` job runs the first four plus a 90% coverage gate (`flutter test --coverage`, then `scripts/coverage.sh 90`); the `floor` job analyzes and tests on Flutter 3.47.0. `.githooks/pre-push` runs them too (`git config core.hooksPath .githooks`). `example.yml` builds the example app for Android, iOS, macOS, Windows, Linux and web (JS and Wasm) on every PR to `master`; the example's native icons come from `example/assets/icon` via `cd example && dart run flutter_launcher_icons`.
+`dart format --output=none --set-exit-if-changed .`, `flutter analyze`, `flutter test`, `(cd example && flutter test)`, `flutter pub publish --dry-run`. CI's `build` job runs the first four plus a 100% coverage gate (`flutter test --coverage`, then `scripts/coverage.sh 100`); the `floor` job analyzes and tests on Flutter 3.47.0. `.githooks/pre-push` runs them too (`git config core.hooksPath .githooks`). `example.yml` builds the example app for Android, iOS, macOS, Windows, Linux and web (JS and Wasm) on every PR to `master`; the example's native icons come from `example/assets/icon` via `cd example && dart run flutter_launcher_icons`.
 
 ### Conventions
 
@@ -50,7 +50,7 @@ test/
 - Every PR that changes anything users receive bumps `pubspec.yaml` and adds a matching `CHANGELOG.md` entry. CI gate `version bumped` enforces both, and without the entry `dart pub publish --dry-run` fails, which stops the release workflow before it publishes.
 - The PR title becomes the squash commit message.
 - `master` is protected: PR required, squash-only merges.
-- The README documents **shipped features only** - no roadmap, no plans. Every Dart block in it must also be in `test/readme_snippets.dart`, verbatim, or `readme_test.dart` fails.
+- The README documents **shipped features only** - no roadmap, no plans. Every Dart block in it, except the `// 3.x` one showing the old API (which cannot compile), must also be in `test/readme_snippets.dart`, verbatim, or `readme_test.dart` fails. Repository files are linked by absolute GitHub URL, because pub.dev drops relative links; `readme_test.dart` checks it.
 - Markdown prose is never hard-wrapped: one line per paragraph and per list item. Do not re-wrap these files to a column.
 - Never use an em-dash. Use a hyphen.
 

@@ -122,6 +122,8 @@ class _CarouselEngineState extends State<CarouselEngine>
   @override
   final sizes = PageSizes();
   final _pagesKey = GlobalKey();
+  // Marks the painted dots, so the tap band around the carousel finds them.
+  final _dotsKey = GlobalKey();
   late final _current = ValueNotifier<int>(_index);
 
   @override
@@ -268,9 +270,12 @@ class _CarouselEngineState extends State<CarouselEngine>
         old.itemCount != itemCount ||
         old.config.infinite != _config.infinite ||
         target != _index;
+    // Looping on or off moves every page, and a position corrected in place
+    // still clamps to the old extent until layout, so it gets new pages.
     final pagesChanged =
         old.config.viewportFraction != _config.viewportFraction ||
-        old.config.keepPage != _config.keepPage;
+        old.config.keepPage != _config.keepPage ||
+        old.config.infinite != _config.infinite;
     if (old.config.edgeAlignment != _config.edgeAlignment) _settleFlush();
     if (!loopChanged && !pagesChanged) return;
     final page = loopChanged
@@ -302,7 +307,12 @@ class _CarouselEngineState extends State<CarouselEngine>
         _pages.jumpTo(_flushTarget(page));
         _onPageChanged(page);
       } else if (_currentPage != page) {
+        // Until the next layout the extent is still the one from before the
+        // change, so PageView would report a clamped page; report the target.
+        _jumping = true;
         _pages.jumpToPage(page);
+        _jumping = false;
+        _onPageChanged(page);
       } else {
         // Shrinking items clamps the position during layout, which sends no
         // scroll notification, so PageView never reports the new page.
@@ -586,6 +596,13 @@ class _CarouselEngineState extends State<CarouselEngine>
     flipped: _flipped,
   );
 
+  /// Set while a jump reports its own page.
+  var _jumping = false;
+
+  void _onPageViewChanged(int page) {
+    if (!_jumping) _onPageChanged(page);
+  }
+
   void _onPageChanged(int page) {
     if (itemCount == 0) return;
     final index = itemAt(page, itemCount);
@@ -709,7 +726,7 @@ class _CarouselEngineState extends State<CarouselEngine>
             )
           : basePhysics,
       pageSnapping: !_flush && config.pageSnapping,
-      onPageChanged: _flush ? null : _onPageChanged,
+      onPageChanged: _flush ? null : _onPageViewChanged,
       childrenDelegate: SliverChildBuilderDelegate(
         _buildPage,
         childCount: infinite ? null : itemCount,
@@ -829,21 +846,20 @@ class _CarouselEngineState extends State<CarouselEngine>
     final body = KeyedSubtree(key: _pagesKey, child: pages);
     final indicator = _config.indicator;
     if (indicator == null || itemCount < 2) return body;
-    final dots = Padding(
-      padding: indicator.margin,
-      child: IndicatorView(
-        key: indicator == const CarouselIndicator()
-            ? const ValueKey('default_indicator')
-            : null,
-        indicator: indicator,
-        view: this,
-      ),
-    );
     final horizontal = axis == Axis.horizontal;
     final alignment =
         indicator.alignment ??
         (horizontal ? Alignment.bottomCenter : AlignmentDirectional.centerEnd);
-    return switch (indicator.placement) {
+    final dots = IndicatorView(
+      key: indicator == const CarouselIndicator()
+          ? const ValueKey('default_indicator')
+          : null,
+      indicator: indicator,
+      view: this,
+      alignment: alignment,
+      dotsKey: _dotsKey,
+    );
+    final placed = switch (indicator.placement) {
       CarouselIndicatorPlacement.overlay => Stack(
         children: [
           body,
@@ -867,24 +883,24 @@ class _CarouselEngineState extends State<CarouselEngine>
         ],
       ),
     };
+    return IndicatorTapBand(
+      indicator: indicator,
+      view: this,
+      alignment: alignment,
+      dotsKey: _dotsKey,
+      child: placed,
+    );
   }
 }
 
 /// A page key made of the item's own key and which copy of it this is, so an
-/// infinite carousel showing an item twice never has two equal keys.
-@immutable
-class _PageKey extends LocalKey {
-  const _PageKey(this.item, this.cycle);
+/// infinite carousel showing an item twice never has two equal keys. Being
+/// its own type, it never equals a key the app made.
+class _PageKey extends ValueKey<(Key, int)> {
+  const _PageKey(Key item, int cycle) : super((item, cycle));
 
-  final Key item;
-  final int cycle;
-
-  @override
-  bool operator ==(Object other) =>
-      other is _PageKey && other.item == item && other.cycle == cycle;
-
-  @override
-  int get hashCode => Object.hash(item, cycle);
+  Key get item => value.$1;
+  int get cycle => value.$2;
 }
 
 class _EffectItem extends StatelessWidget {
@@ -941,15 +957,6 @@ class _KeepAlivePageState extends State<_KeepAlivePage>
   void initState() {
     super.initState();
     widget.engine._current.addListener(updateKeepAlive);
-  }
-
-  @override
-  void didUpdateWidget(_KeepAlivePage old) {
-    super.didUpdateWidget(old);
-    if (old.engine != widget.engine) {
-      old.engine._current.removeListener(updateKeepAlive);
-      widget.engine._current.addListener(updateKeepAlive);
-    }
   }
 
   @override

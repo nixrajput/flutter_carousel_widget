@@ -35,7 +35,7 @@ jobs:
       - name: Test with coverage
         run: flutter test --coverage
       - name: Coverage gate
-        run: scripts/coverage.sh 90
+        run: scripts/coverage.sh 100
       - name: Example tests
         run: cd example && flutter test
 

@@ -41,17 +41,33 @@ void main() {
         .where((b) => !b.startsWith('// 3.x'));
     expect(blocks, isNotEmpty);
     for (final block in blocks) {
-      expect(snippets.contains(block.trimRight()), isTrue, reason: block);
+      expect(snippets.contains(block), isTrue, reason: block);
     }
   });
 
-  test('every relative link points at a file in the repo', () {
-    final targets = RegExp(r'\]\(([^)#\s]+)\)')
-        .allMatches(body)
-        .map((m) => m.group(1)!)
-        .where((t) => !t.contains('://') && !t.startsWith('mailto:'));
-    for (final target in targets) {
-      expect(File(target).existsSync(), isTrue, reason: target);
+  test('every link to a repository file is absolute and exists', () {
+    // pub.dev drops relative links, so repository files are linked by URL.
+    const blob =
+        'https://github.com/nixrajput/flutter_carousel_widget/blob/master/';
+    for (final path in ['README.md', 'CHANGELOG.md', 'example/README.md']) {
+      final text = File(path)
+          .readAsStringSync()
+          .replaceAll(RegExp(r'```[\s\S]*?```'), '');
+      final targets = RegExp(r'\]\(([^)\s]+)\)|href="([^"]+)"')
+          .allMatches(text)
+          .map((m) => (m.group(1) ?? m.group(2))!)
+          .where((t) => !t.startsWith('#') && !t.startsWith('mailto:'));
+      for (final target in targets) {
+        expect(target, contains('://'), reason: '$path links $target');
+        if (target.startsWith(blob)) {
+          final file = target.substring(blob.length).split('#').first;
+          expect(
+            File(file).existsSync(),
+            isTrue,
+            reason: '$path links $target',
+          );
+        }
+      }
     }
   });
 

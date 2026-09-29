@@ -12,7 +12,7 @@ class SlideIndicatorStyle {
     this.borderColor,
     this.borderWidth = 1,
     this.radius = 6,
-    this.spacing = 20,
+    this.spacing = 24,
     this.halo,
     this.haloPadding = const EdgeInsets.all(8),
     this.animated = false,
@@ -35,7 +35,9 @@ class SlideIndicatorStyle {
   /// The radius of each dot.
   final double radius;
 
-  /// The distance between the centres of neighbouring dots.
+  /// The distance between the centres of neighbouring dots. It is also each
+  /// dot's tap target along the row, so the default, 24, is the smallest
+  /// target WCAG 2.2 allows (2.5.8).
   final double spacing;
 
   /// A box drawn behind the dots, such as a translucent pill. `null` draws
