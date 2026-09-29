@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 32 32">
+  <title>flutter_carousel_widget</title>
+  <rect width="32" height="32" rx="7" fill="#141118" />
+  <!-- the neighbours, grey; the centre slide, violet; the active dot, amber -->
+  <rect x="3.5" y="10" width="5.5" height="11" rx="1.6" fill="#6b6478" />
+  <rect x="23" y="10" width="5.5" height="11" rx="1.6" fill="#6b6478" />
+  <rect x="10.5" y="7" width="11" height="17" rx="2.2" fill="#9b8cff" />
+  <circle cx="12.8" cy="27.4" r="1.25" fill="#6b6478" />
+  <circle cx="16" cy="27.4" r="1.25" fill="#f0a868" />
+  <circle cx="19.2" cy="27.4" r="1.25" fill="#6b6478" />
+</svg>

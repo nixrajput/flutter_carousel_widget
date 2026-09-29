@@ -1,5 +1,22 @@
 # Changelog
 
+## 4.0.0
+
+A rewrite on Flutter 3.47 and `widgets.dart` alone. [MIGRATION.md](MIGRATION.md) maps every 3.x symbol.
+
+- **Breaking:** Flutter 3.47 or newer (Dart `^3.13.0`); no Material import, so a Cupertino or plain `WidgetsApp` no longer pulls Material in through this package.
+- **Breaking:** constructor parameters replace `FlutterCarouselOptions` and `ExpandableCarouselOptions`; one `FlutterCarouselController` drives both widgets, and its methods return futures.
+- **Added:** ten composable effects (enlarge, fade, parallax, depth, zoomOut, stack, coverflow, cube, flip, rotate) and `CarouselEffect.builder` ([#26](https://github.com/nixrajput/flutter_carousel_widget/issues/26)).
+- **Added:** autoplay with per-item intervals, pausing on touch, hover, focus, a covered route, the background, offstage tabs and reduced motion; `stopAutoPlay` stays stopped.
+- **Added:** keyboard navigation, screen-reader semantics and announcements; tappable, labelled indicator dots ([#31](https://github.com/nixrajput/flutter_carousel_widget/issues/31)).
+- **Added:** `CarouselEdgeAlignment.flush` for flush first and last items with centred middle ones ([#58](https://github.com/nixrajput/flutter_carousel_widget/issues/58)).
+- **Added:** `index`, `position` and change notifications on the controller ([#39](https://github.com/nixrajput/flutter_carousel_widget/issues/39)).
+- **Fixed:** keyed items keep their state when the list changes, and `keepAlive` keeps scrolled-away pages ([#16](https://github.com/nixrajput/flutter_carousel_widget/issues/16), [#65](https://github.com/nixrajput/flutter_carousel_widget/issues/65)).
+- **Fixed:** the controller detaches on dispose instead of crashing ([#59](https://github.com/nixrajput/flutter_carousel_widget/issues/59)); no PageController leaks on rebuild.
+- **Fixed:** the indicator follows the drag without lag ([#62](https://github.com/nixrajput/flutter_carousel_widget/issues/62)) and mirrors under RTL ([#66](https://github.com/nixrajput/flutter_carousel_widget/issues/66)).
+- **Fixed:** `ExpandableCarousel` keeps item heights when items are added ([#60](https://github.com/nixrajput/flutter_carousel_widget/issues/60)), reaches the last item's height with `padEnds: false` ([#48](https://github.com/nixrajput/flutter_carousel_widget/issues/48)), and lets small images fill the page ([#29](https://github.com/nixrajput/flutter_carousel_widget/issues/29)).
+- **Fixed:** enlarge scales once, autoplay never runs to page -1 in reverse, trackpads drag, and a finite carousel no longer animates a wrap on its last dot.
+
 ## 3.1.1
 
 - **Chore**: Added automated pub.dev release pipeline (version check, tag, publish) via GitHub Actions.
