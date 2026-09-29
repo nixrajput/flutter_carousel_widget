@@ -28,6 +28,10 @@ class DemoSlide extends StatelessWidget {
     ];
     final (background, foreground) = tints[index % tints.length];
     final text = Theme.of(context).textTheme;
+    final number = Text(
+      '${index + 1}',
+      style: text.displaySmall?.copyWith(color: foreground),
+    );
     return Padding(
       // The gap between slides runs along the scroll axis.
       padding: axis == Axis.horizontal
@@ -54,21 +58,23 @@ class DemoSlide extends StatelessWidget {
                   Gaps.l + Gaps.s,
                   Gaps.m,
                 ),
-          child: Column(
-            mainAxisSize: lines == 0 ? MainAxisSize.max : MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '${index + 1}',
-                style: text.displaySmall?.copyWith(color: foreground),
-              ),
-              for (var i = 0; i < lines; i++)
-                Text(
-                  'Line ${i + 1} of slide ${index + 1}',
-                  style: text.bodyMedium?.copyWith(color: foreground),
+          child: lines == 0
+              // A fixed-size slide can be small on a phone at a large text
+              // size, so its number shrinks to fit rather than overflowing.
+              ? Center(
+                  child: FittedBox(fit: BoxFit.scaleDown, child: number),
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    number,
+                    for (var i = 0; i < lines; i++)
+                      Text(
+                        'Line ${i + 1} of slide ${index + 1}',
+                        style: text.bodyMedium?.copyWith(color: foreground),
+                      ),
+                  ],
                 ),
-            ],
-          ),
         ),
       ),
     );

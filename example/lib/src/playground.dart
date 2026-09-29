@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 import 'app_theme.dart';
+import 'collapsible_section.dart';
+import 'widgets.dart';
 
 enum Effect {
   none,
@@ -148,140 +150,152 @@ class PlaygroundOptions {
       : null;
 }
 
-class OptionsPanel extends StatelessWidget {
-  const OptionsPanel({
-    super.key,
-    required this.options,
-    required this.onChanged,
-  });
-
-  final PlaygroundOptions options;
-  final ValueChanged<PlaygroundOptions> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget toggle(
-      String label,
-      bool value,
-      PlaygroundOptions Function(bool) next,
-    ) => FilterChip(
-      label: Text(label),
-      selected: value,
-      onSelected: (v) => onChanged(next(v)),
-    );
-    return Column(
+/// The options as collapsible cards, grouped by what they change.
+/// [generation] rebuilds the menus, which read their selection once, after a
+/// reset.
+List<DemoSection> optionSections({
+  required PlaygroundOptions options,
+  required ValueChanged<PlaygroundOptions> onChanged,
+  required int generation,
+}) {
+  final o = options;
+  Widget toggle(
+    String label,
+    bool value,
+    PlaygroundOptions Function(bool) next,
+  ) => FilterChip(
+    label: Text(label),
+    selected: value,
+    onSelected: (v) => onChanged(next(v)),
+  );
+  Widget chips(List<Widget> children) =>
+      Wrap(spacing: Gaps.s, runSpacing: Gaps.s, children: children);
+  Widget column(List<Widget> children) => KeyedSubtree(
+    key: ValueKey(generation),
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
+      children: children,
+    ),
+  );
+  return [
+    DemoSection(
+      title: 'Carousel',
+      summary:
+          '${o.expandable ? 'Expandable' : 'FlutterCarousel'} · '
+          'viewport ${o.viewportFraction.toStringAsFixed(2)} · '
+          '${o.infinite ? 'infinite' : 'finite'}',
+      child: column([
         SegmentedButton<bool>(
-          segments: const [
-            ButtonSegment(value: false, label: Text('FlutterCarousel')),
-            ButtonSegment(value: true, label: Text('Expandable')),
+          segments: [
+            ButtonSegment(value: false, label: segmentLabel('FlutterCarousel')),
+            ButtonSegment(value: true, label: segmentLabel('Expandable')),
           ],
-          selected: {options.expandable},
+          selected: {o.expandable},
           onSelectionChanged: (s) =>
-              onChanged(options.copyWith(expandable: s.single)),
+              onChanged(o.copyWith(expandable: s.single)),
         ),
         const SizedBox(height: Gaps.m),
+        Text('Viewport fraction ${o.viewportFraction.toStringAsFixed(2)}'),
+        Slider(
+          value: o.viewportFraction,
+          min: 0.4,
+          max: 1,
+          divisions: 12,
+          onChanged: (v) => onChanged(o.copyWith(viewportFraction: v)),
+        ),
+        chips([
+          toggle('Infinite', o.infinite, (v) => o.copyWith(infinite: v)),
+          toggle('Pad ends', o.padEnds, (v) => o.copyWith(padEnds: v)),
+          toggle('Flush edges', o.flush, (v) => o.copyWith(flush: v)),
+        ]),
+      ]),
+    ),
+    DemoSection(
+      title: 'Effect',
+      summary: o.effect == Effect.none
+          ? 'none'
+          : '${o.effect.name} · strength ${o.strength.toStringAsFixed(2)}',
+      child: column([
         DropdownMenu<Effect>(
           label: const Text('Effect'),
           expandedInsets: EdgeInsets.zero,
-          initialSelection: options.effect,
+          initialSelection: o.effect,
           dropdownMenuEntries: [
             for (final e in Effect.values)
               DropdownMenuEntry(value: e, label: e.name),
           ],
-          onSelected: (e) => onChanged(options.copyWith(effect: e)),
+          onSelected: (e) => onChanged(o.copyWith(effect: e)),
         ),
         const SizedBox(height: Gaps.m),
+        Text('Strength ${o.strength.toStringAsFixed(2)}'),
+        Slider(
+          value: o.strength,
+          min: 0.5,
+          max: 1.5,
+          divisions: 10,
+          onChanged: o.effect == Effect.none
+              ? null
+              : (v) => onChanged(o.copyWith(strength: v)),
+        ),
+      ]),
+    ),
+    DemoSection(
+      title: 'Indicator',
+      summary: '${o.painter.name} · ${o.below ? 'below' : 'overlay'}',
+      child: column([
         DropdownMenu<Painter>(
           label: const Text('Indicator'),
           expandedInsets: EdgeInsets.zero,
-          initialSelection: options.painter,
+          initialSelection: o.painter,
           dropdownMenuEntries: [
             for (final p in Painter.values)
               DropdownMenuEntry(value: p, label: p.name),
           ],
-          onSelected: (p) => onChanged(options.copyWith(painter: p)),
+          onSelected: (p) => onChanged(o.copyWith(painter: p)),
         ),
-        const SizedBox(height: Gaps.s),
-        Text('Effect strength ${options.strength.toStringAsFixed(2)}'),
-        Slider(
-          value: options.strength,
-          min: 0.5,
-          max: 1.5,
-          divisions: 10,
-          onChanged: options.effect == Effect.none
-              ? null
-              : (v) => onChanged(options.copyWith(strength: v)),
+        const SizedBox(height: Gaps.m),
+        chips([
+          toggle('Indicator below', o.below, (v) => o.copyWith(below: v)),
+        ]),
+      ]),
+    ),
+    DemoSection(
+      title: 'Motion',
+      summary: [
+        if (!o.autoPlay)
+          'no autoplay'
+        else if (o.variedIntervals)
+          'autoplay, varied intervals'
+        else
+          'autoplay',
+        if (o.softSpring) 'soft snap',
+      ].join(' · '),
+      child: chips([
+        toggle('Autoplay', o.autoPlay, (v) => o.copyWith(autoPlay: v)),
+        toggle(
+          'Varied intervals',
+          o.variedIntervals,
+          (v) => o.copyWith(variedIntervals: v),
         ),
-        Text(
-          'Viewport fraction ${options.viewportFraction.toStringAsFixed(2)}',
+        toggle(
+          'Soft snap spring',
+          o.softSpring,
+          (v) => o.copyWith(softSpring: v),
         ),
-        Slider(
-          value: options.viewportFraction,
-          min: 0.4,
-          max: 1,
-          divisions: 12,
-          onChanged: (v) => onChanged(options.copyWith(viewportFraction: v)),
-        ),
-        const SizedBox(height: Gaps.s),
-        Wrap(
-          spacing: Gaps.s,
-          runSpacing: Gaps.s,
-          children: [
-            toggle(
-              'Autoplay',
-              options.autoPlay,
-              (v) => options.copyWith(autoPlay: v),
-            ),
-            toggle(
-              'Varied intervals',
-              options.variedIntervals,
-              (v) => options.copyWith(variedIntervals: v),
-            ),
-            toggle(
-              'Infinite',
-              options.infinite,
-              (v) => options.copyWith(infinite: v),
-            ),
-            toggle(
-              'Pad ends',
-              options.padEnds,
-              (v) => options.copyWith(padEnds: v),
-            ),
-            toggle(
-              'Flush edges',
-              options.flush,
-              (v) => options.copyWith(flush: v),
-            ),
-            toggle(
-              'Reverse',
-              options.reverse,
-              (v) => options.copyWith(reverse: v),
-            ),
-            toggle(
-              'Vertical',
-              options.vertical,
-              (v) => options.copyWith(vertical: v),
-            ),
-            toggle(
-              'Right to left',
-              options.rtl,
-              (v) => options.copyWith(rtl: v),
-            ),
-            toggle(
-              'Indicator below',
-              options.below,
-              (v) => options.copyWith(below: v),
-            ),
-            toggle(
-              'Soft snap spring',
-              options.softSpring,
-              (v) => options.copyWith(softSpring: v),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+      ]),
+    ),
+    DemoSection(
+      title: 'Direction',
+      summary: [
+        if (o.vertical) 'vertical' else 'horizontal',
+        if (o.rtl) 'right to left' else 'left to right',
+        if (o.reverse) 'reversed',
+      ].join(' · '),
+      child: chips([
+        toggle('Vertical', o.vertical, (v) => o.copyWith(vertical: v)),
+        toggle('Reverse', o.reverse, (v) => o.copyWith(reverse: v)),
+        toggle('Right to left', o.rtl, (v) => o.copyWith(rtl: v)),
+      ]),
+    ),
+  ];
 }

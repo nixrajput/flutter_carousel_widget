@@ -1,12 +1,11 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 import 'app_theme.dart';
+import 'collapsible_section.dart';
+import 'demo_layout.dart';
 import 'logo_mark.dart';
 import 'playground.dart';
-import 'scroll_forwarder.dart';
 import 'slides.dart';
 import 'widgets.dart';
 
@@ -26,15 +25,21 @@ class DemoPage extends StatefulWidget {
 
 class _DemoPageState extends State<DemoPage> {
   static const _count = 5;
-  final _list = ScrollController();
+
+  /// What the preview card needs around the carousel: its title, the
+  /// toolbar and the padding.
+  static const _previewChrome = 152.0;
+
   final _controller = FlutterCarouselController();
   final _position = ValueNotifier<double>(0);
   final _focus = FocusNode();
   var _settings = const PlaygroundOptions();
 
+  /// Bumped by a reset, so the menus rebuild with the defaults selected.
+  var _generation = 0;
+
   @override
   void dispose() {
-    _list.dispose();
     _controller.dispose();
     _position.dispose();
     _focus.dispose();
@@ -42,122 +47,49 @@ class _DemoPageState extends State<DemoPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    // Options and preview must both stay in view. With room or in landscape
-    // both are pinned side by side above one list; on a portrait phone the
-    // preview is pinned and the options lead the list under it.
-    final twoPane = size.width >= Gaps.twoPane || size.width > size.height;
-    final maxWidth = twoPane ? Gaps.maxWideWidth : Gaps.maxWidth;
-    final side = math.max(Gaps.m, (size.width - maxWidth) / 2);
-    final preview = _preview(
-      compact: !twoPane || size.height < Gaps.tallEnough,
-    );
-    return Scaffold(
-      appBar: AppBar(
-        titleSpacing: side,
-        // Scales down rather than overflowing beside the theme switch on a
-        // narrow phone or with a large text size.
-        title: const FittedBox(
-          fit: BoxFit.scaleDown,
-          alignment: Alignment.centerLeft,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              LogoMark(size: 28),
-              SizedBox(width: Gaps.s + Gaps.s / 2),
-              Text('flutter_carousel_widget'),
-            ],
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: side),
-            child: ThemeModeSwitch(
-              mode: widget.themeMode,
-              onChanged: widget.onThemeModeChanged,
-            ),
-          ),
-        ],
+  Widget build(BuildContext context) => DemoLayout(
+    title: 'flutter_carousel_widget',
+    logo: const LogoMark(size: 28),
+    themeMode: widget.themeMode,
+    onThemeModeChanged: widget.onThemeModeChanged,
+    preview: (context, maxHeight) =>
+        _preview((maxHeight - _previewChrome).clamp(96.0, 240.0)),
+    onReset: () => setState(() {
+      _settings = const PlaygroundOptions();
+      _generation++;
+    }),
+    options: optionSections(
+      options: _settings,
+      onChanged: (o) => setState(() => _settings = o),
+      generation: _generation,
+    ),
+    explore: [
+      DemoSection(
+        title: 'Effects',
+        summary: 'Every preset, side by side',
+        subtitle: 'Every preset, dragged or left to autoplay.',
+        child: _gallery(),
       ),
-      // An explicit ListView padding drops the device insets, so SafeArea
-      // restores them; without it the last card sits under the home bar.
-      body: SafeArea(
-        top: false,
-        // The wheel over the pinned preview scrolls the list too.
-        child: ScrollForwarder(
-          controller: _list,
-          child: twoPane ? _twoPane(side, preview) : _onePane(side, preview),
-        ),
+      DemoSection(
+        title: 'Expandable',
+        summary: 'The height follows each slide',
+        subtitle: 'The height follows each slide, and the drag between them.',
+        child: _expandable(),
       ),
-    );
-  }
-
-  Widget _twoPane(double side, Widget preview) => Row(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Expanded(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final list = EdgeInsets.fromLTRB(side, Gaps.s, Gaps.s, Gaps.l);
-            // Pinned like the preview only when the options fit whole and the
-            // list keeps room; a half-hidden card reads as broken.
-            final room =
-                Gaps.pinOptions * MediaQuery.textScalerOf(context).scale(1);
-            if (constraints.maxHeight < room) return _content(list);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(side, Gaps.s, Gaps.s, Gaps.s),
-                  child: _options(),
-                ),
-                Expanded(child: _content(list, withOptions: false)),
-              ],
-            );
-          },
-        ),
-      ),
-      Expanded(
-        // Scrolls only when the preview is taller than the screen.
-        child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(Gaps.s, Gaps.s, side, Gaps.l),
-          child: preview,
+      const DemoSection(
+        title: 'Keyboard and screen readers',
+        summary: 'Arrow keys, Home and End',
+        child: Text(
+          'Focus the preview (Tab), then use the arrow keys, Home and End. '
+          'Screen readers hear "Slide x of n" and can swipe through; autoplay '
+          'pauses while the preview has focus and never speaks.',
         ),
       ),
     ],
   );
 
-  Widget _onePane(double side, Widget preview) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Padding(
-        padding: EdgeInsets.fromLTRB(side, Gaps.s, side, Gaps.s),
-        child: preview,
-      ),
-      Expanded(
-        child: _content(EdgeInsets.fromLTRB(side, Gaps.s, side, Gaps.l)),
-      ),
-    ],
-  );
-
-  /// Everything that is not pinned, in the one list that scrolls.
-  Widget _content(EdgeInsets padding, {bool withOptions = true}) => ListView(
-    controller: _list,
-    padding: padding,
-    children: [
-      if (withOptions) ...[_options(), const SizedBox(height: Gaps.m)],
-      _controls(),
-      const SizedBox(height: Gaps.m),
-      _gallery(),
-      const SizedBox(height: Gaps.m),
-      _expandable(),
-      const SizedBox(height: Gaps.m),
-      _keyboard(),
-    ],
-  );
-
-  Widget _preview({required bool compact}) {
+  /// The carousel at [height], with the controls that drive it under it.
+  Widget _preview(double height) {
     final scheme = Theme.of(context).colorScheme;
     final o = _settings;
     final axis = o.vertical ? Axis.vertical : Axis.horizontal;
@@ -191,7 +123,7 @@ class _DemoPageState extends State<DemoPage> {
         : FlutterCarousel.builder(
             itemCount: _count,
             itemBuilder: (context, i, _) => DemoSlide(index: i, axis: axis),
-            height: compact ? 160 : 240,
+            height: height,
             itemAlignment: null,
             controller: _controller,
             focusNode: _focus,
@@ -212,7 +144,7 @@ class _DemoPageState extends State<DemoPage> {
     // A vertical ExpandableCarousel sizes its width to the slides and scrolls
     // along its height, so it needs one.
     if (o.expandable && o.vertical) {
-      carousel = SizedBox(height: compact ? 200 : 300, child: carousel);
+      carousel = SizedBox(height: height * 1.25, child: carousel);
     }
     carousel = Directionality(
       textDirection: o.rtl ? TextDirection.rtl : TextDirection.ltr,
@@ -240,142 +172,124 @@ class _DemoPageState extends State<DemoPage> {
         children: [
           carousel,
           const SizedBox(height: Gaps.s),
-          ListenableBuilder(
-            listenable: _controller,
-            builder: (context, _) => Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: IconButton(
-                tooltip: _controller.isAutoPlaying ? 'Pause' : 'Play',
-                onPressed: !_controller.isAttached || !o.autoPlay
-                    ? null
-                    : _controller.isAutoPlaying
-                    ? _controller.stopAutoPlay
-                    : _controller.startAutoPlay,
-                icon: Icon(
-                  _controller.isAutoPlaying ? Icons.pause : Icons.play_arrow,
-                ),
-              ),
-            ),
-          ),
+          _toolbar(),
         ],
       ),
     );
   }
 
-  Widget _options() => Section(
-    title: 'Options',
-    child: OptionsPanel(
-      options: _settings,
-      onChanged: (o) => setState(() => _settings = o),
-    ),
-  );
-
-  Widget _controls() => Section(
-    title: 'Controller',
-    subtitle: 'Drives the preview.',
-    child: ListenableBuilder(
-      listenable: Listenable.merge([_controller, _position]),
-      builder: (context, _) {
-        final ready = _controller.isAttached;
-        return Wrap(
-          spacing: Gaps.s,
-          runSpacing: Gaps.s,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            OutlinedButton(
-              onPressed: ready ? () => _controller.jumpToPage(0) : null,
-              child: const Text('First'),
-            ),
-            OutlinedButton(
-              onPressed: ready ? _controller.previousPage : null,
-              child: const Text('Previous'),
-            ),
-            OutlinedButton(
-              onPressed: ready ? _controller.nextPage : null,
-              child: const Text('Next'),
-            ),
-            OutlinedButton(
-              onPressed: ready
-                  ? () => _controller.jumpToPage(_count - 1)
-                  : null,
-              child: const Text('Last'),
-            ),
-            Text(
-              ready
-                  ? 'Item ${_controller.index + 1} of $_count, '
-                        'position ${_controller.position.toStringAsFixed(2)}'
-                  : 'Not attached',
-            ),
-          ],
-        );
-      },
-    ),
-  );
-
-  Widget _gallery() => Section(
-    title: 'Effects',
-    subtitle: 'Every preset, dragged or left to autoplay.',
-    child: Wrap(
-      spacing: Gaps.m,
-      runSpacing: Gaps.m,
-      children: [
-        for (final e in Effect.values.skip(1))
-          SizedBox(
-            width: 200,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(e.name, style: Theme.of(context).textTheme.labelMedium),
-                const SizedBox(height: Gaps.s),
-                FlutterCarousel.builder(
-                  itemCount: 4,
-                  itemBuilder: (context, i, _) => DemoSlide(index: i),
-                  height: 120,
-                  itemAlignment: null,
-                  infinite: true,
-                  viewportFraction: 0.7,
-                  effect: PlaygroundOptions.effectFor(e),
-                  autoPlay: const CarouselAutoPlay(
-                    interval: Duration(seconds: 2),
-                  ),
-                  indicator: null,
-                  semanticLabel: '${e.name} effect',
+  /// The controller's actions, beside the carousel they move. A narrow
+  /// preview drops the readout, then First and Last, which Home and End
+  /// still reach.
+  Widget _toolbar() => ListenableBuilder(
+    listenable: Listenable.merge([_controller, _position]),
+    builder: (context, _) {
+      final ready = _controller.isAttached;
+      final o = _settings;
+      Widget button(String tooltip, IconData icon, VoidCallback? onPressed) =>
+          IconButton(
+            tooltip: tooltip,
+            onPressed: ready ? onPressed : null,
+            icon: Icon(icon),
+          );
+      final playing = _controller.isAutoPlaying;
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          const target = 48.0;
+          final edges = constraints.maxWidth >= 5 * target;
+          final readout = constraints.maxWidth >= 5 * target + 72;
+          return Row(
+            children: [
+              if (edges)
+                button(
+                  'First',
+                  Icons.first_page,
+                  () => _controller.jumpToPage(0),
                 ),
-              ],
-            ),
+              button('Previous', Icons.chevron_left, _controller.previousPage),
+              button(
+                playing ? 'Pause' : 'Play',
+                playing ? Icons.pause : Icons.play_arrow,
+                !o.autoPlay
+                    ? null
+                    : playing
+                    ? _controller.stopAutoPlay
+                    : _controller.startAutoPlay,
+              ),
+              button('Next', Icons.chevron_right, _controller.nextPage),
+              if (edges)
+                button(
+                  'Last',
+                  Icons.last_page,
+                  () => _controller.jumpToPage(_count - 1),
+                ),
+              if (readout)
+                Expanded(
+                  child: Text(
+                    ready
+                        ? 'Item ${_controller.index + 1} of $_count · '
+                              '${_controller.position.toStringAsFixed(2)}'
+                        : 'Not attached',
+                    textAlign: TextAlign.end,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                ),
+            ],
+          );
+        },
+      );
+    },
+  );
+
+  Widget _gallery() => Wrap(
+    spacing: Gaps.m,
+    runSpacing: Gaps.m,
+    children: [
+      for (final e in Effect.values.skip(1))
+        SizedBox(
+          width: 200,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(e.name, style: Theme.of(context).textTheme.labelMedium),
+              const SizedBox(height: Gaps.s),
+              FlutterCarousel.builder(
+                itemCount: 4,
+                itemBuilder: (context, i, _) => DemoSlide(index: i),
+                height: 120,
+                itemAlignment: null,
+                infinite: true,
+                viewportFraction: 0.7,
+                effect: PlaygroundOptions.effectFor(e),
+                autoPlay: const CarouselAutoPlay(
+                  interval: Duration(seconds: 2),
+                ),
+                indicator: null,
+                semanticLabel: '${e.name} effect',
+              ),
+            ],
           ),
-      ],
-    ),
+        ),
+    ],
   );
 
   Widget _expandable() {
     final scheme = Theme.of(context).colorScheme;
-    return Section(
-      title: 'Expandable',
-      subtitle: 'The height follows each slide, and the drag between them.',
-      child: ExpandableCarousel.builder(
-        itemCount: 4,
-        itemBuilder: (context, i, _) => DemoSlide(index: i, lines: 1 + i * 2),
-        viewportFraction: 0.9,
-        indicator: CarouselIndicator(
-          placement: CarouselIndicatorPlacement.below,
-          painter: SequentialFillIndicator(
-            style: SlideIndicatorStyle(
-              activeColor: scheme.primary,
-              inactiveColor: scheme.outline,
-            ),
+    return ExpandableCarousel.builder(
+      itemCount: 4,
+      itemBuilder: (context, i, _) => DemoSlide(index: i, lines: 1 + i * 2),
+      viewportFraction: 0.9,
+      indicator: CarouselIndicator(
+        placement: CarouselIndicatorPlacement.below,
+        painter: SequentialFillIndicator(
+          style: SlideIndicatorStyle(
+            activeColor: scheme.primary,
+            inactiveColor: scheme.outline,
           ),
         ),
       ),
     );
   }
-
-  Widget _keyboard() => const Section(
-    title: 'Keyboard and screen readers',
-    subtitle:
-        'Focus the preview (Tab), then use the arrow keys, Home and End. '
-        'Screen readers hear "Slide x of n" and can swipe through; autoplay '
-        'pauses while the preview has focus and never speaks.',
-    child: SizedBox.shrink(),
-  );
 }

@@ -5,6 +5,7 @@
 - **Docs:** the README has its Contributors section back, with a contributors badge, and its Contributing section points to Issues, Discussions and SECURITY.md.
 - **Docs:** links to MIGRATION.md, CONTRIBUTING.md and the other repository files are absolute, so they work on pub.dev, which drops relative ones.
 - **Chore:** the pubspec homepage is the live demo.
+- **Example:** the demo is redesigned for every screen, from a 320-pixel phone to an ultrawide: the preview never scrolls away, the options sit in collapsible cards that summarise their values while closed, and wide screens give the options a panel of their own. The controller's buttons move under the preview they drive.
 
 ## 4.0.0
 

@@ -13,18 +13,30 @@ abstract final class Gaps {
   /// A single column never grows wider than this, so it stays readable.
   static const double maxWidth = 720;
 
-  /// Two panes never grow wider than this together.
-  static const double maxWideWidth = 1200;
+  /// The panes never grow wider than this together, even on an ultrawide.
+  static const double maxWideWidth = 1440;
 
-  /// From this width, options and preview sit side by side.
+  /// From this width the options get a panel beside the preview.
   static const double twoPane = 840;
 
-  /// Below this height the pinned preview uses its compact form.
-  static const double tallEnough = 700;
+  /// From this width a short screen puts the panel beside the preview too:
+  /// the panel and a usable preview fit side by side.
+  static const double shortTwoPane = 560;
 
-  /// The height the options need to be pinned whole with a usable list below,
-  /// at a text scale of 1.
-  static const double pinOptions = 560;
+  /// Below this height of the page's body, a stacked preview takes half.
+  static const double smallBody = 600;
+
+  /// Below this height, a landscape phone, a pinned preview over the options
+  /// would leave them no room.
+  static const double shortHeight = 480;
+
+  /// Room at a list's trailing edge for its scrollbar, so no card sits
+  /// under it.
+  static const double scrollbarGutter = 16;
+
+  /// The options panel's width range beside the preview.
+  static const double panelMin = 320;
+  static const double panelMax = 400;
 }
 
 ThemeData buildTheme(Brightness brightness) {
