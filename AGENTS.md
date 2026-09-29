@@ -42,7 +42,7 @@ test/
 
 ### The checks
 
-`dart format --output=none --set-exit-if-changed .`, `flutter analyze`, `flutter test`, `(cd example && flutter test)`, `flutter pub publish --dry-run`. CI's `build` job runs the first four plus a 90% coverage gate (`flutter test --coverage`, then `scripts/coverage.sh 90`); the `floor` job analyzes and tests on Flutter 3.47.0. `.githooks/pre-push` runs them too (`git config core.hooksPath .githooks`). `example.yml` builds the example app for Android, iOS, macOS, Windows, Linux and web (JS and Wasm) on every PR to `master`; the example's native icons come from `example/assets/icon` via `dart run flutter_launcher_icons`.
+`dart format --output=none --set-exit-if-changed .`, `flutter analyze`, `flutter test`, `(cd example && flutter test)`, `flutter pub publish --dry-run`. CI's `build` job runs the first four plus a 90% coverage gate (`flutter test --coverage`, then `scripts/coverage.sh 90`); the `floor` job analyzes and tests on Flutter 3.47.0. `.githooks/pre-push` runs them too (`git config core.hooksPath .githooks`). `example.yml` builds the example app for Android, iOS, macOS, Windows, Linux and web (JS and Wasm) on every PR to `master`; the example's native icons come from `example/assets/icon` via `cd example && dart run flutter_launcher_icons`.
 
 ### Conventions
 
