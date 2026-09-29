@@ -894,20 +894,13 @@ class _CarouselEngineState extends State<CarouselEngine>
 }
 
 /// A page key made of the item's own key and which copy of it this is, so an
-/// infinite carousel showing an item twice never has two equal keys.
-@immutable
-class _PageKey extends LocalKey {
-  const _PageKey(this.item, this.cycle);
+/// infinite carousel showing an item twice never has two equal keys. Being
+/// its own type, it never equals a key the app made.
+class _PageKey extends ValueKey<(Key, int)> {
+  const _PageKey(Key item, int cycle) : super((item, cycle));
 
-  final Key item;
-  final int cycle;
-
-  @override
-  bool operator ==(Object other) =>
-      other is _PageKey && other.item == item && other.cycle == cycle;
-
-  @override
-  int get hashCode => Object.hash(item, cycle);
+  Key get item => value.$1;
+  int get cycle => value.$2;
 }
 
 class _EffectItem extends StatelessWidget {
@@ -964,15 +957,6 @@ class _KeepAlivePageState extends State<_KeepAlivePage>
   void initState() {
     super.initState();
     widget.engine._current.addListener(updateKeepAlive);
-  }
-
-  @override
-  void didUpdateWidget(_KeepAlivePage old) {
-    super.didUpdateWidget(old);
-    if (old.engine != widget.engine) {
-      old.engine._current.removeListener(updateKeepAlive);
-      widget.engine._current.addListener(updateKeepAlive);
-    }
   }
 
   @override

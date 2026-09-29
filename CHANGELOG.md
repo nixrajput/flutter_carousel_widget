@@ -6,7 +6,7 @@
 - **Docs:** links to MIGRATION.md, CONTRIBUTING.md and the other repository files are absolute, so they work on pub.dev, which drops relative ones.
 - **Fixed:** indicator dots were 20 by 12 pixel tap targets. Each is now one `spacing` wide and 48 pixels tall, growing towards the items so none of it falls off the carousel, and the default `spacing` is 24 pixels, the smallest target WCAG 2.2 allows. Pass `SlideIndicatorStyle(spacing: 20)` for the 4.0.0 look.
 - **Fixed:** turning `infinite` on or off moved the carousel to another item, because `PageView` reported a page clamped to the old extent; it now keeps the current item and reports no change.
-- **Chore:** the pubspec homepage is the live demo.
+- **Chore:** the pubspec homepage is the live demo, and CI now requires 100% line coverage.
 - **Example:** the demo is redesigned for every screen, from a 320-pixel phone to an ultrawide: the preview never scrolls away, the options sit in collapsible cards that summarise their values while closed, and wide screens give the options a panel of their own. The controller's buttons move under the preview they drive.
 
 ## 4.0.0

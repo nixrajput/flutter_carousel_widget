@@ -450,4 +450,29 @@ void main() {
     await tester.pumpAndSettle();
     expect(offsets[4], closeTo(0, 1e-6));
   });
+
+  testWidgets('a vertical carousel gives effects its pages along the height', (
+    tester,
+  ) async {
+    final seen = <Size>[];
+    await tester.pumpWidget(
+      host(
+        SizedBox(
+          height: 300,
+          child: FlutterCarousel(
+            items: boxes(3),
+            height: 200,
+            scrollDirection: Axis.vertical,
+            effect: CarouselEffect.builder((context, position, child) {
+              seen.add(position.extent);
+              return child;
+            }),
+            indicator: null,
+          ),
+        ),
+      ),
+    );
+    expect(seen, isNotEmpty);
+    expect(seen.last, const Size(400, 160));
+  });
 }

@@ -380,4 +380,75 @@ void main() {
     // Repainting must not rely on the pages repainting in the same layer.
     expect(dots().shouldRepaint(before), isTrue);
   });
+
+  testWidgets('a screen reader taps a dot to move there, reported as manual', (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    final changes = <(int, CarouselPageChangedReason)>[];
+    await tester.pumpWidget(
+      host(
+        FlutterCarousel(
+          items: boxes(5),
+          height: 100,
+          onPageChanged: (i, r) => changes.add((i, r)),
+        ),
+      ),
+    );
+    tester.semantics.performAction(
+      find.semantics.byLabel('Slide 3 of 5'),
+      SemanticsAction.tap,
+    );
+    await tester.pumpAndSettle();
+    expect(changes.last, (2, CarouselPageChangedReason.manual));
+    handle.dispose();
+  });
+
+  testWidgets('with tapToNavigate off, the dots are labels of their own size', (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    await tester.pumpWidget(
+      host(
+        FlutterCarousel(
+          items: boxes(5),
+          height: 100,
+          indicator: const CarouselIndicator(tapToNavigate: false),
+        ),
+      ),
+    );
+    final dot = find.semantics.byLabel('Slide 2 of 5').evaluate().single;
+    expect(dot.flagsCollection.isButton, isFalse);
+    expect(dot.getSemanticsData().hasAction(SemanticsAction.tap), isFalse);
+    expect(dot.rect.size, const Size(24, 12), reason: 'no tap band');
+    handle.dispose();
+  });
+
+  testWidgets(
+    'with tapToNavigate off, a tap just above a dot reaches the item',
+    (tester) async {
+      final c = FlutterCarouselController();
+      addTearDown(c.dispose);
+      var tapped = 0;
+      await tester.pumpWidget(
+        host(
+          FlutterCarousel.builder(
+            itemCount: 5,
+            itemBuilder: (context, i, _) => GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => tapped++,
+              child: const SizedBox.expand(),
+            ),
+            height: 100,
+            controller: c,
+            indicator: const CarouselIndicator(tapToNavigate: false),
+          ),
+        ),
+      );
+      final dots = tester.getRect(find.byType(CustomPaint).last);
+      await tester.tapAt(Offset(dots.left + 78, dots.top - 10));
+      await tester.pumpAndSettle();
+      expect((c.index, tapped), (0, 1));
+    },
+  );
 }

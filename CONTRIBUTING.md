@@ -31,7 +31,7 @@ flutter test
 flutter pub publish --dry-run
 ```
 
-CI also holds line coverage at 90% (`scripts/coverage.sh 90`), repeats analyze and test on Flutter 3.47.0, the floor, and builds the example app for Android, iOS, macOS, Windows, Linux, web and WebAssembly.
+CI also holds line coverage at 100% (`scripts/coverage.sh 100`), repeats analyze and test on Flutter 3.47.0, the floor, and builds the example app for Android, iOS, macOS, Windows, Linux, web and WebAssembly.
 
 ## Workflow
 

@@ -299,14 +299,15 @@ class _RenderTapBand extends RenderProxyBox {
 
   @override
   bool hitTest(BoxHitTestResult result, {required Offset position}) {
+    // Laid out whenever a hit test runs; the checks only keep a stray tap
+    // during a rebuild from throwing.
     final painted = dotsKey.currentContext?.findRenderObject();
-    if (painted is! RenderBox || !painted.attached || !painted.hasSize) {
-      return super.hitTest(result, position: position);
-    }
-    final dots = MatrixUtils.transformRect(
-      painted.getTransformTo(this),
-      Offset.zero & painted.size,
-    );
+    final dots = painted is RenderBox && painted.attached && painted.hasSize
+        ? MatrixUtils.transformRect(
+            painted.getTransformTo(this),
+            Offset.zero & painted.size,
+          )
+        : Rect.zero;
     final (along, before, after) = (band.along, band.before, band.after);
     final reach = axis == Axis.horizontal
         ? Rect.fromLTRB(
