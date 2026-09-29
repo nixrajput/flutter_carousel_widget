@@ -1,0 +1,57 @@
+name: Example
+
+# Builds the example app for every platform Flutter supports, so a template or
+# API change that breaks one of them shows up on the pull request.
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: example-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: example (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { target: android, os: ubuntu-latest, build: apk --debug }
+          - { target: ios, os: macos-latest, build: ios --debug --no-codesign }
+          - { target: macos, os: macos-latest, build: macos --debug }
+          - { target: windows, os: windows-latest, build: windows --debug }
+          - { target: linux, os: ubuntu-latest, build: linux --debug }
+          - { target: web, os: ubuntu-latest, build: web }
+          - { target: web-wasm, os: ubuntu-latest, build: web --wasm }
+    defaults:
+      run:
+        working-directory: example
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - if: matrix.target == 'android'
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+      - if: matrix.target == 'linux'
+        name: Install Linux desktop toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev libstdc++-12-dev
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Build
+        run: flutter build ${{ matrix.build }}
