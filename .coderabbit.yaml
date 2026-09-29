@@ -1,7 +1,0 @@
-# The example's icons and launch images are binaries rendered from
-# assets/logo.svg, so there is nothing to review. Everything else, generated
-# platform code included, stays in review.
-reviews:
-  path_filters:
-    - "!example/**/*.png"
-    - "!example/**/*.ico"
