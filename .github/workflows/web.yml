@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Flutter SDK
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
           channel: stable
 
@@ -54,7 +54,8 @@ jobs:
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
       - name: Deploy to GitHub Pages
-        uses: bluefireteam/flutter-gh-pages@v8
+        # v9 skips --web-renderer from Flutter 3.29, which removed it; v8 always passes it and fails.
+        uses: bluefireteam/flutter-gh-pages@cf4a9312849577dbfd9df8f3d63d12ef6b09898e # v9
         with:
           workingDir: example
           baseHref: /flutter_carousel_widget/
