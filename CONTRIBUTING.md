@@ -1,63 +1,67 @@
-# Contributing to the `flutter_carousel_widget` Package
+# Contributing to flutter_carousel_widget
 
-We appreciate your interest in contributing to the `flutter_carousel_widget` package built with Dart and Flutter. By contributing, you help make this project better and more accessible for others. Please take a moment to review the following guidelines to ensure a smooth and collaborative development process.
+Thanks for your interest in contributing. flutter_carousel_widget is a carousel for Flutter built on `widgets.dart` alone, and contributions that make carousels smoother, more accessible or easier to build are very welcome.
 
 ## Code of Conduct
 
 Please review and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md). We expect all contributors to be respectful, considerate, and inclusive when interacting with the project and its community.
 
-## How to Contribute
+## Getting set up
 
-Here are the steps to contribute to this project:
+Requires Flutter 3.47 or newer.
 
-1. Fork the Repository: Click the "Fork" button at the top right of this repository to create a copy in your GitHub account.
+```bash
+git clone https://github.com/nixrajput/flutter_carousel_widget.git
+cd flutter_carousel_widget
+flutter pub get
+git config core.hooksPath .githooks   # optional: runs the checks below before each push
+```
 
-2. Clone the Repository: Clone your forked repository to your local machine using the following command:
+`flutter pub get` resolves the example app too.
 
-   ```bash
-   git clone https://github.com/nixrajput/flutter_carousel_widget.git
-   ```
+## The checks
 
-3. Create a Branch: Create a new branch for your contributions. Make sure to choose a descriptive branch name that reflects the changes you intend to make.
+Every one of these must pass before a PR can merge. CI runs all of them but the publish dry run, which the release workflow runs before every publish:
 
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
+```bash
+dart format --output=none --set-exit-if-changed .
+flutter analyze
+flutter test
+(cd example && flutter test)
+flutter pub publish --dry-run
+```
 
-4. Make Changes: Implement your changes and improvements in your local repository. Follow the coding style and best practices of the project.
+CI also holds line coverage at 90% (`scripts/coverage.sh 90`) and repeats analyze and test on Flutter 3.47.0, the floor.
 
-5. Test Your Changes: Ensure that your changes do not introduce any errors or regressions. Test the website locally to verify that it functions as expected.
+## Workflow
 
-6. Commit Changes: Commit your changes with a clear and descriptive commit message.
+1. **Fork and branch.** Branch off `master` with a descriptive name (`feat/cube-perspective`, `fix/expandable-height`).
+2. **Write the test first.** Every feature and bugfix lands with a test. Bugs get a test that reproduces them before the fix.
+3. **Keep the diff surgical.** Every changed line should trace to the change you are making. No drive-by refactors, no speculative abstractions.
+4. **Bump the version.** `pubspec.yaml` must move in every PR, with a matching `CHANGELOG.md` entry - CI enforces both (`version bumped`). Patch for fixes, minor for features.
+5. **Update the docs.** If behaviour a user can see changes, the README changes in the same PR, and every Dart block in it must also be in `test/readme_snippets.dart`.
+6. **Open the PR.** Fill in the template. The PR title becomes the squash commit message on merge, so write it in Conventional Commit form (`feat: add a cube effect`) and keep it under ~50 characters.
 
-   ```bash
-   git commit -m "Add feature/fix: Describe your changes here"
-   ```
+## Keeping the carousel correct
 
-7. Push Changes: Push your changes to your forked repository on GitHub.
+Three rules keep the carousel correct and fast:
 
-   ```bash
-   git push origin feature/your-feature-name
-   ```
+- An effect never changes its widget structure with the offset; it changes values. A different structure remounts the item and loses its state.
+- Nothing rebuilds the carousel per scroll frame. Effects and indicators listen to the scroll position themselves.
+- `lib/` never imports Material or Cupertino. `test/architecture_test.dart` fails if it does.
 
-8. Create a Pull Request: Go to the original repository on GitHub and click the "New Pull Request" button. Provide a concise description of your changes, why they are necessary, and any relevant information.
+## Conventions
 
-9. Review and Collaboration: Contributors and maintainers will review your Pull Request. Be prepared to address any feedback or make additional changes as necessary.
+- **Commits:** Conventional Commits (`feat:`, `fix:`, `docs:`, `ci:`, `chore:`, `refactor:`), imperative subject, no trailing period.
+- **Style:** `dart format` and the lints in `analysis_options.yaml`, including `public_member_api_docs`: every public API element carries a doc comment.
+- **Language:** Dart 3.13, Flutter `>=3.47.0`, and `widgets.dart` only: `lib/` never imports Material or Cupertino, so the carousel works in any app.
+- **Dependencies:** none besides `flutter`. Please do not add one without discussing it in an issue first.
+- **Comments:** explain why, not what. Most code needs none.
 
-10. Merge: Once your Pull Request is approved and passes all checks, a maintainer will merge it into the main branch. Congratulations, your contribution is now part of the project!
+## Reporting issues
 
-## Development Guidelines
+Bugs and feature requests go to [Issues](https://github.com/nixrajput/flutter_carousel_widget/issues) - the templates ask for the Flutter version, the platforms and a minimal repro, which is usually enough to act on. Questions and open-ended ideas belong in [Discussions](https://github.com/nixrajput/flutter_carousel_widget/discussions). Security issues follow [SECURITY.md](SECURITY.md) instead - never a public issue.
 
-- Follow the project's coding style and guidelines.
-- Write clear and concise code with comments where necessary.
-- Test your changes thoroughly before submitting a Pull Request.
-- Keep Pull Requests focused on a single feature or bug fix.
-- Be responsive to feedback and be willing to make improvements as requested.
+## Thank you
 
-## Reporting Issues
-
-If you encounter any issues or bugs while using the Flutter_Carousel_Widget Package, please report them on the [Issues](https://github.com/nixrajput/flutter_carousel_widget/issues) page of the repository. Provide as much detail as possible to help us understand and address the problem.
-
-## Thank You
-
-Thank you for contributing to the Flutter_Carousel_Widget Package project. Your contributions help make this project better and more valuable to its users. We appreciate your time and effort in making this project a success!
+Every issue, repro, and PR makes this project more useful. Thanks for taking the time.

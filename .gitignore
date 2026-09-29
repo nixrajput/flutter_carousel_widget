@@ -27,3 +27,10 @@ pubspec.lock
 .dart_tool/
 .packages
 build/
+
+coverage/
+.playwright-mcp/
+
+# Local agent state
+.superpowers/
+.claude/settings.local.json

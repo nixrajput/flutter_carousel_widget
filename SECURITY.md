@@ -1,62 +1,38 @@
 # Security Policy
 
-## Supported Versions
+## Supported versions
 
-The following versions of the `flutter_carousel_widget` package are currently being supported with security updates:
+Only the latest major receives security fixes.
 
-| Version | Supported          |
-|---------|--------------------|
-| 3.x.x   | :white_check_mark: |
-| 2.3.x   | :white_check_mark: |
-| 2.2.x   | :white_check_mark: |
-| 1.x.x   | :x:                |
+| Version | Supported |
+| ------- | --------- |
+| 4.x     | Yes       |
+| < 4.0   | No        |
 
-If you are using an older, unsupported version, we recommend upgrading to the latest version to benefit from security fixes.
+## Reporting a vulnerability
 
-## Reporting a Vulnerability
+**Please do not open a public GitHub issue for security vulnerabilities.**
 
-We take security issues seriously. If you discover any security vulnerabilities or potential issues in the carousel widget package, please report them to us privately to allow us to investigate and address the issue before it is publicly disclosed.
+### Option 1 - GitHub private advisory (preferred)
 
-### To report a vulnerability:
+Use GitHub's private vulnerability reporting:
 
-- **Email:** [`nkr.nikhil.nkr@gmail.com`, `nixlab.in@gmail.com`]
-- **Subject:** Security Issue in FlutterCarouselWidget Package
-- **Information to include:**
-    - A description of the vulnerability
-    - Steps to reproduce (if applicable)
-    - The impact of the vulnerability
-    - Any potential fixes or patches
+[https://github.com/nixrajput/flutter_carousel_widget/security/advisories/new](https://github.com/nixrajput/flutter_carousel_widget/security/advisories/new)
 
-Please **do not** publicly disclose security vulnerabilities until we have confirmed and addressed them. We will work quickly to investigate and fix the issue.
+### Option 2 - Email
 
-### Response Time:
+Send a description of the vulnerability to **<nkr.nikhil.nkr@gmail.com>**. Include:
 
-We aim to respond to vulnerability reports within **48 hours** and will work closely with you to understand and resolve the issue as quickly as possible.
+- A clear description of the issue and its potential impact.
+- Steps to reproduce or a proof-of-concept.
+- Any suggested remediation if you have one.
 
-## Security Best Practices
+## Response expectations
 
-When using the Flutter carousel widget package in your project, consider the following security best practices:
+| Milestone          | Target                           |
+| ------------------ | -------------------------------- |
+| Acknowledgement    | Within 72 hours                  |
+| Initial assessment | Within 7 days                    |
+| Fix or mitigation  | Within 30 days for high-severity |
 
-1. **Keep the package up to date:**  
-   Always use the latest version of the carousel widget package to ensure you have the most recent security fixes and updates.
-
-2. **Review dependencies:**  
-   Ensure that all other dependencies in your project are up-to-date and free from vulnerabilities. Use tools like `pub outdated` to identify and update outdated packages.
-
-3. **Input Validation:**  
-   When using dynamic content (e.g., image URLs, widgets) with the carousel, validate and sanitize any external data to prevent potential attacks like XSS or injection attacks.
-
-4. **User Interaction:**  
-   Ensure that user interaction with the carousel widget (e.g., gestures, swipes) does not open the door for unintended behavior or exploits.
-
-## Patching and Updates
-
-We commit to regularly reviewing and updating the package with necessary security patches. Critical security vulnerabilities will be patched and released as soon as possible. If a critical fix is required, we will:
-
-- Prioritize the vulnerability fix
-- Release a patch version immediately
-- Notify users through the release notes and the changelog
-
----
-
-By adhering to these guidelines, you help ensure a more secure experience when using the `flutter_carousel_widget` package.
+You will be credited in the release notes unless you prefer to remain anonymous. Thank you for helping keep this project secure.

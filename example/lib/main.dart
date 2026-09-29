@@ -1,45 +1,30 @@
 import 'package:flutter/material.dart';
 
-import 'app_themes.dart';
-import 'views/custom_indicator.dart';
-import 'views/enlarge.dart';
-import 'views/expandable.dart';
-import 'views/fullscreen.dart';
-import 'views/home.dart';
-import 'views/indicator_halo.dart';
-import 'views/manual.dart';
-import 'views/multiple_items.dart';
-import 'views/page_change_reason.dart';
-import 'views/standard.dart';
+import 'src/app_theme.dart';
+import 'src/demo_page.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(const FlutterCarouselDemo());
-}
+void main() => runApp(const ExampleApp());
 
-class FlutterCarouselDemo extends StatelessWidget {
-  const FlutterCarouselDemo({Key? key}) : super(key: key);
+class ExampleApp extends StatefulWidget {
+  const ExampleApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (ctx) => const CarouselDemoHome(),
-        '/standard': (ctx) => const StandardCarouselDemo(),
-        '/enlarge': (ctx) => const EnlargeStrategyCarouselDemo(),
-        '/manual': (ctx) => const ManuallyControlledCarouselDemo(),
-        '/fullscreen': (ctx) => const FullscreenCarouselDemo(),
-        '/custom_indicator': (ctx) => const CustomIndicatorCarouselDemo(),
-        '/indicator_halo': (ctx) => const HaloIndicatorCarouselDemo(),
-        '/multiple_items': (ctx) => const MultipleItemsCarouselDemo(),
-        '/expandable': (ctx) => const ExpandableCarouselDemo(),
-        '/page_changed_reason': (ctx) => const PageChangedReasonCarouselDemo(),
-      },
-      theme: AppThemes.lightTheme,
-      darkTheme: AppThemes.darkTheme,
-      themeMode: ThemeMode.system,
-    );
-  }
+  State<ExampleApp> createState() => _ExampleAppState();
+}
+
+class _ExampleAppState extends State<ExampleApp> {
+  var _themeMode = ThemeMode.system;
+
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+    title: 'flutter_carousel_widget',
+    debugShowCheckedModeBanner: false,
+    theme: buildTheme(Brightness.light),
+    darkTheme: buildTheme(Brightness.dark),
+    themeMode: _themeMode,
+    home: DemoPage(
+      themeMode: _themeMode,
+      onThemeModeChanged: (mode) => setState(() => _themeMode = mode),
+    ),
+  );
 }
