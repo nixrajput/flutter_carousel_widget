@@ -102,12 +102,97 @@ void main() {
       ),
     );
     final dots = tester.getRect(
-      find.byKey(const ValueKey('default_indicator')),
+      find.descendant(
+        of: find.byKey(const ValueKey('default_indicator')),
+        matching: find.byType(CustomPaint),
+      ),
     );
-    // Dot 3: radius 6, spacing 20, so its centre is 66 px in.
-    await tester.tapAt(Offset(dots.left + 66, dots.center.dy));
+    // Dot 3: radius 6, spacing 24, so its centre is 78 px in.
+    await tester.tapAt(Offset(dots.left + 78, dots.center.dy));
     await tester.pumpAndSettle();
     expect(changes.last, (3, CarouselPageChangedReason.manual));
+  });
+
+  testWidgets('each dot is a 24 by 48 target, however small it is drawn', (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    await tester.pumpWidget(
+      host(FlutterCarousel(items: boxes(5), height: 100)),
+    );
+    for (var i = 1; i <= 5; i++) {
+      final dot = find.semantics.byLabel('Slide $i of 5').evaluate().single;
+      expect(dot.rect.size, const Size(24, 48), reason: 'dot $i');
+    }
+    handle.dispose();
+  });
+
+  testWidgets('a vertical carousel turns the targets to 48 by 24', (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    await tester.pumpWidget(
+      host(
+        FlutterCarousel(
+          items: boxes(3),
+          height: 300,
+          scrollDirection: Axis.vertical,
+        ),
+      ),
+    );
+    final dot = find.semantics.byLabel('Slide 2 of 3').evaluate().single;
+    expect(dot.rect.size, const Size(48, 24));
+    handle.dispose();
+  });
+
+  testWidgets('a tap in the band above a dot moves to it', (tester) async {
+    final c = FlutterCarouselController();
+    addTearDown(c.dispose);
+    await tester.pumpWidget(
+      host(FlutterCarousel(items: boxes(5), height: 100, controller: c)),
+    );
+    final dots = tester.getRect(
+      find.descendant(
+        of: find.byKey(const ValueKey('default_indicator')),
+        matching: find.byType(CustomPaint),
+      ),
+    );
+    // Above what the dots draw, inside the band that grows towards the items.
+    await tester.tapAt(Offset(dots.left + 78, dots.top - 20));
+    await tester.pumpAndSettle();
+    expect(c.index, 3);
+  });
+
+  testWidgets('a tap above the band reaches the items, not the dots', (
+    tester,
+  ) async {
+    final c = FlutterCarouselController();
+    addTearDown(c.dispose);
+    var tapped = 0;
+    await tester.pumpWidget(
+      host(
+        FlutterCarousel.builder(
+          itemCount: 5,
+          itemBuilder: (context, i, _) => GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => tapped++,
+            child: const SizedBox.expand(),
+          ),
+          height: 100,
+          controller: c,
+        ),
+      ),
+    );
+    final dots = tester.getRect(
+      find.descendant(
+        of: find.byKey(const ValueKey('default_indicator')),
+        matching: find.byType(CustomPaint),
+      ),
+    );
+    await tester.tapAt(Offset(dots.left + 78, dots.top - 40));
+    await tester.pumpAndSettle();
+    expect(c.index, 0);
+    expect(tapped, 1);
   });
 
   testWidgets('tapToNavigate false leaves taps to the items', (tester) async {
@@ -124,7 +209,7 @@ void main() {
       ),
     );
     final dots = tester.getRect(find.byType(CustomPaint).last);
-    await tester.tapAt(Offset(dots.left + 66, dots.center.dy));
+    await tester.tapAt(Offset(dots.left + 78, dots.center.dy));
     await tester.pumpAndSettle();
     expect(c.index, 0);
   });
@@ -190,7 +275,7 @@ void main() {
       ),
     );
     expect(seen.last.axis, Axis.vertical);
-    expect(tester.getSize(find.byType(CustomPaint).last), const Size(12, 52));
+    expect(tester.getSize(find.byType(CustomPaint).last), const Size(12, 60));
   });
 
   testWidgets('a controller move repaints the dots through the scroll alone', (
@@ -232,7 +317,12 @@ void main() {
         ),
       );
       final pages = tester.getRect(find.byType(PageView));
-      final dots = tester.getRect(find.byType(IndicatorView));
+      final dots = tester.getRect(
+        find.descendant(
+          of: find.byType(IndicatorView),
+          matching: find.byType(CustomPaint),
+        ),
+      );
       expect(dots.center.dy, closeTo(pages.center.dy, 0.5), reason: '$dir');
       if (dir == TextDirection.ltr) {
         expect(pages.right - dots.right, 8, reason: 'margin from the end');

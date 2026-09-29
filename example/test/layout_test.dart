@@ -441,8 +441,8 @@ void main() {
     final handle = tester.ensureSemantics();
     await pumpAt(tester, const Size(390, 844));
     await expandAll(tester);
-    // The indicator dots are the package's own widget, 20 pixels apart; their
-    // target size is a package issue, reported separately, not the demo's.
+    // The indicator dots are drawn smaller than their targets, which are one
+    // spacing wide, the WCAG 2.2 minimum of 24, and 48 tall.
     final small = <String>[];
     void visit(SemanticsNode node, Rect Function(Rect) toScreen) {
       Rect place(Rect r) => toScreen(
@@ -455,10 +455,10 @@ void main() {
       final screen = Offset.zero & const Size(390, 844);
       if (data.hasAction(SemanticsAction.tap) &&
           !node.isMergedIntoParent &&
-          !data.label.startsWith('Slide ') &&
           screen.contains(rect.topLeft) &&
           screen.contains(rect.bottomRight - const Offset(0.01, 0.01)) &&
-          (rect.width < 47.99 || rect.height < 47.99)) {
+          (rect.width < (data.label.startsWith('Slide ') ? 23.99 : 47.99) ||
+              rect.height < 47.99)) {
         small.add('${data.label}${data.tooltip} $rect');
       }
       node.visitChildren((child) {

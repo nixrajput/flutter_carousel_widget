@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <b>10 effects</b> &nbsp;·&nbsp; <b>204 tests</b> &nbsp;·&nbsp; <b>6 platforms</b> &nbsp;·&nbsp; <b>0 third-party dependencies</b> &nbsp;·&nbsp; <b>keyboard and screen-reader ready</b>
+  <b>10 effects</b> &nbsp;·&nbsp; <b>208 tests</b> &nbsp;·&nbsp; <b>6 platforms</b> &nbsp;·&nbsp; <b>0 third-party dependencies</b> &nbsp;·&nbsp; <b>keyboard and screen-reader ready</b>
 </p>
 
 <p align="center">
@@ -204,7 +204,7 @@ FlutterCarousel(
 );
 ```
 
-`overlay` places the dots over the items by `alignment`, which defaults to the bottom centre, or the middle of the trailing edge for a vertical carousel, where the dots run down the side. `below` puts them outside the items: under a horizontal carousel, outside its height, and beside a vertical one at its trailing edge. The dots repaint from the scroll position without rebuilding any widget, follow the drag with no frame of lag, and mirror under right-to-left text and `reverse`. Tapping a dot moves to its item unless `tapToNavigate` is off, and each dot is a labelled button for screen readers. Pass `indicator: null` to hide them; they never show for fewer than two items. Extend `SlideIndicator` for a look of your own.
+`overlay` places the dots over the items by `alignment`, which defaults to the bottom centre, or the middle of the trailing edge for a vertical carousel, where the dots run down the side. `below` puts them outside the items: under a horizontal carousel, outside its height, and beside a vertical one at its trailing edge. The dots repaint from the scroll position without rebuilding any widget, follow the drag with no frame of lag, and mirror under right-to-left text and `reverse`. Tapping a dot moves to its item unless `tapToNavigate` is off, and each dot is a labelled button for screen readers. However small a dot is drawn, its target is one `spacing` wide (24 pixels by default, the smallest WCAG 2.2 allows) and 48 pixels tall, growing towards the items so none of it falls off the carousel's edge. Pass `indicator: null` to hide them; they never show for fewer than two items. Extend `SlideIndicator` for a look of your own.
 
 ## Keyboard and accessibility
 

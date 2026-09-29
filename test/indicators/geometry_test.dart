@@ -50,21 +50,21 @@ void main() {
   });
 
   test('dot centres follow item order, mirrored when flipped (#66)', () {
-    const p = CircularSlideIndicator(); // radius 6, spacing 20
-    expect(p.size(5, Axis.horizontal), const Size(92, 12));
-    expect(p.size(5, Axis.vertical), const Size(12, 92));
+    const p = CircularSlideIndicator(); // radius 6, spacing 24
+    expect(p.size(5, Axis.horizontal), const Size(108, 12));
+    expect(p.size(5, Axis.vertical), const Size(12, 108));
     expect(p.size(0, Axis.horizontal), const Size(0, 12));
     expect(p.dotCenter(0, g(0)), const Offset(6, 6));
-    expect(p.dotCenter(4, g(0)), const Offset(86, 6));
-    expect(p.dotCenter(0, g(0, flipped: true)), const Offset(86, 6));
-    expect(p.dotCenter(1, g(0, axis: Axis.vertical)), const Offset(6, 26));
+    expect(p.dotCenter(4, g(0)), const Offset(102, 6));
+    expect(p.dotCenter(0, g(0, flipped: true)), const Offset(102, 6));
+    expect(p.dotCenter(1, g(0, axis: Axis.vertical)), const Offset(6, 30));
     const bordered = CircularSlideIndicator(
       style: SlideIndicatorStyle(
         borderColor: Color(0xFF000000),
         borderWidth: 2,
       ),
     );
-    expect(bordered.size(2, Axis.horizontal), const Size(34, 14));
+    expect(bordered.size(2, Axis.horizontal), const Size(38, 14));
     expect(bordered.dotCenter(0, g(0, n: 2)), const Offset(7, 7));
   });
 
@@ -73,7 +73,7 @@ void main() {
     final canvas = RecordingCanvas();
     p.paint(canvas, p.size(5, Axis.horizontal), g(1.5));
     final active = canvas.circles.where((c) => c.$3 == p.style.activeColor);
-    expect(active.single.$1, const Offset(36, 6)); // halfway between 26 and 46
+    expect(active.single.$1, const Offset(42, 6)); // halfway between 30 and 54
     expect(
       canvas.circles.where((c) => c.$3 == p.style.inactiveColor),
       hasLength(5),
@@ -93,7 +93,10 @@ void main() {
     final active = looping.circles
         .where((c) => c.$3 == p.style.activeColor)
         .toList();
-    expect(active.map((c) => c.$1), [const Offset(96, 6), const Offset(-4, 6)]);
+    expect(active.map((c) => c.$1), [
+      const Offset(114, 6),
+      const Offset(-6, 6),
+    ]);
     expect(looping.clips, greaterThan(0));
   });
 
@@ -114,7 +117,7 @@ void main() {
     still.paint(a, still.size(5, Axis.horizontal), g(1.4));
     expect(
       a.circles.where((c) => c.$3 == still.style.activeColor).map((c) => c.$1),
-      [const Offset(26, 6)],
+      [const Offset(30, 6)],
     );
     const moving = CircularStaticIndicator(
       style: SlideIndicatorStyle(animated: true),
@@ -125,8 +128,8 @@ void main() {
         .where((c) => c.$3 == moving.style.activeColor)
         .toList();
     expect(active.map((c) => (c.$1, c.$2)), [
-      (const Offset(26, 6), 4.5),
-      (const Offset(46, 6), 1.5),
+      (const Offset(30, 6), 4.5),
+      (const Offset(54, 6), 1.5),
     ]);
   });
 
@@ -137,7 +140,7 @@ void main() {
       final mid = RecordingCanvas();
       p.paint(mid, p.size(5, Axis.horizontal), g(1.5));
       final dot = mid.circles.lastWhere((c) => c.$3 == p.style.activeColor);
-      expect(dot.$1, const Offset(36, 6));
+      expect(dot.$1, const Offset(42, 6));
       expect(dot.$2, closeTo(1.8, 1e-9));
       final settled = RecordingCanvas();
       p.paint(settled, p.size(5, Axis.horizontal), g(2));
@@ -155,13 +158,13 @@ void main() {
     final canvas = RecordingCanvas();
     p.paint(canvas, p.size(5, Axis.horizontal), g(2.5));
     expect(canvas.lines.single.$1, const Offset(6, 6));
-    expect(canvas.lines.single.$2, const Offset(56, 6));
+    expect(canvas.lines.single.$2, const Offset(66, 6));
     expect(canvas.lines.single.$3, 12);
     expect(canvas.clips, 1);
     const stepped = SequentialFillIndicator();
     final c2 = RecordingCanvas();
     stepped.paint(c2, stepped.size(5, Axis.horizontal), g(2.4));
-    expect(c2.lines.single.$2, const Offset(46, 6));
+    expect(c2.lines.single.$2, const Offset(54, 6));
   });
 
   test('styles, painters and indicators hash by value', () {
@@ -211,7 +214,10 @@ void main() {
     final canvas = RecordingCanvas();
     p.paint(canvas, p.size(5, Axis.horizontal), g(4.5, infinite: true));
     final active = canvas.circles.where((c) => c.$3 == p.style.activeColor);
-    expect(active.map((c) => c.$1), [const Offset(96, 6), const Offset(-4, 6)]);
+    expect(active.map((c) => c.$1), [
+      const Offset(114, 6),
+      const Offset(-6, 6),
+    ]);
     expect(canvas.clips, 1);
   });
 

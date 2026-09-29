@@ -829,20 +829,18 @@ class _CarouselEngineState extends State<CarouselEngine>
     final body = KeyedSubtree(key: _pagesKey, child: pages);
     final indicator = _config.indicator;
     if (indicator == null || itemCount < 2) return body;
-    final dots = Padding(
-      padding: indicator.margin,
-      child: IndicatorView(
-        key: indicator == const CarouselIndicator()
-            ? const ValueKey('default_indicator')
-            : null,
-        indicator: indicator,
-        view: this,
-      ),
-    );
     final horizontal = axis == Axis.horizontal;
     final alignment =
         indicator.alignment ??
         (horizontal ? Alignment.bottomCenter : AlignmentDirectional.centerEnd);
+    final dots = IndicatorView(
+      key: indicator == const CarouselIndicator()
+          ? const ValueKey('default_indicator')
+          : null,
+      indicator: indicator,
+      view: this,
+      alignment: alignment,
+    );
     return switch (indicator.placement) {
       CarouselIndicatorPlacement.overlay => Stack(
         children: [
