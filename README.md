@@ -11,6 +11,7 @@
   <a href="https://github.com/nixrajput/flutter_carousel_widget/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/nixrajput/flutter_carousel_widget/ci.yml?branch=master&label=CI" alt="CI" /></a>
   <a href="https://pub.dev/packages/flutter_carousel_widget/score"><img src="https://img.shields.io/pub/likes/flutter_carousel_widget?label=Likes" alt="pub likes" /></a>
   <a href="https://pub.dev/packages/flutter_carousel_widget/score"><img src="https://img.shields.io/pub/points/flutter_carousel_widget?label=Points" alt="pub points" /></a>
+  <a href="https://github.com/nixrajput/flutter_carousel_widget/graphs/contributors"><img src="https://img.shields.io/github/contributors/nixrajput/flutter_carousel_widget?label=Contributors" alt="contributors" /></a>
   <a href="https://github.com/nixrajput/flutter_carousel_widget/blob/master/LICENSE"><img src="https://img.shields.io/github/license/nixrajput/flutter_carousel_widget?label=Licence" alt="licence" /></a>
 </p>
 
@@ -54,6 +55,7 @@
 - [FAQ](#faq)
 - [Migrating from 3.x](#migrating-from-3x)
 - [Contributing](#contributing)
+- [Contributors](#contributors)
 - [License](#license)
 - [Support the project](#support-the-project)
 - [Connect](#connect)
@@ -310,6 +312,14 @@ They are the things this package controls and can check: how many effects it shi
 ## Contributing
 
 Fork the repository, make your changes and open a pull request. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first, and note that every PR must bump the version in `pubspec.yaml` and add a matching `CHANGELOG.md` entry.
+
+## Contributors
+
+Thanks to everyone who has contributed to flutter_carousel_widget.
+
+<a href="https://github.com/nixrajput/flutter_carousel_widget/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=nixrajput/flutter_carousel_widget" alt="Contributors" />
+</a>
 
 ## License
 

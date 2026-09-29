@@ -1,6 +1,6 @@
 name: flutter_carousel_widget
 description: A carousel for Flutter with ten composable effects, autoplay, indicators, content-sized pages, keyboard navigation and screen-reader support, on widgets.dart alone.
-version: 4.0.0
+version: 4.0.1
 homepage: https://github.com/nixrajput/flutter_carousel_widget
 repository: https://github.com/nixrajput/flutter_carousel_widget
 issue_tracker: https://github.com/nixrajput/flutter_carousel_widget/issues

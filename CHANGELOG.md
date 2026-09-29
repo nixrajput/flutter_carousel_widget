@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.0.1
+
+- **Docs:** the README has its Contributors section back, with a contributors badge.
+
 ## 4.0.0
 
 A rewrite on Flutter 3.47 and `widgets.dart` alone. [MIGRATION.md](MIGRATION.md) maps every 3.x symbol.
