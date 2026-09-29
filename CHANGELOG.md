@@ -2,11 +2,13 @@
 
 ## 4.0.1
 
-- **Docs:** the README has its Contributors section back, with a contributors badge.
+- **Docs:** the README has its Contributors section back, with a contributors badge, and its Contributing section points to Issues, Discussions and SECURITY.md.
+- **Docs:** links to MIGRATION.md, CONTRIBUTING.md and the other repository files are absolute, so they work on pub.dev, which drops relative ones.
+- **Chore:** the pubspec homepage is the live demo.
 
 ## 4.0.0
 
-A rewrite on Flutter 3.47 and `widgets.dart` alone. [MIGRATION.md](MIGRATION.md) maps every 3.x symbol.
+A rewrite on Flutter 3.47 and `widgets.dart` alone. [MIGRATION.md](https://github.com/nixrajput/flutter_carousel_widget/blob/master/MIGRATION.md) maps every 3.x symbol.
 
 - **Breaking:** Flutter 3.47 or newer (Dart `^3.13.0`); no Material import, so a Cupertino or plain `WidgetsApp` no longer pulls Material in through this package.
 - **Breaking:** constructor parameters replace `FlutterCarouselOptions` and `ExpandableCarouselOptions`; one `FlutterCarouselController` drives both widgets, and its methods return futures.

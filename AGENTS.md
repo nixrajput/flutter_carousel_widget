@@ -50,7 +50,7 @@ test/
 - Every PR that changes anything users receive bumps `pubspec.yaml` and adds a matching `CHANGELOG.md` entry. CI gate `version bumped` enforces both, and without the entry `dart pub publish --dry-run` fails, which stops the release workflow before it publishes.
 - The PR title becomes the squash commit message.
 - `master` is protected: PR required, squash-only merges.
-- The README documents **shipped features only** - no roadmap, no plans. Every Dart block in it must also be in `test/readme_snippets.dart`, verbatim, or `readme_test.dart` fails.
+- The README documents **shipped features only** - no roadmap, no plans. Every Dart block in it must also be in `test/readme_snippets.dart`, verbatim, or `readme_test.dart` fails. Repository files are linked by absolute GitHub URL, because pub.dev drops relative links; `readme_test.dart` checks it.
 - Markdown prose is never hard-wrapped: one line per paragraph and per list item. Do not re-wrap these files to a column.
 - Never use an em-dash. Use a hyphen.
 

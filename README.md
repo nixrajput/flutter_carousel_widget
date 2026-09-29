@@ -29,7 +29,7 @@
   <a href="#effects">Effects</a> &nbsp;·&nbsp;
   <a href="#autoplay">Autoplay</a> &nbsp;·&nbsp;
   <a href="#keyboard-and-accessibility">Accessibility</a> &nbsp;·&nbsp;
-  <a href="MIGRATION.md">Migrating from 3.x</a> &nbsp;·&nbsp;
+  <a href="https://github.com/nixrajput/flutter_carousel_widget/blob/master/MIGRATION.md">Migrating from 3.x</a> &nbsp;·&nbsp;
   <a href="https://pub.dev/documentation/flutter_carousel_widget/latest/">API reference</a>
 </p>
 
@@ -62,11 +62,11 @@
 
 ## Overview
 
-flutter_carousel_widget shows a row (or column) of items one page at a time, and moves between them by drag, key, screen-reader gesture, controller call or autoplay. `FlutterCarousel` is for items that share one size; `ExpandableCarousel` sizes itself to each item and follows the drag between their heights. Both run on one engine, take their options as constructor parameters, share one `FlutterCarouselController`, and report exactly what moved them: 4.0 is a rewrite, and [MIGRATION.md](MIGRATION.md) maps every 3.x symbol.
+flutter_carousel_widget shows a row (or column) of items one page at a time, and moves between them by drag, key, screen-reader gesture, controller call or autoplay. `FlutterCarousel` is for items that share one size; `ExpandableCarousel` sizes itself to each item and follows the drag between their heights. Both run on one engine, take their options as constructor parameters, share one `FlutterCarouselController`, and report exactly what moved them: 4.0 is a rewrite, and [MIGRATION.md](https://github.com/nixrajput/flutter_carousel_widget/blob/master/MIGRATION.md) maps every 3.x symbol.
 
 ## Demo
 
-Try every option in the [live web demo](https://nixrajput.github.io/flutter_carousel_widget): the effects and their strength, autoplay, the four indicators, keyboard navigation, right-to-left and the vertical axis, beside a pinned preview. It is the [example app](example/README.md) built for the web; the same app runs on Android, iOS, macOS, Windows and Linux.
+Try every option in the [live web demo](https://nixrajput.github.io/flutter_carousel_widget): the effects and their strength, autoplay, the four indicators, keyboard navigation, right-to-left and the vertical axis, beside a pinned preview. It is the [example app](https://github.com/nixrajput/flutter_carousel_widget/blob/master/example/README.md) built for the web; the same app runs on Android, iOS, macOS, Windows and Linux.
 
 ## Quick start
 
@@ -307,11 +307,11 @@ They are the things this package controls and can check: how many effects it shi
 
 ## Migrating from 3.x
 
-4.0 replaces the options objects with constructor parameters, merges the two controllers into `FlutterCarouselController`, turns `enlargeCenterPage` into `CarouselEffect.enlarge`, and requires Flutter 3.47. [MIGRATION.md](MIGRATION.md) maps every 3.x symbol and lists every behaviour that changed.
+4.0 replaces the options objects with constructor parameters, merges the two controllers into `FlutterCarouselController`, turns `enlargeCenterPage` into `CarouselEffect.enlarge`, and requires Flutter 3.47. [MIGRATION.md](https://github.com/nixrajput/flutter_carousel_widget/blob/master/MIGRATION.md) maps every 3.x symbol and lists every behaviour that changed.
 
 ## Contributing
 
-Fork the repository, make your changes and open a pull request. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first, and note that every PR must bump the version in `pubspec.yaml` and add a matching `CHANGELOG.md` entry.
+Contributions are welcome. Fork, branch and open a pull request - see [CONTRIBUTING.md](https://github.com/nixrajput/flutter_carousel_widget/blob/master/CONTRIBUTING.md) for the checks a PR has to pass, and note that every PR must bump the version in `pubspec.yaml` and add a matching `CHANGELOG.md` entry. Bugs and ideas go to [Issues](https://github.com/nixrajput/flutter_carousel_widget/issues), questions to [Discussions](https://github.com/nixrajput/flutter_carousel_widget/discussions), and vulnerabilities follow [SECURITY.md](https://github.com/nixrajput/flutter_carousel_widget/blob/master/SECURITY.md).
 
 ## Contributors
 
@@ -323,7 +323,7 @@ Thanks to everyone who has contributed to flutter_carousel_widget.
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](https://github.com/nixrajput/flutter_carousel_widget/blob/master/LICENSE).
 
 ## Support the project
 
