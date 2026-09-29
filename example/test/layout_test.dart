@@ -41,6 +41,7 @@ Future<void> loadRealFonts() async {
 const screens = <(String, Size, double, double)>[
   ('smallest phone', Size(320, 568), 0, 1),
   ('small phone', Size(360, 640), 0, 1),
+  ('narrow tall phone', Size(360, 740), 0, 1),
   ('phone portrait', Size(390, 844), 34, 1),
   ('short phone, large text', Size(390, 600), 0, 1.3),
   ('android, large text', Size(412, 915), 48, 1.3),
