@@ -30,6 +30,10 @@ class _DemoPageState extends State<DemoPage> {
   /// toolbar and the padding.
   static const _previewChrome = 152.0;
 
+  /// A slide's padding, which keeps it clear of the dots, plus room for its
+  /// number.
+  static const _shortestSlide = Gaps.m + Gaps.l + Gaps.s + 24;
+
   final _controller = FlutterCarouselController();
   final _position = ValueNotifier<double>(0);
   final _focus = FocusNode();
@@ -53,7 +57,7 @@ class _DemoPageState extends State<DemoPage> {
     themeMode: widget.themeMode,
     onThemeModeChanged: widget.onThemeModeChanged,
     preview: (context, maxHeight) =>
-        _preview((maxHeight - _previewChrome).clamp(96.0, 240.0)),
+        _preview((maxHeight - _previewChrome).clamp(64.0, 240.0)),
     onReset: () => setState(() {
       _settings = const PlaygroundOptions();
       _generation++;
@@ -93,17 +97,22 @@ class _DemoPageState extends State<DemoPage> {
     final scheme = Theme.of(context).colorScheme;
     final o = _settings;
     final axis = o.vertical ? Axis.vertical : Axis.horizontal;
+    final shortest = _shortestSlide.clamp(0.0, height);
     Widget carousel = o.expandable
         ? ExpandableCarousel.builder(
             itemCount: _count,
-            // The measured axis varies: heights when horizontal, widths when
-            // vertical, so the carousel's size visibly follows each slide.
+            // The measured axis varies: heights when horizontal, from one just
+            // tall enough for its number to the whole preview, widths when
+            // vertical, so the size follows each slide inside the pinned area.
             itemBuilder: (context, i, _) => o.vertical
                 ? SizedBox(
                     width: 180.0 + 60 * i,
                     child: DemoSlide(index: i, axis: axis),
                   )
-                : DemoSlide(index: i, lines: 1 + i * 2, axis: axis),
+                : SizedBox(
+                    height: shortest + (height - shortest) * i / (_count - 1),
+                    child: DemoSlide(index: i, axis: axis),
+                  ),
             controller: _controller,
             focusNode: _focus,
             viewportFraction: o.viewportFraction,
@@ -144,7 +153,7 @@ class _DemoPageState extends State<DemoPage> {
     // A vertical ExpandableCarousel sizes its width to the slides and scrolls
     // along its height, so it needs one.
     if (o.expandable && o.vertical) {
-      carousel = SizedBox(height: height * 1.25, child: carousel);
+      carousel = SizedBox(height: height, child: carousel);
     }
     carousel = Directionality(
       textDirection: o.rtl ? TextDirection.rtl : TextDirection.ltr,

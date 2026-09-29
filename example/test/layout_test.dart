@@ -161,6 +161,26 @@ Future<void> expandAll(WidgetTester tester) async {
   }
 }
 
+/// Scrolls whichever list holds [option] until it is built, then taps it.
+Future<void> tapOption(WidgetTester tester, Finder option) async {
+  for (final list in lists(tester)) {
+    list.position.jumpTo(0);
+    await tester.pumpAndSettle();
+    final inList = find.descendant(of: listOf(list), matching: option);
+    try {
+      await tester.scrollUntilVisible(inList, 200, scrollable: listOf(list));
+    } on StateError {
+      continue;
+    }
+    await Scrollable.ensureVisible(tester.element(inList), alignment: 0.5);
+    await tester.pumpAndSettle();
+    await tester.tap(inList);
+    await tester.pumpAndSettle();
+    return;
+  }
+  throw StateError('No list holds $option.');
+}
+
 bool isOpen(WidgetTester tester, String title) =>
     tester
         .getSemantics(header(title).first)
@@ -260,6 +280,61 @@ void main() {
         lessThanOrEqualTo(visibleBottom),
         reason: '$name: the preview is cut off',
       );
+    });
+  }
+
+  // An expandable carousel follows each slide, and dots below or beside the
+  // items take room of their own, so each is checked on every item.
+  final expandable = find.descendant(
+    of: find.byType(SegmentedButton<bool>),
+    matching: find.text('Expandable'),
+  );
+  final heightOptions = {
+    'dots below': [find.text('Indicator below')],
+    'vertical, dots beside': [
+      find.text('Vertical'),
+      find.text('Indicator below'),
+    ],
+    'expandable': [expandable],
+    'expandable, dots below': [expandable, find.text('Indicator below')],
+    'expandable, vertical': [expandable, find.text('Vertical')],
+  };
+  for (final (name, size, bottomInset, textScale) in screens) {
+    if (textScale != 1) continue;
+    testWidgets('the preview fits whatever its options: $name', (tester) async {
+      for (final MapEntry(key: label, value: toggles)
+          in heightOptions.entries) {
+        await tester.pumpWidget(const SizedBox());
+        await pumpAt(tester, size, bottomInset: bottomInset);
+        await expandAll(tester);
+        for (final toggle in toggles) {
+          await tapOption(tester, toggle);
+        }
+        // Five dots 24 px apart are longer than the 88 px a 320 by 568
+        // phone leaves the carousel, so there its area scrolls that far.
+        final allowed = size == const Size(320, 568) && label.contains('beside')
+            ? 8.0
+            : 0.0;
+        final area = tester.state<ScrollableState>(
+          find
+              .descendant(of: previewArea(), matching: find.byType(Scrollable))
+              .first,
+        );
+        for (var item = 1; item <= 5; item++) {
+          expect(
+            area.position.maxScrollExtent,
+            lessThanOrEqualTo(allowed),
+            reason: '$name, $label, item $item',
+          );
+          await tester.tap(
+            find.descendant(
+              of: previewArea(),
+              matching: find.byTooltip('Next'),
+            ),
+          );
+          await tester.pumpAndSettle();
+        }
+      }
     });
   }
 
