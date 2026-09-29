@@ -37,9 +37,16 @@ class _RevealFocusState extends State<RevealFocus> with WidgetsBindingObserver {
   @override
   void didChangeMetrics() => _schedule();
 
-  void _schedule() => WidgetsBinding.instance.addPostFrameCallback((_) {
-    if (mounted) _reveal();
-  });
+  var _pending = false;
+
+  void _schedule() {
+    if (_pending) return;
+    _pending = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _pending = false;
+      if (mounted) _reveal();
+    });
+  }
 
   void _reveal() {
     final focused = FocusManager.instance.primaryFocus?.context;
