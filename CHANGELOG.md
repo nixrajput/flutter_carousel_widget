@@ -5,6 +5,7 @@
 - **Chore:** CI pins every GitHub Action to a full commit SHA. Workflows default to read-only or no token permissions and grant write scopes per job.
 - **Chore:** dev dependencies in the package and the example are pinned to exact versions.
 - **Chore:** `.gitignore` excludes environment files, private keys and local databases, and `.pubignore` keeps keys and databases out of the published package.
+- **Example:** the Android build uses Android Gradle Plugin 9.5.2, Kotlin 2.4.21 and Gradle 9.9.2, whose wrapper download is checksum-verified.
 
 ## 4.0.1
 
