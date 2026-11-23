@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.2
+
+- **Chore:** CI pins every GitHub Action to a full commit SHA, and each workflow gets only the token permissions its jobs use.
+- **Chore:** dev dependencies in the package and the example are pinned to exact versions.
+- **Chore:** `.gitignore` excludes environment files, private keys and local databases, and `.pubignore` keeps keys and databases out of the published package.
+
 ## 4.0.1
 
 - **Docs:** the README has its Contributors section back, with a contributors badge, and its Contributing section points to Issues, Discussions and SECURITY.md.
