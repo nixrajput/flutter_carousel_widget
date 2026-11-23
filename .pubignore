@@ -30,3 +30,17 @@ example/pubspec.lock
 example/.metadata
 example/assets/
 example/flutter_launcher_icons.yaml
+
+# Keys and local databases. pub already drops dot-files such as .env.
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+key.properties
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*

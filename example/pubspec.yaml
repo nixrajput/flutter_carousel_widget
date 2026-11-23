@@ -11,10 +11,11 @@ dependencies:
     sdk: flutter
   flutter_carousel_widget:
     path: ../
+  material_ui: 1.11.1
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.14.4
-  flutter_lints: ^6.0.0
+  flutter_launcher_icons: 0.14.4
+  flutter_lints: 6.0.0
   flutter_test:
     sdk: flutter
 
