@@ -39,5 +39,8 @@ example/flutter_launcher_icons.yaml
 *.keystore
 key.properties
 *.db
+*.db-*
 *.sqlite
+*.sqlite-*
 *.sqlite3
+*.sqlite3-*

@@ -2,7 +2,7 @@
 
 ## 4.0.2
 
-- **Chore:** CI pins every GitHub Action to a full commit SHA, and each workflow gets only the token permissions its jobs use.
+- **Chore:** CI pins every GitHub Action to a full commit SHA. Workflows default to read-only or no token permissions and grant write scopes per job.
 - **Chore:** dev dependencies in the package and the example are pinned to exact versions.
 - **Chore:** `.gitignore` excludes environment files, private keys and local databases, and `.pubignore` keeps keys and databases out of the published package.
 
