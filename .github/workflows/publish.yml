@@ -22,4 +22,4 @@ jobs:
   publish:
     permissions:
       id-token: write # OIDC token for keyless pub.dev auth
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@2286a0c042b44434fe26d292bbce8d34f7ec662b # v1.8.2
