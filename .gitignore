@@ -34,3 +34,17 @@ coverage/
 # Local agent state
 .superpowers/
 .claude/settings.local.json
+
+# Secrets and local databases
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+key.properties
+*.db
+*.sqlite
+*.sqlite3
