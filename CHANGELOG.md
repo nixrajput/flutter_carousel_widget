@@ -6,6 +6,7 @@
 - **Chore:** dev dependencies in the package and the example are pinned to exact versions.
 - **Chore:** `.gitignore` excludes environment files, private keys and local databases, and `.pubignore` keeps keys and databases out of the published package.
 - **Example:** the Android build uses Android Gradle Plugin 9.5.2, Kotlin 2.4.21 and Gradle 9.9.2, whose wrapper download is checksum-verified.
+- **Example:** the demo imports `package:material_ui` 1.11.1 instead of `package:flutter/material.dart`, which Flutter 3.50 deprecates.
 
 ## 4.0.1
 

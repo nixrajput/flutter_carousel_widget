@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The violet from the package logo. Both themes grow from this one seed, so
 /// light and dark stay in step.
