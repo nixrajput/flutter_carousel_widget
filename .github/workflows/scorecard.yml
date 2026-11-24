@@ -18,7 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write # publish results to the OpenSSF API
-      security-events: write # SARIF upload scope, unused while results stay off code scanning
       contents: read
       actions: read
     steps:
