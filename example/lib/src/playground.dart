@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'app_theme.dart';
 import 'collapsible_section.dart';
