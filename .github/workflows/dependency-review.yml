@@ -1,8 +1,8 @@
 name: Dependency Review
 
 # Fails a PR that introduces a dependency with a known vulnerability or a
-# disallowed licence. With CodeQL and Dependabot deliberately absent fleet-wide,
-# this and Scorecard are the supply-chain gate.
+# disallowed licence. With CodeQL, Dependabot and Scorecard deliberately
+# absent fleet-wide, this is the supply-chain gate.
 on:
   pull_request:
     branches: ["master"]
