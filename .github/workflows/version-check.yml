@@ -7,8 +7,9 @@ name: Version Check
 # a version that was never released must remain releasable. This prevents a
 # non-incremental publish (which pub.dev rejects) while still allowing the
 # current master version to ship if it hasn't been released yet.
-# A PR that changes only .github/ or the .fvmrc pin ships nothing to pub.dev,
-# so it needs no bump. The job still passes, so the required check reports.
+# A PR that changes only .github/, the .fvmrc pin or the agent guides
+# (AGENTS.md, CLAUDE.md, .claude/) ships nothing to pub.dev, so it needs no
+# bump. The job still passes, so the required check reports.
 on:
   pull_request:
     branches: ["master"]
@@ -34,10 +35,10 @@ jobs:
           HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
           changed=$(git diff --name-only --no-renames "$BASE...$HEAD")
-          if grep -vqE '^(\.github/|\.fvmrc$)' <<< "$changed"; then
+          if grep -vqE '^(\.github/|\.claude/|\.fvmrc$|AGENTS\.md$|CLAUDE\.md$)' <<< "$changed"; then
             echo "ship=true" >> "$GITHUB_OUTPUT"
           else
-            echo "Only .github/ and pin files changed - nothing ships, no bump needed ✓"
+            echo "Only .github/, pin files and agent guides changed - nothing ships, no bump needed ✓"
             echo "ship=false" >> "$GITHUB_OUTPUT"
           fi
 
